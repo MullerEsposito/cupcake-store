@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="CupCake Store — cupcakes, pequenos momentos e grandes sorrisos. Projeto acadêmico PIT II.">
+  <title>CupCake Store · Feito para adoçar</title>
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#catalogo">Ir para o catálogo</a>
+  <div class="announcement">Feito com carinho, para os seus pequenos grandes momentos.</div>
+  <header class="header wrap">
+    <a class="brand" href="/" aria-label="CupCake Store, início"><span class="brand-icon">c.</span><span>CupCake<span class="brand-small">STORE</span></span></a>
+    <nav aria-label="Navegação principal"><a href="#catalogo">Nossos cupcakes</a><a href="#sobre">Nossa essência</a></nav>
+    <div class="account"><span id="greeting" hidden></span><button id="account-button" class="button outline">Entrar / Cadastrar</button><button id="logout" class="button outline" hidden>Sair</button></div>
+  </header>
+  <main>
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy"><p class="eyebrow"><span></span> PEQUENAS DELÍCIAS. GRANDES MOMENTOS.</p><h1 id="hero-title">Um carinho<br>em forma de <em>cupcake.</em></h1><p class="hero-description">Sabores que abraçam, detalhes que encantam.<br>Encontre o seu favorito e deixe o dia mais doce.</p><a class="button primary" href="#catalogo">Conhecer os sabores <span aria-hidden="true">↗</span></a><div class="hero-note"><span aria-hidden="true">✧</span> Preparados com cuidado, em cada detalhe.</div></div>
+      <div class="hero-art"><span class="orbit orbit-one"></span><span class="orbit orbit-two"></span><div class="art-label">uma pausa<br><em>mais doce.</em></div><img src="/cupcake.svg" alt="Ilustração de um cupcake com cobertura rosa e uma cereja" width="480" height="480"><div class="art-stamp">FEITO COM<br><span>amor</span><br>E UM TOQUE DE DOÇURA</div></div>
+    </section>
+    <div class="benefits"><div class="wrap"><span>✧ Sabores que surpreendem</span><span>♡ Cuidado em cada detalhe</span><span>✦ Do seu jeito, no seu momento</span></div></div>
+    <section id="catalogo" class="catalog wrap" aria-labelledby="catalog-title">
+      <div class="section-top"><div><p class="eyebrow">ESCOLHA SEU MOMENTO DOCE</p><h2 id="catalog-title">Nossos cupcakes</h2></div><span class="catalog-note">Do primeiro olhar à última mordida.</span></div>
+      <div id="catalog-state" class="state" role="status">Preparando a vitrine…</div>
+      <div id="products" class="products" aria-live="polite"></div>
+    </section>
+    <section id="sobre" class="about wrap"><span class="about-mark" aria-hidden="true">♡</span><div><p class="eyebrow">NOSSA ESSÊNCIA</p><h2>Mais do que um doce.<br>Um pequeno gesto de carinho.</h2><p>A CupCake Store nasceu para transformar uma pausa na rotina em um momento especial. Descubra sabores e escolha o que combina com você.</p></div></section>
+    <div class="project-note wrap"><strong>Protótipo acadêmico · PIT II</strong><span>Primeira entrega: vitrine, detalhes, cadastro e login. Compras e pagamentos ainda não estão disponíveis.</span></div>
+  </main>
+  <footer class="wrap"><a class="brand footer-brand" href="/">CupCake Store</a><span>Feito para adoçar seus dias.</span><small>Projeto Integrador Transdisciplinar em SI</small></footer>
+  <dialog id="auth-dialog" aria-labelledby="auth-title"><button class="close" data-close aria-label="Fechar">×</button><p class="eyebrow">BEM-VINDO À CUPCAKE STORE</p><h2 id="auth-title">Que bom ter você aqui.</h2><p id="auth-description">Entre para acessar sua conta.</p><div class="tabs" role="group" aria-label="Acesso à conta"><button id="login-tab" aria-pressed="true">Entrar</button><button id="register-tab" aria-pressed="false">Criar conta</button></div><form id="auth-form"><label id="name-field" hidden>Seu nome<input name="name" autocomplete="name" maxlength="150"></label><label>E-mail<input name="email" type="email" autocomplete="email" maxlength="254" required></label><label>Senha<input name="password" type="password" autocomplete="current-password" maxlength="128" required></label><p id="password-help" class="hint" hidden>Use entre 12 e 128 caracteres para proteger sua conta.</p><p id="auth-error" class="error" role="alert"></p><button id="auth-submit" class="button primary" type="submit">Entrar na minha conta</button></form></dialog>
+  <dialog id="product-dialog" aria-labelledby="product-title"><button class="close" data-close aria-label="Fechar">×</button><div id="product-detail"></div></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

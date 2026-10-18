@@ -1,0 +1,14 @@
+{
+  "name": "cupcake-store",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20.19" },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env src/server.mjs",
+    "dev": "node --watch --env-file-if-exists=.env src/server.mjs",
+    "test": "node --test",
+    "check:db": "node --env-file-if-exists=.env scripts/check-db.mjs"
+  },
+  "dependencies": { "pg": "^8.16.3" }
+}
