@@ -25,44 +25,44 @@ test('todas as fábricas criam e injetam seu serviço com dependências explíci
     dataSource: createTypeOrmFixture(), passwords: {}, sessions: {}, origin: 'https://cupcake.example', clock: () => 1000
   };
   const createController = factory => withDataSource(dependencies.dataSource, () => factory(dependencies));
-  for (const [factory, Service] of [
-    [getRegisterUserController, RegisterUserService],
-    [getAuthenticateUserController, AuthenticateUserService],
-    [getCurrentUserController, GetCurrentUserService],
-    [getLogoutUserController, LogoutUserService],
-    [getListProductsController, ListProductsService],
-    [getProductController, GetProductService]
+  for (const [factory, Service, property] of [
+    [getRegisterUserController, RegisterUserService, 'registerUserService'],
+    [getAuthenticateUserController, AuthenticateUserService, 'authenticateUserService'],
+    [getCurrentUserController, GetCurrentUserService, 'getCurrentUserService'],
+    [getLogoutUserController, LogoutUserService, 'logoutUserService'],
+    [getListProductsController, ListProductsService, 'listProductsService'],
+    [getProductController, GetProductService, 'getProductService']
   ]) {
     const first = createController(factory);
     const second = createController(factory);
-    assert.ok(first.service instanceof Service);
+    assert.ok(first[property] instanceof Service, property);
     assert.notEqual(first, second);
-    assert.notEqual(first.service, second.service);
+    assert.notEqual(first[property], second[property]);
     assert.equal(typeof first.handle, 'function');
   }
-  for (const factory of [getRegisterUserController, getAuthenticateUserController, getCurrentUserController]) {
-    const first = createController(factory).service.usersRepository;
-    const second = createController(factory).service.usersRepository;
+  for (const [factory, property] of [[getRegisterUserController, 'registerUserService'], [getAuthenticateUserController, 'authenticateUserService'], [getCurrentUserController, 'getCurrentUserService']]) {
+    const first = createController(factory)[property].usersRepository;
+    const second = createController(factory)[property].usersRepository;
     assert.ok(first instanceof UsersRepository);
     assert.equal(first.repository, dependencies.dataSource.getRepository(User));
     assert.notEqual(first, second);
   }
-  for (const factory of [getListProductsController, getProductController]) {
-    const first = createController(factory).service.productsRepository;
-    const second = createController(factory).service.productsRepository;
+  for (const [factory, property] of [[getListProductsController, 'listProductsService'], [getProductController, 'getProductService']]) {
+    const first = createController(factory)[property].productsRepository;
+    const second = createController(factory)[property].productsRepository;
     assert.ok(first instanceof ProductsRepository);
     assert.equal(first.repository, dependencies.dataSource.getRepository(Product));
     assert.notEqual(first, second);
   }
-  assert.equal(createController(getAuthenticateUserController).service.clock, dependencies.clock);
-  for (const factory of [getRegisterUserController, getAuthenticateUserController]) {
+  assert.equal(createController(getAuthenticateUserController).authenticateUserService.clock, dependencies.clock);
+  for (const [factory, property] of [[getRegisterUserController, 'registerUserService'], [getAuthenticateUserController, 'authenticateUserService']]) {
     const controller = createController(factory);
-    assert.equal(controller.service.sessions, dependencies.sessions);
+    assert.equal(controller[property].sessions, dependencies.sessions);
     assert.equal('sessions' in controller, false);
     assert.equal('security' in controller, false);
   }
   assert.equal('sessions' in createController(getCurrentUserController), false);
-  assert.equal(createController(getLogoutUserController).service.sessions, dependencies.sessions);
+  assert.equal(createController(getLogoutUserController).logoutUserService.sessions, dependencies.sessions);
 });
 
 test('composição compartilha dataSource mas não sessões entre aplicações', () => {
@@ -82,5 +82,5 @@ test('catálogo executa com repositório criado a partir do dataSource da compos
   const expected = [{ id: '1', name: 'Cupcake' }];
   const dataSource = createTypeOrmFixture({ products: async () => expected });
   const controller = withDataSource(dataSource, () => getListProductsController());
-  assert.deepEqual(await controller.service.execute(), expected);
+  assert.deepEqual(await controller.listProductsService.execute(), expected);
 });

@@ -1,3 +1,5 @@
+import { Cart } from '#entities/Cart';
+import { CartItem } from '#entities/CartItem';
 import { withDataSource } from '../src/infrastructure/typeorm/repository-context.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -107,7 +109,7 @@ test('adaptadores sem parâmetros resolvem o repositório da conexão ativa', as
 test('classes decoradas preservam defaults e não selecionam senha por padrão', async () => {
   const source = createDataSource();
   await source.buildMetadatas();
-  assert.deepEqual(source.options.entities, [User, Product, Category]);
+  assert.deepEqual(source.options.entities, [User, Product, Category, Cart, CartItem]);
   const user = source.getMetadata(User);
   assert.equal(user.findColumnWithPropertyName('role').default, 'CLIENTE');
   assert.equal(user.findColumnWithPropertyName('active').default, true);
