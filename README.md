@@ -26,6 +26,10 @@ Cancelamento pelo proprietário ou ADMIN até a preparação, com motivo, confir
 
 Execute `npm run migrate` para acrescentar a tabela de cancelamentos sem alterar os dados anteriores. Valide com `npm run check:sprint5`, que reverte todos os dados fictícios do diagnóstico.
 
+## Sprint 6
+
+Navegação por páginas com React Router e estilos encapsulados com styled-components. Catálogo, detalhes, carrinho, checkout, pedidos e administração possuem endereços próprios. Consulte [Sprint 6](docs/sprint-6.md) para rotas, organização e verificação.
+
 ## Configuração local
 
 1. Abra a raiz deste repositório em um terminal e execute `npm ci` para instalar as dependências registradas.
@@ -62,4 +66,4 @@ Teste manual com o banco conectado: inserir catálogo, consultar vitrine e detal
 
 ## Próximos incrementos
 
-Sprints 1 a 5 implementadas no escopo aprovado. Evoluções: auditoria ampliada de estoque, paginação, trocas/devoluções após entrega e preparação para produção. O login não conclui uma compra. Pagamentos, estornos e logística são simulações acadêmicas, sem cobrança, GPS ou movimentação financeira real.
+Sprints 1 a 6 implementadas no escopo aprovado. Evoluções: auditoria ampliada de estoque, paginação, trocas/devoluções após entrega e preparação para produção. O login não conclui uma compra. Pagamentos, estornos e logística são simulações acadêmicas, sem cobrança, GPS ou movimentação financeira real.

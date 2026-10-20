@@ -248,3 +248,13 @@ CancelOrder e AdminCancelOrder preservam a separação de autorização: o prime
 OrderCancellation mapeia a nova tabela cancelamento_pedido. Ela preserva o histórico do pagamento aprovado e registra estorno exclusivamente simulado, motivo, ator e reposição. O presenter compartilhado inclui o recibo de cancelamento nas visões do cliente e do administrador. A listagem administrativa usa snapshot consistente para não combinar estado antigo com recibo recém-criado.
 
 TypeORM registra a migração CreateOrderCancellations1792454400000, mas somente npm run migrate a executa. Não há sincronização no startup ou mudança destrutiva do modelo inicial. As dez entidades de negócio e o histórico técnico de migrações ficam no mesmo banco. Regras de cancelamento, garantias, diagnóstico com rollback e limites estão em docs/sprint-5.md.
+
+## Sprint 6 — páginas e estilos do frontend
+
+A apresentação utiliza React Router em modo declarativo, com BrowserRouter e rotas explícitas. O StorefrontProvider mantém sessão e carrinho acima das páginas: navegar não repete a incorporação do carrinho de visitante. Cada página compõe componentes de apresentação, sem acessar TypeORM ou regras transacionais.
+
+Componentes visuais seguem o padrão `components/AdminPanel/index.tsx` e `styles.tsx`. Estilos de domínio são locais, com styled-components; `styles/global.tsx` contém somente reset, tipografia e primitivas compartilhadas, e `styles/theme.ts` centraliza cores e medidas. As classes internas são seletores escopados pelo componente, não estilos globais de domínio. A antiga folha `styles.css` foi removida.
+
+Checkout, lista de pedidos e resumo têm rotas separadas e reutilizam o fluxo de pedidos para manter pagamento, acompanhamento e cancelamento consistentes. Login/cadastro e detalhes do produto deixam de depender de diálogos. RequireSession protege a apresentação enquanto a API continua sendo a autoridade de autenticação, propriedade e perfil ADMIN.
+
+O Express entrega o documento React nos endereços conhecidos, inclusive em recargas e links diretos. APIs desconhecidas, arquivos ausentes e caminhos privados continuam retornando 404. Cada documento HTML recebe um nonce novo, presente na CSP e no meta sc-nonce consumido pelo styled-components; não foi habilitado unsafe-inline. Scripts continuam restritos à mesma origem. Não houve alteração de esquema, serviços de negócio ou políticas de estoque/cancelamento.
