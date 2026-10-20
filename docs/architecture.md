@@ -103,7 +103,7 @@ URLs e payloads da API mantidos. Não há alteração no esquema ou nos dados do
 
 `npm test` usa tsx para executar os testes de regressão JavaScript contra os fontes TypeScript. `npm run typecheck` verifica servidor, React, ferramentas e provas de contratos em test/types; `npm test` verifica casos de uso, contratos HTTP, infraestrutura transacional simulada, gateway do frontend e direção de dependências. Testes de unidade não substituem validação com PostgreSQL. `npm run check:db` verifica conexão e nove tabelas, sem modificar dados. A compilação React e a revisão no navegador complementam esses testes.
 
-Na Sprint 1 não houve ampliação do escopo funcional. A Sprint 2 acrescentou busca, filtros e carrinho conforme docs/sprint-2.md; a Sprint 3 acrescenta checkout e pagamentos simulados conforme docs/sprint-3.md. Painel administrativo permanece para a Sprint 4.
+Na Sprint 1 não houve ampliação do escopo funcional. A Sprint 2 acrescentou busca, filtros e carrinho conforme docs/sprint-2.md; a Sprint 3 acrescentou checkout e pagamentos simulados conforme docs/sprint-3.md. A Sprint 4 acrescenta administração e acompanhamento conforme docs/sprint-4.md.
 
 ## TypeScript
 
@@ -232,3 +232,11 @@ Os módulos addresses e orders mantêm os contratos IAddressesRepository e IOrde
 requireSession bloqueia visitantes nas novas rotas; os serviços e transações também validam usuário ativo. Os adaptadores TypeORM filtram endereço e pedido pelo dono autenticado. Checkout cria os snapshots e converte o carrinho em uma única transação, compartilhando seu bloqueio de proprietário com a Sprint 2. PayOrder bloqueia o pedido e os produtos em ordem estável, registrando a aprovação e a baixa de estoque atomicamente. Idempotência usa a chave única de pagamento e bloqueio transacional por chave.
 
 O frontend mantém o acesso HTTP no gateway Axios. CheckoutView coordena seleção/cadastro de endereço, confirmação do pedido, simulação explícita e retomada por histórico. Dados do pedido e seus valores são sempre retornados pelo backend; o navegador não define total, preço, frete ou identidade. Regras, estados, diagnóstico com rollback e limites estão em docs/sprint-3.md.
+
+## Incremento da Sprint 4
+
+AdminPanel é apresentado somente para o perfil ADMIN, mas a autorização efetiva está nos serviços e é repetida nas transações do AdministrationRepository. O contrato IAdministrationRepository cobre catálogo, edição, estoque, consulta e avanço dos pedidos. As fábricas continuam criando adaptadores sem parâmetros e injetando serviços tipados pela classe nos controllers.
+
+GetOrder consulta o pedido pelo ID e proprietário. A apresentação TypeORM dos snapshots foi compartilhada em present-order.ts para evitar duplicação entre cliente e administrador. O acompanhamento mostra o estado atual, atualiza explicitamente ou por consulta periódica com a página visível e impede respostas antigas de substituir uma operação mais recente.
+
+Produtos e categorias recebem revisão dos campos editáveis para comparação otimista. Ajustes de estoque e avanços de pedido têm bloqueios de linha e validação dos valores esperados; não há nova tabela, sincronização ou migração automática. O fluxo administrativo não aprova pagamentos, não cancela pedidos e não concede perfis. Decisões e limites estão em docs/sprint-4.md.

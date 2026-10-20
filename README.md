@@ -14,6 +14,12 @@ Endereços por cliente, checkout autenticado, pedido com snapshots e pagamento e
 
 Execute `npm run check:sprint3` para verificar os fluxos no PostgreSQL com dados fictícios revertidos ao final. A aplicação reutiliza as nove tabelas existentes, sem migração.
 
+## Sprint 4
+
+Acompanhamento de pedidos por proprietário e painel exclusivo ADMIN para produtos, categorias, estoque e avanço dos pedidos até a entrega. Revisões e bloqueios transacionais protegem edições desatualizadas. Cancelamento e estorno permanecem fora do escopo aprovado. Consulte [Sprint 4](docs/sprint-4.md) para endpoints, autorização e limites.
+
+Valide com `npm run check:sprint4`: os dados fictícios e o administrador de teste são revertidos. Contas reais só devem receber o perfil ADMIN com autorização explícita; o cadastro público continua criando clientes.
+
 ## Configuração local
 
 1. Abra a raiz deste repositório em um terminal e execute `npm ci` para instalar as dependências registradas.
@@ -50,4 +56,4 @@ Teste manual com o banco conectado: inserir catálogo, consultar vitrine e detal
 
 ## Próximos incrementos
 
-Sprints 1, 2 e 3 implementadas. Próxima etapa — Sprint 4: acompanhamento logístico e painel administrador. O login não conclui uma compra. Todos os pagamentos são simulações acadêmicas, sem cobrança ou processamento financeiro real.
+Sprints 1 a 4 implementadas no escopo aprovado. Evoluções: cancelamento/estorno, auditoria de movimentações, paginação ampliada e preparação para produção. O login não conclui uma compra. Pagamentos e logística são simulações acadêmicas, sem cobrança, GPS ou processamento financeiro real.
