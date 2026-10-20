@@ -4,7 +4,7 @@ import type { ApplicationErrorCode } from '#shared/errors/ApplicationError';
 import { errorInfo, errorCode } from '#shared/errors/error-info';
 import { HttpError } from '../errors/http-error.js';
 
-const statusCodes: Record<ApplicationErrorCode, number> = { VALIDATION: 400, UNAUTHORIZED: 401, NOT_FOUND: 404, CONFLICT: 409, RATE_LIMIT: 429, UNAVAILABLE: 503 };
+const statusCodes: Record<ApplicationErrorCode, number> = { VALIDATION: 400, UNAUTHORIZED: 401, FORBIDDEN: 403, NOT_FOUND: 404, CONFLICT: 409, RATE_LIMIT: 429, UNAVAILABLE: 503 };
 const parserErrors: Record<string, { status: number; message: string }> = {
   'entity.too.large': { status: 413, message: 'Dados acima do limite permitido.' },
   'entity.parse.failed': { status: 400, message: 'Dados inválidos.' },

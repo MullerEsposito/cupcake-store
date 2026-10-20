@@ -20,6 +20,8 @@ export function Header({ user, loading, cartCount, onLogin, onLogout }: {
       </nav>
       <div className="account">
         <a className="cart-shortcut" href="#carrinho">Carrinho ({cartCount})</a>
+        {user && <a className="cart-shortcut" href="#pedidos">Meus pedidos</a>}
+        {user?.role === 'ADMIN' && <a className="cart-shortcut" href="#administracao">Administração</a>}
         {user
           ? <><span id="greeting">Olá, {user.name.split(' ')[0]}!</span><button className="button outline" disabled={loading} onClick={onLogout}>Sair</button></>
           : <button className="button outline" disabled={loading} onClick={onLogin}>Entrar / Cadastrar</button>}
@@ -66,7 +68,7 @@ export function Footer() {
     </section>
     <div className="project-note wrap">
       <strong>Protótipo acadêmico · PIT II</strong>
-      <span>Sprint 3: carrinho, endereços e checkout com pagamento simulado. Nenhuma cobrança real.</span>
+      <span>Sprint 4: acompanhamento de pedidos e painel administrativo. Pagamentos exclusivamente simulados.</span>
     </div>
     <footer className="wrap">
       <a className="brand footer-brand" href="/">CupCake Store</a>

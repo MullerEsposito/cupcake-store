@@ -1,3 +1,5 @@
+import type { AdminApi } from './admin';
+
 export interface Product {
   id: string;
   name: string;
@@ -37,7 +39,7 @@ export interface Order {
   items: { productId: string; name: string; quantity: number; unitPrice: string; lineTotal: string }[];
   payments: { id: string; method: string; status: string; amount: string; simulated: boolean; idempotencyKey: string; reason: string | null }[];
 }
-export interface StorefrontApi {
+export interface StorefrontApi extends AdminApi {
   products(signal?: AbortSignal, filters?: CatalogFilters): Promise<Product[]>;
   product(id: string, signal?: AbortSignal): Promise<Product>;
   session(signal?: AbortSignal): Promise<PublicUser | null>;
@@ -52,6 +54,7 @@ export interface StorefrontApi {
   addresses(signal?: AbortSignal): Promise<Address[]>;
   createAddress(input: AddressInput): Promise<Address>;
   orders(signal?: AbortSignal): Promise<Order[]>;
+  order(id: string, signal?: AbortSignal): Promise<Order>;
   checkout(input: CheckoutInput): Promise<Order>;
   payOrder(id: string, input: PaymentInput): Promise<Order>;
 }

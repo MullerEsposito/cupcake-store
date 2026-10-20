@@ -6,6 +6,7 @@ import { jsonBody } from '../helpers/request-body.js';
 import { getListOrdersController } from '../../../modules/orders/useCases/listOrders/index.js';
 import { getCheckoutController } from '../../../modules/orders/useCases/checkout/index.js';
 import { getPayOrderController } from '../../../modules/orders/useCases/payOrder/index.js';
+import { getOrderController } from '../../../modules/orders/useCases/getOrder/index.js';
 
 export const ordersRoutes = Router({ caseSensitive: true, strict: true });
 ordersRoutes.use(resolveSession, requireSession);
@@ -14,5 +15,6 @@ ordersRoutes.use((request, response, next) => {
   next();
 });
 ordersRoutes.get('/', (request, response) => getListOrdersController().handle(request, response));
+ordersRoutes.get('/:id', (request, response) => getOrderController().handle(request, response));
 ordersRoutes.post('/checkout', ...jsonBody(), (request, response) => getCheckoutController().handle(request, response));
 ordersRoutes.post('/:id/payments', ...jsonBody(), (request, response) => getPayOrderController().handle(request, response));

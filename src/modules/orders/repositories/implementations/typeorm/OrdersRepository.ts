@@ -3,6 +3,7 @@ import type { EntityManager, Repository } from 'typeorm';
 import { Order } from '../../../entities/Order.js';
 import { OrderItem } from '../../../entities/OrderItem.js';
 import { Payment } from '../../../entities/Payment.js';
+import { presentOrder } from './present-order.js';
 import { Address } from '../../../../addresses/entities/Address.js';
 import { Cart } from '#entities/Cart';
 import { CartItem } from '#entities/CartItem';
@@ -24,23 +25,19 @@ async function activeUser(manager: EntityManager, userId: string): Promise<void>
   }
 }
 
-async function presentOrder(manager: EntityManager, order: Order): Promise<OrderDTO> {
-  const items = await manager.find(OrderItem, { where: { orderId: order.id }, order: { productId: 'ASC' } });
-  const payments = await manager.find(Payment, { where: { orderId: order.id }, order: { id: 'DESC' } });
-  return { id: order.id, number: order.number, status: order.status, createdAt: order.createdAt.toISOString(),
-    subtotal: order.subtotal, shipping: order.shipping, total: order.total,
-    address: { recipient: order.recipient, postalCode: order.postalCode, street: order.street, number: order.addressNumber,
-      complement: order.complement, district: order.district, city: order.city, state: order.state },
-    items: items.map(item => ({ productId: item.productId, name: item.name, quantity: item.quantity,
-      unitPrice: item.unitPrice, lineTotal: money(cents(item.unitPrice) * BigInt(item.quantity)) })),
-    payments: payments.map(payment => ({ id: payment.id, method: payment.method, status: payment.status, amount: payment.amount,
-      simulated: payment.simulated, idempotencyKey: payment.idempotencyKey, reason: payment.reason })) };
-}
-
 export class OrdersRepository implements IOrdersRepository {
   private readonly repository: Repository<Order>;
 
   constructor() { this.repository = getRepository(Order); }
+
+  async find(userId: string, id: string): Promise<OrderDTO> {
+    return this.repository.manager.transaction('REPEATABLE READ', async manager => {
+      await activeUser(manager, userId);
+      const order = await manager.findOneBy(Order, { id, userId });
+      if (!order) throw new ApplicationError('NOT_FOUND', 'Pedido não encontrado na sua conta.');
+      return presentOrder(manager, order);
+    });
+  }
 
   async list(userId: string): Promise<OrderDTO[]> {
     return this.repository.manager.transaction('REPEATABLE READ', async manager => {

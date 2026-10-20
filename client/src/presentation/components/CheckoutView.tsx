@@ -1,10 +1,12 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import type { StorefrontApi, AddressInput, Cart, Order, PaymentMethod, PaymentOutcome } from '../../contracts/storefront';
 import { useResource } from '../hooks/use-resource';
 import { errorMessage } from '../error-message';
 import { formatPrice } from '../format-price';
 import { Modal } from './Modal';
+import { OrderProgress } from './OrderProgress';
+import { statusLabel } from '../order-status';
 
 const addressFields = [
   ['recipient', 'Destinatário', 150], ['postalCode', 'CEP', 9], ['street', 'Logradouro', 200], ['number', 'Número', 20],
@@ -42,15 +44,36 @@ export function CheckoutView({ api, cart, open, onClose, onChanged }: {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const locked = useRef(false);
+  const generation = useRef(0);
+  const [trackingError, setTrackingError] = useState('');
   const checkoutRequest = useRef<{ fingerprint: string; key: string } | null>(null);
   const paymentRequest = useRef<{ orderId: string; method: PaymentMethod; key: string } | null>(null);
+  const selectedId = order?.id;
+  useEffect(() => {
+    const controller = new AbortController();
+    let active = true;
+    const refresh = () => {
+      if (document.visibilityState !== 'visible' || locked.current) return;
+      const current = generation.current;
+      orders.retry();
+      if (selectedId) api.order(selectedId, controller.signal).then(updated => {
+        if (active && generation.current === current && !locked.current) {
+          setOrder(previous => previous?.id === updated.id ? updated : previous);
+          setTrackingError('');
+        }
+      }).catch(() => { if (active && generation.current === current) setTrackingError('Não foi possível atualizar o acompanhamento. Use o botão para tentar novamente.'); });
+    };
+    const timer = setInterval(refresh, 30000);
+    return () => { active = false; controller.abort(); clearInterval(timer); };
+  }, [api, selectedId, orders.retry]);
 
   async function run(operation: () => Promise<void>) {
     if (locked.current) return;
     locked.current = true;
+    generation.current++;
     setBusy(true);
     setError('');
-    try { await operation(); }
+    try { await operation(); setTrackingError(''); }
     catch (failure) { setError(errorMessage(failure)); orders.retry(); }
     finally { locked.current = false; setBusy(false); }
   }
@@ -87,7 +110,7 @@ export function CheckoutView({ api, cart, open, onClose, onChanged }: {
   const pending = order?.payments.find(payment => payment.status === 'PENDENTE');
   const latest = order?.payments[0];
   const showPayment = order?.status === 'AGUARDANDO_PAGAMENTO';
-  return <section className="checkout-section wrap" aria-labelledby="checkout-section-title">
+  return <section id="pedidos" className="checkout-section wrap" aria-labelledby="checkout-section-title">
     <p className="eyebrow">AMBIENTE ACADÊMICO</p><h2 id="checkout-section-title">Pedidos e pagamentos simulados</h2>
     <p>Nenhuma cobrança real. Frete gratuito na simulação. O estoque só é baixado após aprovação.</p>
     {orders.loading && <p role="status">Carregando seus pedidos…</p>}
@@ -95,8 +118,10 @@ export function CheckoutView({ api, cart, open, onClose, onChanged }: {
     <button className="detail-button" disabled={busy || orders.loading} onClick={orders.retry}>Atualizar pedidos</button>
     {orders.data?.length === 0 && <p>Você ainda não possui pedidos.</p>}
     <ul className="order-list">{orders.data?.map(item => <li key={item.id}>
-      <strong>{item.number}</strong><span>{formatPrice(item.total)} · {item.status.replaceAll('_', ' ')}</span>
-      <button className="button outline" disabled={busy} onClick={() => { setOrder(item); setError(''); paymentRequest.current = null; }}>
+      <strong>{item.number}</strong><span>{formatPrice(item.total)} · {statusLabel(item.status)}</span>
+      <button className="button outline" disabled={busy} onClick={() => { void run(async () => {
+        setOrder(await api.order(item.id)); paymentRequest.current = null;
+      }); }}>
         {item.status === 'AGUARDANDO_PAGAMENTO' ? 'Retomar pagamento' : 'Ver resumo'}
       </button>
     </li>)}</ul>
@@ -118,7 +143,11 @@ export function CheckoutView({ api, cart, open, onClose, onChanged }: {
           })} />
         </>}
         {order && <>
-          <p className="order-number">{order.number}</p><p role="status">{order.status.replaceAll('_', ' ')}</p>
+          <p className="order-number">{order.number}</p><p role="status">{statusLabel(order.status)}</p>
+          <OrderProgress status={order.status} />
+          {trackingError && <p role="status" className="error">{trackingError}</p>}
+          <p className="hint">Atualização a cada 30 segundos com esta página visível. As etapas não representam rastreamento GPS.</p>
+          <button className="detail-button" disabled={busy} onClick={() => { void run(async () => { setOrder(await api.order(order.id)); orders.retry(); }); }}>Atualizar acompanhamento</button>
           <ul>{order.items.map(item => <li key={item.productId}>{item.quantity} × {item.name} — {formatPrice(item.lineTotal)}</li>)}</ul>
           <p>Entrega: {order.address.recipient}, {order.address.street}, {order.address.number}{order.address.complement ? `, ${order.address.complement}` : ''} — {order.address.district}, {order.address.city}/{order.address.state}, CEP {order.address.postalCode}.</p>
           <p>Subtotal: {formatPrice(order.subtotal)} · Frete: {formatPrice(order.shipping)}</p>

@@ -10,6 +10,7 @@ import { AuthDialog } from './components/AuthDialog';
 import { ProductDetails } from './components/ProductDetails';
 import { CartView } from './components/CartView';
 import { CheckoutView } from './components/CheckoutView';
+import { AdminPanel } from './components/AdminPanel';
 
 export function App({ api }: { api: StorefrontApi }) {
   const session = useSession(api);
@@ -48,6 +49,8 @@ export function App({ api }: { api: StorefrontApi }) {
       <CartView cart={cart} signedIn={Boolean(session.user)} onCheckout={() => session.user ? setCheckoutOpen(true) : setAuthOpen(true)} />
       {session.user && !session.loading && <CheckoutView key={session.user.id} api={api} cart={cart.data}
         open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onChanged={() => { cart.retry(); allProducts.retry(); filtered.retry(); }} />}
+      {session.user?.role === 'ADMIN' && !session.loading && <AdminPanel key={session.user.id} api={api}
+        onChanged={() => { allProducts.retry(); filtered.retry(); cart.retry(); }} />}
       <Footer />
     </main>
     {authOpen && <AuthDialog authenticate={session.authenticate} onClose={() => setAuthOpen(false)} onSuccess={message => { setAuthOpen(false); setNotice(message); }} />}

@@ -848,6 +848,26 @@ form .button {
 }
 .catalog-filters { display: grid; grid-template-columns: 2fr 1.2fr 1fr 1fr; gap: 14px; align-items: end; margin: 24px 0; }
 .checkout-section { padding-block: 36px 55px; border-top: 1px solid #e6d6d3; }
+.order-progress { list-style: none; display: grid; gap: 12px; padding: 0; margin-block: 22px; }
+.order-progress li { display: flex; align-items: center; gap: 10px; color: #706368; }
+.order-progress li.reached { color: #78404d; }
+.order-progress li[aria-current] { font-weight: 700; }
+.order-progress li span { display: inline-flex; justify-content: center; align-items: center; width: 30px; height: 30px; flex-shrink: 0; border: 1px solid currentColor; border-radius: 50%; }
+.admin-section { padding-block: 36px 55px; border-top: 1px solid #e6d6d3; }
+.admin-actions, .admin-pagination { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-block: 16px; }
+.admin-actions [aria-pressed=true] { background: #78404d; color: #fff; }
+.admin-form { margin-block: 24px; }
+.admin-form fieldset { border: 1px solid #cbb8b5; border-radius: 12px; padding: 20px; min-width: 0; }
+.admin-form label, .admin-filter { display: flex; flex-direction: column; gap: 8px; margin-block: 12px; }
+.admin-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
+.admin-form input:not([type=checkbox]), .admin-form select, .admin-filter select { width: 100%; min-width: 0; padding: 12px; border: 1px solid #cbb8b5; border-radius: 8px; background: #fff; color: #3c242b; font: inherit; }
+.admin-form .admin-checkbox { flex-direction: row; align-items: center; }
+.admin-form input[type=checkbox] { width: 20px; height: 20px; }
+.admin-list { list-style: none; padding: 0; }
+.admin-list li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-block: 16px; border-bottom: 1px solid #e6d6d3; }
+.admin-order { border: 1px solid #e6d6d3; border-radius: 12px; padding: 24px; margin-block: 20px; overflow-wrap: anywhere; }
+.admin-order details { margin-block: 20px; }
+@media (max-width: 600px) { .admin-fields { grid-template-columns: 1fr; } .order-progress li { flex-wrap: wrap; } }
 .checkout-content { text-align: left; }
 .checkout-content h2 { margin-top: 8px; }
 .checkout-content .button { margin-top: 12px; }
