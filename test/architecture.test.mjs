@@ -74,7 +74,7 @@ test('aliases permitidos são resolvidos sem liberar HTTP, ORM, implementações
 test('controllers não acessam repositórios nem implementam regras de negócio', async () => {
   const files = await sourceFiles(new URL('../src/modules/', import.meta.url));
   const controllers = files.filter(file => /Controller\.ts$/.test(file.pathname));
-  assert.equal(controllers.length, 14);
+  assert.equal(controllers.length, 21);
   for (const file of controllers) {
     const source = await readFile(file, 'utf8');
     assert.doesNotMatch(source.replace(/import type[\s\S]*?;\n/g, ''), /from\s+['"][^'"]*(?:repositories|infrastructure|entities|Service|node:|pg)[^'"]*['"]/);
@@ -88,7 +88,8 @@ test('cada caso de uso possui serviço, controlador e composição', async () =>
     catalog: ['listProducts', 'getProduct'],
     cart: ['getCart', 'changeCart', 'mergeCart'],
     addresses: ['listAddresses', 'createAddress'],
-    orders: ['listOrders', 'checkout', 'payOrder']
+    orders: ['listOrders', 'checkout', 'payOrder', 'getOrder'],
+    admin: ['getAdminCatalog', 'saveProduct', 'saveCategory', 'adjustStock', 'listAdminOrders', 'advanceOrder']
   })) {
     for (const useCase of cases) {
       const directory = new URL(`../src/modules/${module}/useCases/${useCase}/`, import.meta.url);
@@ -103,7 +104,7 @@ test('cada caso de uso possui serviço, controlador e composição', async () =>
 test('fábricas instanciam serviços sem depender de request ou app.locals', async () => {
   const files = await sourceFiles(new URL('../src/modules/', import.meta.url));
   const factories = files.filter(file => /\/useCases\/[^/]+\/index\.ts$/.test(file.pathname));
-  assert.equal(factories.length, 14);
+  assert.equal(factories.length, 21);
   for (const file of factories) {
     const source = await readFile(file, 'utf8');
     assert.doesNotMatch(source, /\brequest\b|app\.locals/);
@@ -116,7 +117,7 @@ test('fábricas com persistência instanciam repositórios sem argumentos', asyn
   const files = await sourceFiles(new URL('../src/modules/', import.meta.url));
   const factories = files.filter(file => /\/useCases\/[^/]+\/index\.ts$/.test(file.pathname)
     && !file.pathname.includes('/logoutUser/'));
-  assert.equal(factories.length, 13);
+  assert.equal(factories.length, 20);
   for (const file of factories) {
     const source = await readFile(file, 'utf8');
     assert.doesNotMatch(source, /\bdataSource\b|\.getRepository\(/);
@@ -128,7 +129,7 @@ test('fábricas com persistência instanciam repositórios sem argumentos', asyn
 test('adaptadores TypeORM têm construtores sem parâmetros e getter centralizado', async () => {
   const files = await sourceFiles(new URL('../src/modules/', import.meta.url));
   const adapters = files.filter(file => /\/implementations\/typeorm\/[^/]+Repository\.ts$/.test(file.pathname));
-  assert.equal(adapters.length, 5);
+  assert.equal(adapters.length, 6);
   for (const file of adapters) {
     const source = await readFile(file, 'utf8');
     assert.doesNotMatch(source, /\bDataSource\b|this\.dataSource/);
