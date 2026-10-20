@@ -103,7 +103,7 @@ URLs e payloads da API mantidos. Não há alteração no esquema ou nos dados do
 
 `npm test` usa tsx para executar os testes de regressão JavaScript contra os fontes TypeScript. `npm run typecheck` verifica servidor, React, ferramentas e provas de contratos em test/types; `npm test` verifica casos de uso, contratos HTTP, infraestrutura transacional simulada, gateway do frontend e direção de dependências. Testes de unidade não substituem validação com PostgreSQL. `npm run check:db` verifica conexão e nove tabelas, sem modificar dados. A compilação React e a revisão no navegador complementam esses testes.
 
-Na Sprint 1 não houve ampliação do escopo funcional. A Sprint 2 acrescenta busca, filtros e carrinho conforme docs/sprint-2.md; checkout, estoque transacional de pedidos, pagamentos e painel administrativo permanecem nos próximos incrementos.
+Na Sprint 1 não houve ampliação do escopo funcional. A Sprint 2 acrescentou busca, filtros e carrinho conforme docs/sprint-2.md; a Sprint 3 acrescenta checkout e pagamentos simulados conforme docs/sprint-3.md. Painel administrativo permanece para a Sprint 4.
 
 ## TypeScript
 
@@ -224,3 +224,11 @@ O middleware resolveSession lê o cookie e consulta a instância compartilhada d
 O módulo cart segue a organização de entidades, contratos de repositório, implementações TypeORM e casos de uso com Service, Controller e fábrica. GetCart consulta o resumo; ChangeCart valida inclusão, quantidade e remoção; MergeCart incorpora o visitante ao cliente. Os controllers continuam tipados com a própria classe do serviço e os serviços dependem das interfaces ICartsRepository e IUsersRepository. Cart e CartItem são mapeadas no DataSource sem sincronização do schema.
 
 resolveCart gera a identidade anônima em cookie opaco e armazena somente seu hash no contexto e no banco. A integração do frontend executa a incorporação após obter a sessão autenticada; o serviço de autenticação não passa a depender do módulo cart. As transações de carrinho serializam operações por proprietário e revalidam estoque, sem reservá-lo. Totais são calculados em centavos inteiros. HTTP mantém a proteção de origem e adiciona limite próprio para alterações no carrinho. Critérios, limites, rotas e diagnóstico transacional estão em docs/sprint-2.md.
+
+## Incremento da Sprint 3
+
+Os módulos addresses e orders mantêm os contratos IAddressesRepository e IOrdersRepository, serviços dependentes dessas interfaces, controllers tipados com a classe correspondente e fábricas com repositórios sem argumentos. Address, Order, OrderItem e Payment completam o mapeamento das nove tabelas, sem schemas redundantes nem sincronização automática.
+
+requireSession bloqueia visitantes nas novas rotas; os serviços e transações também validam usuário ativo. Os adaptadores TypeORM filtram endereço e pedido pelo dono autenticado. Checkout cria os snapshots e converte o carrinho em uma única transação, compartilhando seu bloqueio de proprietário com a Sprint 2. PayOrder bloqueia o pedido e os produtos em ordem estável, registrando a aprovação e a baixa de estoque atomicamente. Idempotência usa a chave única de pagamento e bloqueio transacional por chave.
+
+O frontend mantém o acesso HTTP no gateway Axios. CheckoutView coordena seleção/cadastro de endereço, confirmação do pedido, simulação explícita e retomada por histórico. Dados do pedido e seus valores são sempre retornados pelo backend; o navegador não define total, preço, frete ou identidade. Regras, estados, diagnóstico com rollback e limites estão em docs/sprint-3.md.

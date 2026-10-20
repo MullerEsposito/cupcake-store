@@ -6,7 +6,13 @@ Primeiro incremento funcional: HU-01 (vitrine), HU-02 (detalhes), HU-09 (cadastr
 
 Busca por nome/descrição, filtros por categoria e faixa de preço, carrinho de visitante e carrinho persistido do cliente, com incorporação após login. Quantidades e totais são validados no servidor; não há reserva nem baixa de estoque antes do checkout. Consulte [Sprint 2](docs/sprint-2.md) para endpoints, limites e critérios de verificação.
 
-Diagnóstico com PostgreSQL real: `npm run check:sprint2`. Os dados fictícios são revertidos com ROLLBACK; sequências podem avançar. O checkout e os pagamentos permanecem fora desta entrega.
+Diagnóstico com PostgreSQL real: `npm run check:sprint2`. Os dados fictícios são revertidos com ROLLBACK; sequências podem avançar.
+
+## Sprint 3
+
+Endereços por cliente, checkout autenticado, pedido com snapshots e pagamento exclusivamente simulado (PIX, cartão ou boleto). Frete gratuito na demonstração. A aprovação baixa o estoque na mesma transação; recusa ou falha permite nova tentativa sem cobrança real. Chaves de idempotência evitam pedidos e baixas duplicados. Consulte [Sprint 3](docs/sprint-3.md) para estados, endpoints, limites e decisões.
+
+Execute `npm run check:sprint3` para verificar os fluxos no PostgreSQL com dados fictícios revertidos ao final. A aplicação reutiliza as nove tabelas existentes, sem migração.
 
 ## Configuração local
 
@@ -44,4 +50,4 @@ Teste manual com o banco conectado: inserir catálogo, consultar vitrine e detal
 
 ## Próximos incrementos
 
-Sprint 2: busca, filtros, carrinho e resumo implementados. Próximas etapas — Sprint 3: endereço, checkout e pagamento simulado com baixa transacional de estoque. Sprint 4: acompanhamento e painel administrador. Os fluxos das Sprints 3 e 4 não estão implementados nesta entrega. O login não é apresentado como compra concluída e nenhum pagamento é realizado.
+Sprints 1, 2 e 3 implementadas. Próxima etapa — Sprint 4: acompanhamento logístico e painel administrador. O login não conclui uma compra. Todos os pagamentos são simulações acadêmicas, sem cobrança ou processamento financeiro real.
