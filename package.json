@@ -19,6 +19,8 @@
     "check:sprint3": "node --import tsx --env-file-if-exists=.env scripts/check-sprint3.mjs",
     "check:sprint4": "node --import tsx --env-file-if-exists=.env scripts/check-sprint4.mjs",
     "check:sprint5": "node --import tsx --env-file-if-exists=.env scripts/check-sprint5.mjs",
+    "check:sprint7": "node --import tsx --env-file-if-exists=.env scripts/check-sprint7.mjs",
+    "check:sprint7:concurrency": "node --import tsx --env-file-if-exists=.env scripts/check-sprint7-concurrency.mjs",
     "migrate": "node --import tsx --env-file-if-exists=.env scripts/migrate.ts"
   },
   "dependencies": {
