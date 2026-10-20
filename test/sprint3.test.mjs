@@ -69,7 +69,7 @@ test('serviços encaminham somente identidade autenticada e dados validados aos 
   assert.deepEqual(await new CheckoutService(repository, users).execute('7', checkout), { id: 'pedido' });
   assert.deepEqual(calls, [['7', checkout]]);
   const addresses = { create: async (...args) => args };
-  assert.deepEqual(await new CreateAddressService(addresses, users).execute('7', address), ['7', validateAddress(address)]);
+  assert.deepEqual(await new CreateAddressService(addresses, users, { lookup: async () => ({ city: 'São Paulo', state: 'SP' }) }).execute('7', address), ['7', validateAddress(address)]);
 });
 
 test('novas entidades preservam tabelas e precisão monetária do modelo físico existente', async () => {

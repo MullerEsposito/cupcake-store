@@ -9,6 +9,7 @@ import { MemoryRouter } from 'react-router';
 import { ServerStyleSheet } from 'styled-components';
 import { App } from '../client/src/presentation/App.tsx';
 import { SessionAccess, safeReturnTo } from '../client/src/presentation/routes/RequireSession.tsx';
+import { StorefrontProvider } from '../client/src/presentation/StorefrontContext.tsx';
 import { HomePage } from '../client/src/presentation/pages/HomePage/index.tsx';
 import { AuthForm } from '../client/src/presentation/components/AuthForm/index.tsx';
 import { CheckoutView } from '../client/src/presentation/components/CheckoutView/index.tsx';
@@ -20,7 +21,7 @@ const api = new Proxy({}, { get: () => () => { throw new Error('Renderização n
 const user = { id: '1', name: 'Cliente Teste', email: 'cliente@example.com', role: 'CLIENTE' };
 const render = (element, path = '/') => renderToStaticMarkup(React.createElement(MemoryRouter, { initialEntries: [path] }, element));
 
-test('início não monta catálogo, carrinho, pedidos ou administração', () => {
+test('início apresenta vitrine sem montar páginas de catálogo, carrinho, pedidos ou administração', () => {
   const markup = render(React.createElement(App, { api }));
   assert.match(markup, /id="hero-title"/);
   for (const id of ['catalogo', 'carrinho', 'pedidos', 'administracao']) assert.doesNotMatch(markup, new RegExp(`id="${id}"`));
@@ -78,7 +79,7 @@ test('lista de pedidos e checkout são apresentações distintas e não disparam
 test('styled-components encapsula estilos da página sem depender da antiga folha global', () => {
   const sheet = new ServerStyleSheet();
   try {
-    const markup = render(sheet.collectStyles(React.createElement(HomePage)));
+    const markup = render(sheet.collectStyles(React.createElement(StorefrontProvider, { api }, React.createElement(HomePage))));
     const styles = sheet.getStyleTags();
     assert.match(markup, /class="sc-/);
     assert.match(styles, /data-styled/);

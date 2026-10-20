@@ -1,7 +1,7 @@
 import { Container } from './styles';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { FormEvent } from 'react';
-import type { StorefrontApi, AddressInput, Cart, Order, PaymentMethod, PaymentOutcome } from '../../../contracts/storefront';
+import { AddressForm } from '../AddressForm';
+import type { StorefrontApi, Cart, Order, PaymentMethod, PaymentOutcome } from '../../../contracts/storefront';
 import { useResource } from '../../hooks/use-resource';
 import { errorMessage } from '../../error-message';
 import { formatPrice } from '../../format-price';
@@ -10,30 +10,6 @@ import { OrderProgress } from '../OrderProgress';
 import { statusLabel } from '../../order-status';
 import { canCancel } from '../../../contracts/cancellation';
 import { CancellationForm, CancellationSummary } from '../Cancellation';
-
-const addressFields = [
-  ['recipient', 'Destinatário', 150], ['postalCode', 'CEP', 9], ['street', 'Logradouro', 200], ['number', 'Número', 20],
-  ['complement', 'Complemento (opcional)', 150], ['district', 'Bairro', 100], ['city', 'Cidade', 100], ['state', 'UF', 2]
-] as const;
-
-function AddressForm({ busy, onSave }: { busy: boolean; onSave(input: AddressInput): Promise<void> }) {
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const input = Object.fromEntries(addressFields.map(([field]) => [field, String(form.get(field) ?? '')])) as unknown as AddressInput;
-    await onSave(input);
-  }
-  return <form className="checkout-form" onSubmit={event => { void submit(event); }}>
-    <fieldset disabled={busy}><legend>Novo endereço de entrega</legend>
-      <div className="address-fields">{addressFields.map(([field, label, maximum]) => <label key={field}>{label}
-        <input name={field} maxLength={maximum} required={field !== 'complement'}
-          inputMode={field === 'postalCode' ? 'numeric' : 'text'}
-          pattern={field === 'postalCode' ? '[0-9]{5}-?[0-9]{3}' : undefined} />
-      </label>)}</div>
-      <button className="button outline" type="submit">Salvar endereço</button>
-    </fieldset>
-  </form>;
-}
 
 export function CheckoutView({ api, cart, mode, orderId, onChanged }: {
   api: StorefrontApi; cart: Cart | null; mode: 'checkout' | 'orders' | 'detail'; orderId?: string; onChanged(): void;
@@ -70,8 +46,10 @@ export function CheckoutView({ api, cart, mode, orderId, onChanged }: {
         }
       }).catch(() => { if (active && generation.current === current) setTrackingError('Não foi possível atualizar o acompanhamento. Use o botão para tentar novamente.'); });
     };
+    const unwatch = api.watchOrders(refresh);
+    document.addEventListener('visibilitychange', refresh);
     const timer = setInterval(refresh, 30000);
-    return () => { active = false; controller.abort(); clearInterval(timer); };
+    return () => { active = false; controller.abort(); clearInterval(timer); unwatch(); document.removeEventListener('visibilitychange', refresh); };
   }, [api, selectedId, orders.retry]);
 
   async function run(operation: () => Promise<void>) {
@@ -143,7 +121,8 @@ export function CheckoutView({ api, cart, mode, orderId, onChanged }: {
       <div className="checkout-content"><p className="eyebrow">SEM COBRANÇA REAL</p><h1 id="checkout-title">{order ? 'Resumo do pedido' : 'Finalizar pedido'}</h1>
         {error && <p role="alert" className="error">{error}</p>}
         {!order && <>
-          <p>Subtotal: <strong>{formatPrice(cart?.total ?? '0.00')}</strong> · Frete: <strong>Grátis</strong></p>
+          <ul className="order-items">{cart?.items.map(item => <li key={item.productId}>{item.quantity} × {item.name} · {formatPrice(item.lineTotal)}</li>)}</ul>
+          <p>Subtotal: <strong>{formatPrice(cart?.total ?? '0.00')}</strong> · Frete: <strong>Grátis em todo o Brasil (simulado)</strong></p>
           <p className="hint">Os valores e a disponibilidade serão conferidos novamente pelo servidor.</p>
           {addresses.loading && <p role="status">Carregando endereços…</p>}
           {addresses.error && <p role="alert" className="error">{addresses.error}</p>}
@@ -152,7 +131,7 @@ export function CheckoutView({ api, cart, mode, orderId, onChanged }: {
             <option value="">Selecione um endereço</option>
             {addresses.data?.map(address => <option key={address.id} value={address.id}>{address.street}, {address.number} — {address.city}/{address.state}</option>)}
           </select></label>
-          <AddressForm busy={busy} onSave={input => run(async () => {
+          <AddressForm api={api} busy={busy} onSave={input => run(async () => {
             const address = await api.createAddress(input); setAddressId(address.id); addresses.retry();
           })} />
         </>}
@@ -160,7 +139,7 @@ export function CheckoutView({ api, cart, mode, orderId, onChanged }: {
           <p className="order-number">{order.number}</p><p role="status">{statusLabel(order.status)}</p>
           <OrderProgress status={order.status} />
           {trackingError && <p role="status" className="error">{trackingError}</p>}
-          <p className="hint">Atualização a cada 30 segundos com esta página visível. As etapas não representam rastreamento GPS.</p>
+          <p className="hint">Atualização por eventos em tempo real com esta página visível, com reconexão automática e conferência de segurança a cada 30 segundos. As etapas não representam rastreamento GPS.</p>
           <button className="detail-button" disabled={busy} onClick={() => { void run(async () => { setOrder(await api.order(order.id)); orders.retry(); }); }}>Atualizar acompanhamento</button>
           <ul>{order.items.map(item => <li key={item.productId}>{item.quantity} × {item.name} — {formatPrice(item.lineTotal)}</li>)}</ul>
           <p>Entrega: {order.address.recipient}, {order.address.street}, {order.address.number}{order.address.complement ? `, ${order.address.complement}` : ''} — {order.address.district}, {order.address.city}/{order.address.state}, CEP {order.address.postalCode}.</p>

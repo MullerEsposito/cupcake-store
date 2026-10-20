@@ -31,7 +31,7 @@ function useStorefrontState(api: StorefrontApi) {
     setNotice(added ? 'Produto adicionado ao carrinho.' : 'Não foi possível adicionar. Confira a mensagem no carrinho.');
   }
   const refresh = () => { cart.retry(); allProducts.retry(); filtered.retry(); };
-  return { api, session, cart, products: hasFilters ? filtered : allProducts, filters, setFilters, hasFilters, categories, notice, setNotice, logout, add, refresh };
+  return { api, session, cart, allProducts, products: hasFilters ? filtered : allProducts, filters, setFilters, hasFilters, categories, notice, setNotice, logout, add, refresh };
 }
 
 const StorefrontContext = createContext<ReturnType<typeof useStorefrontState> | null>(null);

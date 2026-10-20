@@ -1,3 +1,5 @@
+import { getLookupPostalCodeController } from '../../../modules/addresses/useCases/lookupPostalCode/index.js';
+import { getListCitiesController } from '../../../modules/addresses/useCases/listCities/index.js';
 import { Router } from 'express';
 import { resolveSession } from '../middlewares/resolve-session.js';
 import { requireSession } from '../middlewares/require-session.js';
@@ -11,6 +13,14 @@ addressesRoutes.use(resolveSession, requireSession);
 addressesRoutes.use((request, response, next) => {
   if (request.method !== 'GET') (request.app.locals as HttpLocals).cartRateLimit(request);
   next();
+});
+addressesRoutes.get('/postal-codes/:postalCode', (request, response) => {
+  (request.app.locals as HttpLocals).cartRateLimit(request);
+  return getLookupPostalCodeController().handle(request, response);
+});
+addressesRoutes.get('/states/:state/cities', (request, response) => {
+  (request.app.locals as HttpLocals).cartRateLimit(request);
+  return getListCitiesController().handle(request, response);
 });
 addressesRoutes.get('/', (request, response) => getListAddressesController().handle(request, response));
 addressesRoutes.post('/', ...jsonBody(), (request, response) => getCreateAddressController().handle(request, response));

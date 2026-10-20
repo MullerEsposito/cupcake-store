@@ -1,3 +1,4 @@
+import { openOrderEvents } from '../events/order-events.js';
 import { Router } from 'express';
 import { resolveSession } from '../middlewares/resolve-session.js';
 import { requireSession } from '../middlewares/require-session.js';
@@ -16,6 +17,7 @@ ordersRoutes.use((request, response, next) => {
   next();
 });
 ordersRoutes.get('/', (request, response) => getListOrdersController().handle(request, response));
+ordersRoutes.get('/events', openOrderEvents);
 ordersRoutes.get('/:id', (request, response) => getOrderController().handle(request, response));
 ordersRoutes.post('/checkout', ...jsonBody(), (request, response) => getCheckoutController().handle(request, response));
 ordersRoutes.post('/:id/payments', ...jsonBody(), (request, response) => getPayOrderController().handle(request, response));

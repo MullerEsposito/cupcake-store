@@ -29,6 +29,7 @@ export interface AddressInput {
   recipient: string; postalCode: string; street: string; number: string; complement: string | null;
   district: string; city: string; state: string;
 }
+export type PostalAddress = Pick<AddressInput, 'postalCode' | 'street' | 'district' | 'city' | 'state'>;
 export interface Address extends AddressInput { id: string }
 export type PaymentMethod = 'PIX' | 'CARTAO' | 'BOLETO';
 export type PaymentOutcome = 'APROVADO' | 'RECUSADO' | 'FALHA';
@@ -42,6 +43,7 @@ export interface Order {
   cancellation: Cancellation | null;
 }
 export interface StorefrontApi extends AdminApi {
+  cities(state: string, signal?: AbortSignal): Promise<{ id: string; name: string }[]>;
   products(signal?: AbortSignal, filters?: CatalogFilters): Promise<Product[]>;
   product(id: string, signal?: AbortSignal): Promise<Product>;
   session(signal?: AbortSignal): Promise<PublicUser | null>;
@@ -54,6 +56,8 @@ export interface StorefrontApi extends AdminApi {
   removeCartItem(productId: string): Promise<Cart>;
   mergeCart(): Promise<Cart>;
   addresses(signal?: AbortSignal): Promise<Address[]>;
+  lookupPostalCode(postalCode: string, signal?: AbortSignal): Promise<PostalAddress>;
+  watchOrders(onChange: () => void): () => void;
   createAddress(input: AddressInput): Promise<Address>;
   orders(signal?: AbortSignal): Promise<Order[]>;
   order(id: string, signal?: AbortSignal): Promise<Order>;

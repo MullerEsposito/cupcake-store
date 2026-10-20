@@ -1,7 +1,11 @@
-import { Link } from 'react-router';
+import { Catalog } from '../../components/Catalog';
+import { useStorefront } from '../../StorefrontContext';
+import { Link, useNavigate } from 'react-router';
 import { Container } from './styles';
 
 export function HomePage() {
+  const { allProducts, add, cart } = useStorefront();
+  const navigate = useNavigate();
   return <Container>
   <section className="hero wrap" aria-labelledby="hero-title">
     <div className="hero-copy">
@@ -22,5 +26,8 @@ export function HomePage() {
       <span>✦ Do seu jeito, no seu momento</span>
     </div>
   </div>
+  <Catalog showcase resource={allProducts} onSelect={id => navigate('/produtos/' + encodeURIComponent(id))}
+    categories={[]} filters={{}} filtered={false} onFilter={() => {}}
+    onAdd={id => { void add(id); }} cartBusy={cart.busy} />
 </Container>;
 }

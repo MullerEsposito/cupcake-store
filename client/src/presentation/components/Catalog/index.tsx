@@ -5,15 +5,15 @@ import { formatPrice } from '../../format-price';
 
 import { CatalogFilters } from '../CatalogFilters';
 
-export function Catalog({ resource, onSelect, categories, onFilter, filters, filtered, onAdd, cartBusy }: {
+export function Catalog({ resource, onSelect, categories, onFilter, filters, filtered, onAdd, cartBusy, showcase = false }: {
   resource: Resource<Product[]>; onSelect(id: string): void;
   categories: { id: string; name: string }[]; onFilter(filters: Filters): void;
-  filters: Filters; filtered: boolean; onAdd(id: string): void; cartBusy: boolean;
+  filters: Filters; filtered: boolean; onAdd(id: string): void; cartBusy: boolean; showcase?: boolean;
 }) {
   const { data: products, loading, error, retry } = resource;
-  return <Container><section id="catalogo" className="catalog wrap" aria-labelledby="catalog-title">
-    <div className="section-top"><div><p className="eyebrow">ESCOLHA SEU MOMENTO DOCE</p><h1 id="catalog-title">Nossos cupcakes</h1></div><span className="catalog-note">Do primeiro olhar à última mordida.</span></div>
-    <CatalogFilters categories={categories} onApply={onFilter} filters={filters} />
+  return <Container><section id={showcase ? "vitrine" : "catalogo"} className="catalog wrap" aria-labelledby={showcase ? "showcase-title" : "catalog-title"}>
+    <div className="section-top"><div><p className="eyebrow">ESCOLHA SEU MOMENTO DOCE</p>{showcase ? <h2 id="showcase-title">Nossos cupcakes</h2> : <h1 id="catalog-title">Nossos cupcakes</h1>}</div><span className="catalog-note">Do primeiro olhar à última mordida.</span></div>
+    {!showcase && <CatalogFilters categories={categories} onApply={onFilter} filters={filters} />}
     {!loading && !error && <p role="status">{products?.length ?? 0} produto(s) encontrado(s).</p>}
     {loading && <div className="state" role="status">Preparando a vitrine…</div>}
     {error && <div className="state" role="alert"><p>{error}</p><button className="button outline" onClick={retry}>Tentar novamente</button></div>}

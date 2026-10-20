@@ -1,11 +1,12 @@
 import type { InventoryPage } from '../contracts/inventory';
 import type { AxiosInstance } from 'axios';
-import type { StorefrontApi, Product, PublicUser, Cart, Address, Order } from '../contracts/storefront';
+import type { StorefrontApi, Product, PublicUser, Cart, Address, Order, PostalAddress } from '../contracts/storefront';
 import { createHttpClient } from './http-client';
 import type { AdminCatalog, AdminProduct, AdminCategory, AdminOrder, Page } from '../contracts/admin';
 
 export function createStorefrontApi(client: Pick<AxiosInstance, 'get' | 'post'> = createHttpClient()): StorefrontApi {
   return {
+    cities: async (state, signal) => (await client.get<{ cities: { id: string; name: string }[] }>(`/addresses/states/${encodeURIComponent(state)}/cities`, { signal })).data.cities,
     products: async (signal, filters) => (await client.get<{ products: Product[] }>('/products', { signal, params: filters })).data.products,
     product: async (id, signal) => (await client.get<{ product: Product }>(`/products/${encodeURIComponent(id)}`, { signal })).data.product,
     session: async signal => (await client.get<{ user: PublicUser | null }>('/session', { signal })).data.user,
@@ -18,6 +19,14 @@ export function createStorefrontApi(client: Pick<AxiosInstance, 'get' | 'post'> 
     removeCartItem: async id => (await client.post<{ cart: Cart }>(`/cart/items/${encodeURIComponent(id)}/remove`, {})).data.cart,
     mergeCart: async () => (await client.post<{ cart: Cart }>('/cart/merge', {})).data.cart,
     addresses: async signal => (await client.get<{ addresses: Address[] }>('/addresses', { signal })).data.addresses,
+    lookupPostalCode: async (postalCode, signal) => (await client.get<{ address: PostalAddress }>(`/addresses/postal-codes/${encodeURIComponent(postalCode)}`, { signal })).data.address,
+    watchOrders: onChange => {
+      const source = new EventSource('/api/orders/events');
+      source.addEventListener('orders-changed', onChange);
+      source.addEventListener('connected', onChange);
+      source.addEventListener('session-ended', () => source.close());
+      return () => source.close();
+    },
     createAddress: async input => (await client.post<{ address: Address }>('/addresses', input)).data.address,
     orders: async signal => (await client.get<{ orders: Order[] }>('/orders', { signal })).data.orders,
     order: async (id, signal) => (await client.get<{ order: Order }>(`/orders/${encodeURIComponent(id)}`, { signal })).data.order,

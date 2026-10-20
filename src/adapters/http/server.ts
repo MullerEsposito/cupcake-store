@@ -1,6 +1,7 @@
 import { withDataSource } from '#infrastructure/typeorm/repository-context';
 import type { RuntimeDependencies } from './dependencies.js';
 
+import { OrderEvents } from './events/order-events.js';
 import express from 'express';
 import { randomBytes } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
@@ -15,6 +16,7 @@ export function createApp(dependencies: RuntimeDependencies, {
   staticDirectory = resolve('dist')
 } = {}) {
   const app = express();
+  app.locals.orderEvents = new OrderEvents();
   app.locals.dependencies = { ...dependencies, origin };
   app.locals.rateLimit = createRateLimiter();
   app.locals.cartRateLimit = createRateLimiter({ maximum: 120 });
