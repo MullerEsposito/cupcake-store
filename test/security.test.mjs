@@ -1,6 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { credentials, hashPassword, verifyPassword, Sessions } from '../src/security.mjs';
+import { validateCredentials } from '../src/modules/users/entities/credentials.ts';
+import { hashPassword, verifyPassword, Sessions } from '../src/infrastructure/security/primitives.ts';
+
+const credentials = (input, registration) => validateCredentials(input, { registration });
 
 test('cadastro normaliza email e recusa credenciais inválidas', () => {
   assert.equal(credentials({ email: ' CLIENTE@EXAMPLE.COM ', password: 'senha-longa-de-teste', name: ' Cliente ' }, true).email, 'cliente@example.com');

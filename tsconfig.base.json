@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "strict": true,
+    "verbatimModuleSyntax": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": false,
+    "paths": {
+      "#entities/*": [
+        "./src/modules/catalog/entities/*.ts",
+        "./src/modules/users/entities/*.ts"
+      ],
+      "#dtos/*": [
+        "./src/modules/catalog/dtos/*.ts",
+        "./src/modules/users/dtos/*.ts"
+      ],
+      "#validators/*": [
+        "./src/modules/catalog/validators/*.ts",
+        "./src/modules/users/validators/*.ts"
+      ],
+      "#repositories/*": [
+        "./src/modules/catalog/repositories/implementations/typeorm/*.ts",
+        "./src/modules/users/repositories/implementations/typeorm/*.ts",
+        "./src/modules/catalog/repositories/*.ts",
+        "./src/modules/users/repositories/*.ts"
+      ],
+      "#http/*": [
+        "./src/adapters/http/*.ts"
+      ],
+      "#shared/*": [
+        "./src/shared/*.ts"
+      ],
+      "#infrastructure/*": [
+        "./src/infrastructure/*.ts"
+      ],
+      "#catalog-usecases/*": [
+        "./src/modules/catalog/useCases/*.ts"
+      ],
+      "#users-usecases/*": [
+        "./src/modules/users/useCases/*.ts"
+      ]
+    }
+  }
+}

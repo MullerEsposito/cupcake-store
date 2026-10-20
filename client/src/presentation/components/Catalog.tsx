@@ -1,0 +1,20 @@
+import type { Product, Resource } from '../../contracts/storefront';
+import { ProductImage } from './ProductImage';
+import { formatPrice } from '../format-price';
+
+export function Catalog({ resource, onSelect }: { resource: Resource<Product[]>; onSelect(id: string): void }) {
+  const { data: products, loading, error, retry } = resource;
+  return <section id="catalogo" className="catalog wrap" aria-labelledby="catalog-title">
+    <div className="section-top"><div><p className="eyebrow">ESCOLHA SEU MOMENTO DOCE</p><h2 id="catalog-title">Nossos cupcakes</h2></div><span className="catalog-note">Do primeiro olhar à última mordida.</span></div>
+    {loading && <div className="state" role="status">Preparando a vitrine…</div>}
+    {error && <div className="state" role="alert"><p>{error}</p><button className="button outline" onClick={retry}>Tentar novamente</button></div>}
+    {!loading && !error && !products?.length && <div className="state" role="status">Nossa vitrine está sendo preparada. Nenhum produto ativo cadastrado no momento.</div>}
+    <div className="products" aria-live="polite">{products?.map(product => <article className="product" key={product.id}>
+      <ProductImage product={product} className="product-image" />
+      <div className="product-content"><p className="category">{product.category}</p><h3>{product.name}</h3><p className="product-description">{product.description}</p>
+        <div className="product-bottom"><span className="price">{formatPrice(product.price)}</span><button className="detail-button" onClick={() => onSelect(product.id)} aria-label={`Ver detalhes de ${product.name}`}>Ver detalhes ↗</button></div>
+        <p className="stock">{Number(product.stock) > 0 ? 'Disponível' : 'Temporariamente esgotado'}</p>
+      </div>
+    </article>)}</div>
+  </section>;
+}
