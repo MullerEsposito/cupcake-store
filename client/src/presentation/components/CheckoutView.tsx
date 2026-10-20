@@ -7,6 +7,8 @@ import { formatPrice } from '../format-price';
 import { Modal } from './Modal';
 import { OrderProgress } from './OrderProgress';
 import { statusLabel } from '../order-status';
+import { canCancel } from '../../contracts/cancellation';
+import { CancellationForm, CancellationSummary } from './Cancellation';
 
 const addressFields = [
   ['recipient', 'Destinatário', 150], ['postalCode', 'CEP', 9], ['street', 'Logradouro', 200], ['number', 'Número', 20],
@@ -153,6 +155,11 @@ export function CheckoutView({ api, cart, open, onClose, onChanged }: {
           <p>Subtotal: {formatPrice(order.subtotal)} · Frete: {formatPrice(order.shipping)}</p>
           <p><strong>Total: {formatPrice(order.total)}</strong></p>
           {latest && <p role="status">Pagamento: {latest.status} · {latest.method}. {latest.reason}</p>}
+          {order.cancellation && <CancellationSummary cancellation={order.cancellation} />}
+          {canCancel(order.status) && <CancellationForm key={`${order.id}-${order.status}`} status={order.status} total={order.total} busy={busy}
+            onConfirm={input => run(async () => {
+              setOrder(await api.cancelOrder(order.id, input)); paymentRequest.current = null; orders.retry(); onChanged();
+            })} />}
         </>}
         {(!order || showPayment) && <>
           <label className="checkout-label">Método simulado<select disabled={busy || Boolean(pending)} value={pending?.method ?? method} onChange={event => setMethod(event.target.value as PaymentMethod)}>

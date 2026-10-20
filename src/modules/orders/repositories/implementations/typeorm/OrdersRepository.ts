@@ -3,6 +3,9 @@ import type { EntityManager, Repository } from 'typeorm';
 import { Order } from '../../../entities/Order.js';
 import { OrderItem } from '../../../entities/OrderItem.js';
 import { Payment } from '../../../entities/Payment.js';
+import { OrderCancellation } from '../../../entities/OrderCancellation.js';
+import type { CancellationInput } from '../../../contracts/CancellationContracts.js';
+import { validateCancellationState, validateCancellationPayment } from '../../../validators/validateCancellation.js';
 import { presentOrder } from './present-order.js';
 import { Address } from '../../../../addresses/entities/Address.js';
 import { Cart } from '#entities/Cart';
@@ -29,6 +32,65 @@ export class OrdersRepository implements IOrdersRepository {
   private readonly repository: Repository<Order>;
 
   constructor() { this.repository = getRepository(Order); }
+
+  cancel(userId: string, orderId: string, input: CancellationInput): Promise<OrderDTO> {
+    return this.cancelOrder(userId, orderId, input, false);
+  }
+
+  cancelAsAdministrator(userId: string, orderId: string, input: CancellationInput): Promise<OrderDTO> {
+    return this.cancelOrder(userId, orderId, input, true);
+  }
+
+  private cancelOrder(userId: string, orderId: string, input: CancellationInput, administrative: boolean): Promise<OrderDTO> {
+    return this.repository.manager.transaction(async manager => {
+      await lock(manager, `cancellation:${input.idempotencyKey}`);
+      const actor = await manager.findOne(User, { where: { id: userId, active: true }, lock: { mode: 'pessimistic_read' } });
+      if (!actor) throw new ApplicationError('UNAUTHORIZED', 'Entre novamente na sua conta.');
+      if (administrative && actor.role !== 'ADMIN') throw new ApplicationError('FORBIDDEN', 'Acesso exclusivo para administradores.');
+      const order = await manager.findOne(Order, { where: administrative ? { id: orderId } : { id: orderId, userId }, lock: { mode: 'pessimistic_write' } });
+      if (!order) throw new ApplicationError('NOT_FOUND', 'Pedido não encontrado.');
+      const previous = await manager.findOneBy(OrderCancellation, { idempotencyKey: input.idempotencyKey });
+      if (previous) {
+        if (previous.orderId !== orderId || previous.actorId !== userId || previous.reason !== input.reason
+          || previous.previousStatus !== input.expectedStatus) {
+          throw new ApplicationError('CONFLICT', 'Esta chave já foi utilizada em outra operação.');
+        }
+        return presentOrder(manager, order);
+      }
+      if (await manager.existsBy(OrderCancellation, { orderId })) {
+        throw new ApplicationError('CONFLICT', 'Este pedido já foi cancelado. Atualize para consultar o registro existente.');
+      }
+      validateCancellationState(order.status, input.expectedStatus);
+      const approved = await manager.findOneBy(Payment, { orderId, status: 'APROVADO' });
+      validateCancellationPayment(order.status, order.total, approved);
+      const products: { product: Product; quantity: number }[] = [];
+      if (approved) {
+        const items = await manager.find(OrderItem, { where: { orderId }, order: { productId: 'ASC' } });
+        if (!items.length) throw new ApplicationError('CONFLICT', 'Pedido sem itens; cancelamento não realizado.');
+        for (const item of items) {
+          const product = await manager.findOne(Product, { where: { id: item.productId }, lock: { mode: 'pessimistic_write' } });
+          if (!product || !Number.isInteger(item.quantity) || item.quantity <= 0 || product.stock + item.quantity > 2147483647) {
+            throw new ApplicationError('CONFLICT', 'Não foi possível devolver o estoque integralmente; cancelamento não realizado.');
+          }
+          products.push({ product, quantity: item.quantity });
+        }
+      }
+      const [{ now }] = await manager.query('SELECT clock_timestamp() AS now') as { now: Date }[];
+      const cancellation = manager.create(OrderCancellation, { orderId, actorId: userId, actorRole: actor.role,
+        previousStatus: order.status, reason: input.reason, idempotencyKey: input.idempotencyKey, createdAt: now,
+        paymentId: approved?.id ?? null, refundStatus: approved ? 'SIMULADO' : 'NAO_APLICAVEL',
+        refundAmount: approved?.amount ?? '0.00', refundedAt: approved ? now : null, stockRestored: Boolean(approved), simulated: true });
+      await manager.save(OrderCancellation, cancellation);
+      for (const { product, quantity } of products) await manager.update(Product, { id: product.id }, { stock: product.stock + quantity });
+      await manager.update(Payment, { orderId, status: 'PENDENTE' }, {
+        status: 'FALHA', reason: 'Tentativa encerrada porque o pedido foi cancelado; nenhuma cobrança real.',
+        processedAt: () => 'GREATEST(clock_timestamp(), criado_em)'
+      });
+      order.status = 'CANCELADO';
+      await manager.save(Order, order);
+      return presentOrder(manager, order);
+    });
+  }
 
   async find(userId: string, id: string): Promise<OrderDTO> {
     return this.repository.manager.transaction('REPEATABLE READ', async manager => {

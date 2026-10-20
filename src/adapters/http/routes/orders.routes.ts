@@ -7,6 +7,7 @@ import { getListOrdersController } from '../../../modules/orders/useCases/listOr
 import { getCheckoutController } from '../../../modules/orders/useCases/checkout/index.js';
 import { getPayOrderController } from '../../../modules/orders/useCases/payOrder/index.js';
 import { getOrderController } from '../../../modules/orders/useCases/getOrder/index.js';
+import { getCancelOrderController } from '../../../modules/orders/useCases/cancelOrder/index.js';
 
 export const ordersRoutes = Router({ caseSensitive: true, strict: true });
 ordersRoutes.use(resolveSession, requireSession);
@@ -18,3 +19,4 @@ ordersRoutes.get('/', (request, response) => getListOrdersController().handle(re
 ordersRoutes.get('/:id', (request, response) => getOrderController().handle(request, response));
 ordersRoutes.post('/checkout', ...jsonBody(), (request, response) => getCheckoutController().handle(request, response));
 ordersRoutes.post('/:id/payments', ...jsonBody(), (request, response) => getPayOrderController().handle(request, response));
+ordersRoutes.post('/:id/cancel', ...jsonBody(), (request, response) => getCancelOrderController().handle(request, response));

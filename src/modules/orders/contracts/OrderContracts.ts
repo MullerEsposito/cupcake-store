@@ -1,4 +1,5 @@
 import type { AddressInput } from '../../addresses/contracts/AddressContracts.js';
+import type { CancellationDTO } from './CancellationContracts.js';
 
 export type PaymentMethod = 'PIX' | 'CARTAO' | 'BOLETO';
 export type PaymentOutcome = 'APROVADO' | 'RECUSADO' | 'FALHA';
@@ -13,4 +14,5 @@ export interface OrderDTO {
   address: AddressInput; subtotal: string; shipping: string; total: string;
   items: { productId: string; name: string; quantity: number; unitPrice: string; lineTotal: string }[];
   payments: PaymentDTO[];
+  cancellation: CancellationDTO | null;
 }

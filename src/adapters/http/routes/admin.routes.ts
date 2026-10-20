@@ -9,6 +9,7 @@ import { getSaveCategoryController } from '../../../modules/admin/useCases/saveC
 import { getAdjustStockController } from '../../../modules/admin/useCases/adjustStock/index.js';
 import { getListAdminOrdersController } from '../../../modules/admin/useCases/listAdminOrders/index.js';
 import { getAdvanceOrderController } from '../../../modules/admin/useCases/advanceOrder/index.js';
+import { getAdminCancelOrderController } from '../../../modules/admin/useCases/adminCancelOrder/index.js';
 
 export const adminRoutes = Router({ caseSensitive: true, strict: true });
 adminRoutes.use(resolveSession, requireSession);
@@ -24,3 +25,4 @@ adminRoutes.post('/categories', ...jsonBody(), (request, response) => getSaveCat
 adminRoutes.post('/categories/:id', ...jsonBody(), (request, response) => getSaveCategoryController().handle(request, response));
 adminRoutes.get('/orders', (request, response) => getListAdminOrdersController().handle(request, response));
 adminRoutes.post('/orders/:id/status', ...jsonBody(), (request, response) => getAdvanceOrderController().handle(request, response));
+adminRoutes.post('/orders/:id/cancel', ...jsonBody(), (request, response) => getAdminCancelOrderController().handle(request, response));

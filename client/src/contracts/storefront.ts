@@ -1,4 +1,5 @@
 import type { AdminApi } from './admin';
+import type { Cancellation, CancellationInput } from './cancellation';
 
 export interface Product {
   id: string;
@@ -38,6 +39,7 @@ export interface Order {
   address: AddressInput; subtotal: string; shipping: string; total: string;
   items: { productId: string; name: string; quantity: number; unitPrice: string; lineTotal: string }[];
   payments: { id: string; method: string; status: string; amount: string; simulated: boolean; idempotencyKey: string; reason: string | null }[];
+  cancellation: Cancellation | null;
 }
 export interface StorefrontApi extends AdminApi {
   products(signal?: AbortSignal, filters?: CatalogFilters): Promise<Product[]>;
@@ -57,6 +59,7 @@ export interface StorefrontApi extends AdminApi {
   order(id: string, signal?: AbortSignal): Promise<Order>;
   checkout(input: CheckoutInput): Promise<Order>;
   payOrder(id: string, input: PaymentInput): Promise<Order>;
+  cancelOrder(id: string, input: CancellationInput): Promise<Order>;
 }
 export interface Resource<T> {
   data: T | null;

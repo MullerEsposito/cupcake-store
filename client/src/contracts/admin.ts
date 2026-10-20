@@ -1,4 +1,5 @@
 import type { Order } from './storefront';
+import type { CancellationInput } from './cancellation';
 
 export interface ProductFields {
   categoryId: string; name: string; description: string; price: string; weight: string; image: string; active: boolean;
@@ -17,4 +18,5 @@ export interface AdminApi {
   adjustStock(id: string, input: { expectedStock: number; delta: number }): Promise<AdminProduct>;
   adminOrders(page: number, status: string, signal?: AbortSignal): Promise<Page<AdminOrder>>;
   advanceOrder(id: string, input: { expectedStatus: string; status: string }): Promise<AdminOrder>;
+  adminCancelOrder(id: string, input: CancellationInput): Promise<Order>;
 }

@@ -9,6 +9,8 @@ import { Address } from '#entities/Address';
 import { Order } from '#entities/Order';
 import { OrderItem } from '#entities/OrderItem';
 import { Payment } from '#entities/Payment';
+import { OrderCancellation } from '#entities/OrderCancellation';
+import { CreateOrderCancellations1792454400000 } from './migrations/1792454400000-CreateOrderCancellations.js';
 import { errorCode } from '#shared/errors/error-info';
 
 export function createDataSource(): DataSource {
@@ -20,7 +22,8 @@ export function createDataSource(): DataSource {
     username: process.env.PGUSER || 'postgres',
     password: process.env.PGPASSWORD,
     schema: 'public',
-    entities: [User, Product, Category, Cart, CartItem, Address, Order, OrderItem, Payment],
+    entities: [User, Product, Category, Cart, CartItem, Address, Order, OrderItem, Payment, OrderCancellation],
+    migrations: [CreateOrderCancellations1792454400000],
     synchronize: false,
     dropSchema: false,
     migrationsRun: false,

@@ -6,6 +6,9 @@ import { errorMessage } from '../error-message';
 import { formatPrice } from '../format-price';
 import { nextStatus, orderSteps, statusLabel } from '../order-status';
 import { OrderProgress } from './OrderProgress';
+import { canCancel } from '../../contracts/cancellation';
+import type { CancellationInput } from '../../contracts/cancellation';
+import { CancellationForm, CancellationSummary } from './Cancellation';
 
 function Pagination({ page, total, pageSize, busy, onPage }: {
   page: number; total: number; pageSize: number; busy: boolean; onPage(page: number): void;
@@ -72,11 +75,12 @@ function StockForm({ product, busy, onSave, onCancel }: {
   </fieldset></form>;
 }
 
-function OrderCard({ order, busy, onAdvance }: { order: AdminOrder; busy: boolean; onAdvance(status: string): void }) {
+function OrderCard({ order, busy, onAdvance, onCancel }: { order: AdminOrder; busy: boolean; onAdvance(status: string): void; onCancel(input: CancellationInput): Promise<void> }) {
   const next = nextStatus(order.status);
   return <article className="admin-order"><h3>{order.number}</h3><p>{order.customer.name} · {order.customer.email}</p>
     <p>{new Date(order.createdAt).toLocaleString('pt-BR')} · <strong>{formatPrice(order.total)}</strong></p>
     <OrderProgress status={order.status} />
+    {order.cancellation && <CancellationSummary cancellation={order.cancellation} />}
     <details><summary>Itens, entrega e pagamentos</summary>
       <ul>{order.items.map(item => <li key={item.productId}>{item.quantity} × {item.name} — {formatPrice(item.lineTotal)}</li>)}</ul>
       <p>{order.address.recipient}: {order.address.street}, {order.address.number}{order.address.complement ? `, ${order.address.complement}` : ''} — {order.address.district}, {order.address.city}/{order.address.state}, CEP {order.address.postalCode}.</p>
@@ -84,6 +88,9 @@ function OrderCard({ order, busy, onAdvance }: { order: AdminOrder; busy: boolea
     </details>
     {next ? <button className="button primary" disabled={busy} onClick={() => onAdvance(next)}>Confirmar: {statusLabel(next)}</button>
       : <p className="hint">{order.status === 'AGUARDANDO_PAGAMENTO' ? 'Aguardando pagamento do cliente; o administrador não aprova pagamentos.' : 'Nenhum avanço disponível.'}</p>}
+    {canCancel(order.status) && <details className="cancellation-details"><summary>Cancelar pedido / estorno simulado</summary>
+      <CancellationForm status={order.status} total={order.total} busy={busy} onConfirm={onCancel} />
+    </details>}
   </article>;
 }
 
@@ -152,7 +159,8 @@ export function AdminPanel({ api, onChanged }: { api: AdminApi; onChanged(): voi
       </select></label>
       {orders.loading && <p role="status">Carregando pedidos…</p>}
       {orders.data?.items.map(order => <OrderCard key={order.id} order={order} busy={busy}
-        onAdvance={target => { void mutate(() => api.advanceOrder(order.id, { expectedStatus: order.status, status: target }), `Pedido atualizado: ${statusLabel(target)}.`); }} />)}
+        onAdvance={target => { void mutate(() => api.advanceOrder(order.id, { expectedStatus: order.status, status: target }), `Pedido atualizado: ${statusLabel(target)}.`); }}
+        onCancel={input => mutate(() => api.adminCancelOrder(order.id, input), 'Cancelamento registrado; estorno e estoque tratados conforme o pagamento.')} />)}
       {orders.data?.total === 0 && <p>Nenhum pedido encontrado.</p>}
       {orders.data && <Pagination {...orders.data} busy={busy} onPage={setOrderPage} />}
     </>}

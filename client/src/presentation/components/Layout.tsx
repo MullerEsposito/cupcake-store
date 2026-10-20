@@ -68,7 +68,7 @@ export function Footer() {
     </section>
     <div className="project-note wrap">
       <strong>Protótipo acadêmico · PIT II</strong>
-      <span>Sprint 4: acompanhamento de pedidos e painel administrativo. Pagamentos exclusivamente simulados.</span>
+      <span>Sprint 5: cancelamento e estorno com registro auditável. Pagamentos e estornos exclusivamente simulados.</span>
     </div>
     <footer className="wrap">
       <a className="brand footer-brand" href="/">CupCake Store</a>

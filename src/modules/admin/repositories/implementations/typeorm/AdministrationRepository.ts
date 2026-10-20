@@ -40,8 +40,8 @@ export class AdministrationRepository implements IAdministrationRepository {
 
   constructor() { this.repository = getRepository(Product); }
 
-  private run<Result>(userId: string, operation: (manager: EntityManager) => Promise<Result>): Promise<Result> {
-    return this.repository.manager.transaction(async manager => {
+  private run<Result>(userId: string, operation: (manager: EntityManager) => Promise<Result>, snapshot = false): Promise<Result> {
+    return this.repository.manager.transaction(snapshot ? 'REPEATABLE READ' : 'READ COMMITTED', async manager => {
       const user = await manager.findOne(User, { where: { id: userId, active: true }, lock: { mode: 'pessimistic_read' } });
       if (!user) throw new ApplicationError('UNAUTHORIZED', 'Entre novamente na sua conta.');
       if (user.role !== 'ADMIN') throw new ApplicationError('FORBIDDEN', 'Acesso exclusivo para administradores.');
@@ -106,7 +106,7 @@ export class AdministrationRepository implements IAdministrationRepository {
       const items: AdminOrder[] = [];
       for (const order of orders) items.push(await presentAdminOrder(manager, order));
       return { items, page: input.page, pageSize: PAGE_SIZE, total };
-    });
+    }, true);
   }
 
   async advanceOrder(userId: string, id: string, input: OrderTransition): Promise<AdminOrder> {
