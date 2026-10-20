@@ -1,17 +1,17 @@
-# CupCake Store — aplicação local PIT II
+# CupCake Store
 
-Primeiro incremento funcional: HU-01 (vitrine), HU-02 (detalhes), HU-09 (cadastro) e HU-10 (login). Node.js 20.19+ e PostgreSQL; interface responsiva em HTML/CSS/JavaScript. O banco existente é reutilizado e nenhuma tabela é apagada ou recriada. As nove tabelas devem estar no esquema public do banco cupcake_store.
+Primeiro incremento funcional: HU-01 (vitrine), HU-02 (detalhes), HU-09 (cadastro) e HU-10 (login). Interface React com TypeScript, Vite e Axios; backend TypeScript em Node.js 20.19+ com Express 5, organizado por módulos de negócio (users e catalog), com entidades, repositórios e Service/Controller/composição por caso de uso, usando TypeORM com PostgreSQL. Casos de uso e regras de negócio são independentes de Express, React e banco. Consulte [Arquitetura](docs/architecture.md) para a estrutura modular, contratos e decisões. O banco existente é reutilizado e nenhuma tabela é apagada ou recriada. As nove tabelas devem estar no esquema public do banco cupcake_store.
 
 ## Configuração local
 
 1. Abra a raiz deste repositório em um terminal e execute `npm ci` para instalar as dependências registradas.
 2. Copie `.env.example` para `.env`. Preencha `PGPASSWORD` no seu editor local com a senha do PostgreSQL. Não envie a senha pelo chat e não publique esse arquivo.
 3. Execute `npm run check:db`. O resultado esperado é conexão com cupcake_store e nove tabelas presentes.
-4. Execute `npm start` e abra http://localhost:3000. Use esse endereço, não o IP 127.0.0.1, pois a proteção de origem valida a URL exata.
+4. Execute `npm start`: o frontend React será compilado e servido com a API em http://localhost:3000. Use esse endereço, não o IP 127.0.0.1, pois a proteção de origem valida a URL exata.
 
 No Windows, depois de configurar o .env, também é possível abrir `iniciar.cmd` para iniciar a aplicação. Mantenha a janela aberta durante o uso. O .env está ignorado pelo controle de versão e não é enviado ao GitHub. Ao clonar o repositório, crie sua configuração a partir de `.env.example`.
 
-O servidor escuta somente na interface local. O comando `npm run dev` reinicia o servidor ao alterar arquivos. Para parar, pressione Ctrl+C. Não são necessárias alterações no DBeaver nem execução de migrações neste incremento.
+O servidor escuta somente na interface local. Para desenvolvimento com atualização React, execute `npm run dev` e abra http://localhost:5173; a API continua em 3000 por proxy. Mantenha PORT=3000 nesse modo e não execute duas instâncias na mesma porta. Para parar, pressione Ctrl+C. Não são necessárias alterações no DBeaver nem execução de migrações neste incremento. TypeORM usa o schema existente, com synchronize, dropSchema e migrationsRun desativados.
 
 ## Catálogo inicial
 
@@ -32,7 +32,7 @@ Os arquivos em `database/` permitem reproduzir o ambiente. Para uma instalação
 
 ## Verificação
 
-`npm test` executa testes automatizados de validação, hash, sessão, contratos HTTP e controle de tentativas. Esses testes isolam o acesso ao banco com objetos de teste; não comprovam integração com seu servidor PostgreSQL. `npm run check:db` faz a verificação real de conexão e das tabelas após preencher o .env.
+`npm run typecheck` valida os tipos do backend, frontend e contratos. `npm test` executa testes automatizados de validação, hash, sessão, contratos HTTP e controle de tentativas. Esses testes isolam o acesso ao banco com um DataSource simulado; não comprovam integração com seu servidor PostgreSQL. `npm run check:db` verifica a conexão TypeORM, as nove tabelas e as consultas dos repositórios após preencher o .env.
 
 Teste manual com o banco conectado: inserir catálogo, consultar vitrine e detalhes; cadastrar um email novo, sair e entrar; rejeitar email repetido; errar a senha cinco vezes e observar bloqueio; verificar usuario.senha_hash e campos de tentativas pelo DBeaver. Não envie hashes ou credenciais em evidências públicas.
 
