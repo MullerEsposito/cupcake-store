@@ -30,16 +30,22 @@ Execute `npm run migrate` para acrescentar a tabela de cancelamentos sem alterar
 
 Navegação por páginas com React Router e estilos encapsulados com styled-components. Catálogo, detalhes, carrinho, checkout, pedidos e administração possuem endereços próprios. Consulte [Sprint 6](docs/sprint-6.md) para rotas, organização e verificação.
 
+## Sprint 7
+
+Auditoria ampliada de estoque: inicializações, reposições/correções com motivo obrigatório, vendas e devoluções registradas na mesma transação. Histórico somente leitura em /administracao/estoque, com filtros e paginação. Consulte [Sprint 7](docs/sprint-7.md) para modelo, migração, segurança e testes.
+
+Execute `npm run migrate` para acrescentar movimentacao_estoque e os saldos de abertura, sem alterar o estoque existente. `npm run check:sprint7` verifica os fluxos com ROLLBACK; `npm run check:sprint7:concurrency` usa banco temporário isolado e exige CREATEDB.
+
 ## Configuração local
 
 1. Abra a raiz deste repositório em um terminal e execute `npm ci` para instalar as dependências registradas.
 2. Copie `.env.example` para `.env`. Preencha `PGPASSWORD` no seu editor local com a senha do PostgreSQL. Não envie a senha pelo chat e não publique esse arquivo.
-3. Com o modelo inicial criado, execute `npm run migrate` e depois `npm run check:db`. O resultado esperado é conexão com cupcake_store e dez tabelas de negócio presentes, além do controle técnico de migrações.
+3. Com o modelo inicial criado e o backend parado, execute `npm run migrate` e depois `npm run check:db`. O resultado esperado é conexão com cupcake_store e onze tabelas de negócio presentes, além do controle técnico de migrações.
 4. Execute `npm start`: o frontend React será compilado e servido com a API em http://localhost:3000. Use esse endereço, não o IP 127.0.0.1, pois a proteção de origem valida a URL exata.
 
 No Windows, depois de configurar o .env, também é possível abrir `iniciar.cmd` para iniciar a aplicação. Mantenha a janela aberta durante o uso. O .env está ignorado pelo controle de versão e não é enviado ao GitHub. Ao clonar o repositório, crie sua configuração a partir de `.env.example`.
 
-O servidor escuta somente na interface local. Para desenvolvimento com atualização React, execute `npm run dev` e abra http://localhost:5173; a API continua em 3000 por proxy. Mantenha PORT=3000 nesse modo e não execute duas instâncias na mesma porta. Para parar, pressione Ctrl+C. A Sprint 5 exige executar `npm run migrate` explicitamente. TypeORM mantém synchronize, dropSchema e migrationsRun desativados: iniciar a aplicação não altera o esquema.
+O servidor escuta somente na interface local. Para desenvolvimento com atualização React, execute `npm run dev` e abra http://localhost:5173; a API continua em 3000 por proxy. Mantenha PORT=3000 nesse modo e não execute duas instâncias na mesma porta. Para parar, pressione Ctrl+C. As Sprints 5 e 7 exigem executar `npm run migrate` explicitamente. TypeORM mantém synchronize, dropSchema e migrationsRun desativados: iniciar a aplicação não altera o esquema.
 
 ## Catálogo inicial
 
@@ -60,10 +66,10 @@ Os arquivos em `database/` permitem reproduzir o ambiente. Para uma instalação
 
 ## Verificação
 
-`npm run typecheck` valida os tipos do backend, frontend e contratos. `npm test` executa testes automatizados de validação, hash, sessão, contratos HTTP e controle de tentativas. Esses testes isolam o acesso ao banco com um DataSource simulado; não comprovam integração com seu servidor PostgreSQL. `npm run check:db` verifica a conexão TypeORM, as dez tabelas de negócio e as consultas dos repositórios após preencher o .env e aplicar as migrações.
+`npm run typecheck` valida os tipos do backend, frontend e contratos. `npm test` executa testes automatizados de validação, hash, sessão, contratos HTTP e controle de tentativas. Esses testes isolam o acesso ao banco com um DataSource simulado; não comprovam integração com seu servidor PostgreSQL. `npm run check:db` verifica a conexão TypeORM, as onze tabelas de negócio e as consultas dos repositórios após preencher o .env e aplicar as migrações.
 
 Teste manual com o banco conectado: inserir catálogo, consultar vitrine e detalhes; cadastrar um email novo, sair e entrar; rejeitar email repetido; errar a senha cinco vezes e observar bloqueio; verificar usuario.senha_hash e campos de tentativas pelo DBeaver. Não envie hashes ou credenciais em evidências públicas.
 
 ## Próximos incrementos
 
-Sprints 1 a 6 implementadas no escopo aprovado. Evoluções: auditoria ampliada de estoque, paginação, trocas/devoluções após entrega e preparação para produção. O login não conclui uma compra. Pagamentos, estornos e logística são simulações acadêmicas, sem cobrança, GPS ou movimentação financeira real.
+Sprints 1 a 7 implementadas no escopo aprovado. Evoluções: inventário físico, alertas de estoque mínimo, trocas/devoluções após entrega e preparação para produção. O login não conclui uma compra. Pagamentos, estornos e logística são simulações acadêmicas, sem cobrança, GPS ou movimentação financeira real.

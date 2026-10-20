@@ -258,3 +258,11 @@ Componentes visuais seguem o padrão `components/AdminPanel/index.tsx` e `styles
 Checkout, lista de pedidos e resumo têm rotas separadas e reutilizam o fluxo de pedidos para manter pagamento, acompanhamento e cancelamento consistentes. Login/cadastro e detalhes do produto deixam de depender de diálogos. RequireSession protege a apresentação enquanto a API continua sendo a autoridade de autenticação, propriedade e perfil ADMIN.
 
 O Express entrega o documento React nos endereços conhecidos, inclusive em recargas e links diretos. APIs desconhecidas, arquivos ausentes e caminhos privados continuam retornando 404. Cada documento HTML recebe um nonce novo, presente na CSP e no meta sc-nonce consumido pelo styled-components; não foi habilitado unsafe-inline. Scripts continuam restritos à mesma origem. Não houve alteração de esquema, serviços de negócio ou políticas de estoque/cancelamento.
+
+## Sprint 7 — auditoria ampliada de estoque
+
+O módulo inventory adiciona StockMovement, IInventoryRepository e o caso de uso listStockMovements. A consulta é exclusiva ADMIN, paginada e parametrizada, com período inclusivo em America/Sao_Paulo e snapshot consistente. A interface fica em /administracao/estoque, com componentes index.tsx + styles.tsx.
+
+A função stock-ledger utiliza o EntityManager transacional recebido dos repositórios de administração e pedidos. Cadastro, ajuste, venda e devolução persistem seus registros de auditoria na mesma transação; falha da auditoria reverte a operação inteira. Os serviços continuam dependentes de interfaces, sem importações TypeORM. Vendas e devoluções possuem vínculos únicos por evento/produto.
+
+A migração CreateStockMovements1792537200000 adiciona movimentacao_estoque (onze tabelas de negócio), captura saldos de abertura sem alterar estoque e protege registros contra edição/exclusão/truncamento. Não reconstitui eventos anteriores; autoria e execução automática são campos distintos. A auditoria cobre a aplicação, não alterações diretas por um superusuário. Consulte [Sprint 7](sprint-7.md) para cardinalidades, restrições e testes concorrentes isolados.
