@@ -1,3 +1,4 @@
+import { CreateStockMovements1792537200000 } from '../src/infrastructure/typeorm/migrations/1792537200000-CreateStockMovements.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import React from 'react';
@@ -88,7 +89,7 @@ test('DataSource registra auditoria e migração sem executá-la automaticamente
   assert.equal(metadata.findColumnWithPropertyName('simulated').default, true);
   assert.equal(source.options.synchronize, false);
   assert.equal(source.options.migrationsRun, false);
-  assert.deepEqual(source.options.migrations, [CreateOrderCancellations1792454400000]);
+  assert.deepEqual(source.options.migrations, [CreateOrderCancellations1792454400000, CreateStockMovements1792537200000]);
 });
 
 test('interface exige confirmação explícita e apresenta estorno como simulação com motivo escapado', () => {

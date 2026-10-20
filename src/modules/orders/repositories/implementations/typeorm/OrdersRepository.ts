@@ -1,3 +1,4 @@
+import { changeStock } from '../../../../inventory/repositories/implementations/typeorm/stock-ledger.js';
 import { randomUUID } from 'node:crypto';
 import type { EntityManager, Repository } from 'typeorm';
 import { Order } from '../../../entities/Order.js';
@@ -22,10 +23,12 @@ async function lock(manager: EntityManager, key: string): Promise<void> {
   await manager.query('SELECT pg_advisory_xact_lock(hashtextextended($1, 0))', [key]);
 }
 
-async function activeUser(manager: EntityManager, userId: string): Promise<void> {
-  if (!await manager.findOne(User, { where: { id: userId, active: true }, lock: { mode: 'pessimistic_read' } })) {
+async function activeUser(manager: EntityManager, userId: string): Promise<User> {
+  const user = await manager.findOne(User, { where: { id: userId, active: true }, lock: { mode: 'pessimistic_read' } });
+  if (!user) {
     throw new ApplicationError('UNAUTHORIZED', 'Entre novamente na sua conta.');
   }
+  return user;
 }
 
 export class OrdersRepository implements IOrdersRepository {
@@ -81,7 +84,10 @@ export class OrdersRepository implements IOrdersRepository {
         paymentId: approved?.id ?? null, refundStatus: approved ? 'SIMULADO' : 'NAO_APLICAVEL',
         refundAmount: approved?.amount ?? '0.00', refundedAt: approved ? now : null, stockRestored: Boolean(approved), simulated: true });
       await manager.save(OrderCancellation, cancellation);
-      for (const { product, quantity } of products) await manager.update(Product, { id: product.id }, { stock: product.stock + quantity });
+      for (const { product, quantity } of products) await changeStock(manager, product, quantity, {
+        type: 'DEVOLUCAO', reason: input.reason, actorId: userId, actorRole: actor.role, origin: 'SISTEMA',
+        orderId, paymentId: approved!.id, cancellationId: cancellation.id
+      });
       await manager.update(Payment, { orderId, status: 'PENDENTE' }, {
         status: 'FALHA', reason: 'Tentativa encerrada porque o pedido foi cancelado; nenhuma cobrança real.',
         processedAt: () => 'GREATEST(clock_timestamp(), criado_em)'
@@ -163,7 +169,7 @@ export class OrdersRepository implements IOrdersRepository {
       await lock(manager, `payment:${input.idempotencyKey}`);
       const order = await manager.findOne(Order, { where: { id: orderId, userId }, lock: { mode: 'pessimistic_write' } });
       if (!order) throw new ApplicationError('NOT_FOUND', 'Pedido não encontrado na sua conta.');
-      await activeUser(manager, userId);
+      const actor = await activeUser(manager, userId);
       let payment = await manager.findOneBy(Payment, { idempotencyKey: input.idempotencyKey });
       if (payment && (payment.orderId !== order.id || payment.method !== input.method)) {
         throw new ApplicationError('CONFLICT', 'Esta chave já foi utilizada em outra operação.');
@@ -179,6 +185,7 @@ export class OrdersRepository implements IOrdersRepository {
         payment = manager.create(Payment, { orderId, method: input.method, amount: order.total,
           idempotencyKey: input.idempotencyKey, simulated: true, status: 'PENDENTE', processedAt: null, reason: null });
       }
+      if (!payment.id) payment = await manager.save(Payment, payment);
       let outcome = input.outcome;
       let reason = input.outcome === 'APROVADO' ? 'Aprovação simulada. Nenhuma cobrança real.'
         : input.outcome === 'RECUSADO' ? 'Recusa simulada. Tente novamente.' : 'Falha simulada. Tente novamente.';
@@ -195,13 +202,13 @@ export class OrdersRepository implements IOrdersRepository {
         if (!items.length) throw new ApplicationError('CONFLICT', 'Pedido sem itens.');
         if (outcome === 'APROVADO') {
           for (const { product, quantity } of products) {
-            await manager.update(Product, { id: product.id }, { stock: product.stock - quantity });
+            await changeStock(manager, product, -quantity, { type: 'VENDA', reason: 'Baixa por aprovação de pagamento exclusivamente simulado.',
+              actorId: userId, actorRole: actor.role, origin: 'SISTEMA', orderId, paymentId: payment.id });
           }
           order.status = 'PAGAMENTO_APROVADO';
           await manager.save(Order, order);
         }
       }
-      if (!payment.id) payment = await manager.save(Payment, payment);
       await manager.update(Payment, { id: payment.id }, {
         status: outcome, reason, processedAt: () => 'GREATEST(clock_timestamp(), criado_em)'
       });

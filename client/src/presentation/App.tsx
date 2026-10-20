@@ -12,6 +12,7 @@ import { AuthPage } from './pages/AuthPage';
 import { CheckoutPage } from './pages/CheckoutPage';
 import { OrdersPage } from './pages/OrdersPage';
 import { OrderPage } from './pages/OrderPage';
+import { InventoryPage } from './pages/InventoryPage';
 import { AdminPage } from './pages/AdminPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { RequireSession } from './routes/RequireSession';
@@ -33,6 +34,7 @@ function StorefrontRoutes() {
         <Route path="/checkout" element={<RequireSession><CheckoutPage /></RequireSession>} />
         <Route path="/pedidos" element={<RequireSession><OrdersPage /></RequireSession>} />
         <Route path="/pedidos/:id" element={<RequireSession><OrderPage /></RequireSession>} />
+        <Route path="/administracao/estoque" element={<RequireSession admin><InventoryPage /></RequireSession>} />
         <Route path="/administracao" element={<RequireSession admin><AdminPage /></RequireSession>} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

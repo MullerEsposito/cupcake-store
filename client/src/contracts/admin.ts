@@ -1,3 +1,4 @@
+import type { InventoryFilter, InventoryPage } from './inventory';
 import type { Order } from './storefront';
 import type { CancellationInput } from './cancellation';
 
@@ -15,7 +16,8 @@ export interface AdminApi {
   adminCatalog(page: number, signal?: AbortSignal): Promise<AdminCatalog>;
   saveProduct(id: string | null, input: ProductWrite): Promise<AdminProduct>;
   saveCategory(id: string | null, input: CategoryWrite): Promise<AdminCategory>;
-  adjustStock(id: string, input: { expectedStock: number; delta: number }): Promise<AdminProduct>;
+  adjustStock(id: string, input: { expectedStock: number; delta: number; reason: string }): Promise<AdminProduct>;
+  stockMovements(page: number, filters: InventoryFilter, signal?: AbortSignal): Promise<InventoryPage>;
   adminOrders(page: number, status: string, signal?: AbortSignal): Promise<Page<AdminOrder>>;
   advanceOrder(id: string, input: { expectedStatus: string; status: string }): Promise<AdminOrder>;
   adminCancelOrder(id: string, input: CancellationInput): Promise<Order>;

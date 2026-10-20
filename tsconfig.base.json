@@ -14,7 +14,8 @@
         "./src/modules/users/entities/*.ts",
         "./src/modules/cart/entities/*.ts",
         "./src/modules/addresses/entities/*.ts",
-        "./src/modules/orders/entities/*.ts"
+        "./src/modules/orders/entities/*.ts",
+        "./src/modules/inventory/entities/*.ts"
       ],
       "#dtos/*": [
         "./src/modules/catalog/dtos/*.ts",

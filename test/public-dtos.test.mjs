@@ -1,3 +1,4 @@
+import { StockMovement } from '#entities/StockMovement';
 import { Cart } from '#entities/Cart';
 import { CartItem } from '#entities/CartItem';
 import { Address } from '#entities/Address';
@@ -27,8 +28,8 @@ test('projeção pública de User nunca serializa hash ou estado de autenticaç�
 test('DataSource registra somente as entidades únicas dos módulos', async () => {
   const source = createDataSource();
   await source.buildMetadatas();
-  assert.deepEqual(source.options.entities, [User, Product, Category, Cart, CartItem, Address, Order, OrderItem, Payment, OrderCancellation]);
-  assert.equal(source.entityMetadatas.length, 10);
+  assert.deepEqual(source.options.entities, [User, Product, Category, Cart, CartItem, Address, Order, OrderItem, Payment, OrderCancellation, StockMovement]);
+  assert.equal(source.entityMetadatas.length, 11);
   assert.equal(source.getRepository(User).target, User);
   assert.equal(source.getRepository(Product).target, Product);
   assert.equal(source.getMetadata(Product).relations[0].inverseEntityMetadata.target, Category);

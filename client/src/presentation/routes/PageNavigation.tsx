@@ -1,7 +1,17 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router';
 
-const pageTitles: Record<string, string> = { '/': 'Início', '/produtos': 'Nossos cupcakes', '/carrinho': 'Meu carrinho', '/sobre': 'Nossa essência', '/entrar': 'Minha conta', '/checkout': 'Finalizar pedido', '/pedidos': 'Meus pedidos', '/administracao': 'Administração' };
+const pageTitles: Record<string, string> = {
+  '/administracao/estoque': 'Histórico de estoque',
+  '/': 'Início',
+  '/produtos': 'Nossos cupcakes',
+  '/carrinho': 'Meu carrinho',
+  '/sobre': 'Nossa essência',
+  '/entrar': 'Minha conta',
+  '/checkout': 'Finalizar pedido',
+  '/pedidos': 'Meus pedidos',
+  '/administracao': 'Administração'
+};
 
 export function PageNavigation() {
   const location = useLocation();

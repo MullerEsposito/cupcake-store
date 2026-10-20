@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import { Container } from './styles';
 import { useCallback, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
@@ -65,12 +66,16 @@ function CategoryForm({ category, busy, onSave, onCancel }: {
 }
 
 function StockForm({ product, busy, onSave, onCancel }: {
-  product: AdminProduct; busy: boolean; onSave(delta: number): void; onCancel(): void;
+  product: AdminProduct; busy: boolean; onSave(delta: number, reason: string): void; onCancel(): void;
 }) {
   return <form className="admin-form" onSubmit={event => {
-    event.preventDefault(); onSave(Number(new FormData(event.currentTarget).get('delta')));
+    event.preventDefault();
+    const fields = new FormData(event.currentTarget);
+    onSave(Number(fields.get('delta')), String(fields.get('reason') ?? '').trim());
   }}><fieldset disabled={busy}><legend>Ajustar estoque de {product.name}</legend>
     <p>Estoque conferido: {product.stock}. O servidor rejeita o ajuste se esse valor mudar.</p>
+    <p className="hint">O histórico é permanente. Confira as movimentações antes de repetir um ajuste com resposta incerta.</p>
+    <label>Motivo do ajuste<input name="reason" minLength={5} maxLength={500} required /></label>
     <label>Variação de estoque (positiva para repor, negativa para corrigir)<input name="delta" type="number" step="1" min="-2147483647" max="2147483647" required /></label>
     <div className="admin-actions"><button className="button primary" type="submit">Aplicar ajuste</button><button className="button outline" type="button" onClick={onCancel}>Cancelar ajuste</button></div>
   </fieldset></form>;
@@ -126,6 +131,7 @@ export function AdminPanel({ api, onChanged }: { api: AdminApi; onChanged(): voi
   return <Container><section id="administracao" className="admin-section wrap" aria-labelledby="admin-title">
     <p className="eyebrow">ACESSO RESTRITO · ADMIN</p><h1 id="admin-title">Painel administrativo</h1>
     <p>Gerencie o catálogo e acompanhe as entregas. Não há cobranças ou integrações logísticas reais.</p>
+    <p><Link className="button outline" to="/administracao/estoque">Histórico de movimentações de estoque ↗</Link></p>
     <div className="admin-actions" aria-label="Seções administrativas">
       <button className="button outline" aria-pressed={tab === 'products'} disabled={busy} onClick={() => setTab('products')}>Produtos e estoque</button>
       <button className="button outline" aria-pressed={tab === 'categories'} disabled={busy} onClick={() => setTab('categories')}>Categorias</button>
@@ -139,7 +145,7 @@ export function AdminPanel({ api, onChanged }: { api: AdminApi; onChanged(): voi
       <ProductForm key={`${editingProduct?.id ?? 'new'}-${formVersion}`} product={editingProduct} categories={catalog.data.categories} busy={busy}
         onCancel={reset} onSave={input => { void mutate(() => api.saveProduct(editingProduct?.id ?? null, input), 'Produto salvo.'); }} />
       {stockProduct && <StockForm key={stockProduct.id} product={stockProduct} busy={busy} onCancel={() => setStockProduct(null)}
-        onSave={delta => { void mutate(() => api.adjustStock(stockProduct.id, { expectedStock: stockProduct.stock, delta }), 'Estoque ajustado.'); }} />}
+        onSave={(delta, reason) => { void mutate(() => api.adjustStock(stockProduct.id, { expectedStock: stockProduct.stock, delta, reason }), 'Estoque ajustado.'); }} />}
       <ul className="admin-list">{catalog.data.products.items.map(product => <li key={product.id}><div><strong>{product.name}</strong>
         <p>{formatPrice(product.price)} · {product.stock} unidade(s) · {product.active ? 'Ativo' : 'Inativo'}</p></div>
         <div className="admin-actions"><button className="button outline" disabled={busy} onClick={() => { setEditingProduct(product); setFormVersion(value => value + 1); }}>Editar produto</button>

@@ -49,5 +49,6 @@ grid-template-columns: 1fr;
 }
 }
 
+
 h1 { font-size: clamp(32px, 4vw, 46px); letter-spacing: -1px; }
 `;

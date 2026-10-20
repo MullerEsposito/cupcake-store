@@ -1,3 +1,4 @@
+import { StockMovement } from '#entities/StockMovement';
 import { Cart } from '#entities/Cart';
 import { CartItem } from '#entities/CartItem';
 import { Address } from '#entities/Address';
@@ -114,7 +115,7 @@ test('adaptadores sem parâmetros resolvem o repositório da conexão ativa', as
 test('classes decoradas preservam defaults e não selecionam senha por padrão', async () => {
   const source = createDataSource();
   await source.buildMetadatas();
-  assert.deepEqual(source.options.entities, [User, Product, Category, Cart, CartItem, Address, Order, OrderItem, Payment, OrderCancellation]);
+  assert.deepEqual(source.options.entities, [User, Product, Category, Cart, CartItem, Address, Order, OrderItem, Payment, OrderCancellation, StockMovement]);
   const user = source.getMetadata(User);
   assert.equal(user.findColumnWithPropertyName('role').default, 'CLIENTE');
   assert.equal(user.findColumnWithPropertyName('active').default, true);

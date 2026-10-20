@@ -69,9 +69,11 @@ export function validateCategoryWrite(input: unknown, updating: boolean): Catego
 }
 
 export function validateStockAdjustment(input: unknown): StockAdjustment {
-  const data = inputObject(input, ['expectedStock', 'delta']);
+  const data = inputObject(input, ['expectedStock', 'delta', 'reason']);
   if (typeof data.delta !== 'number' || !Number.isInteger(data.delta) || data.delta === 0 || Math.abs(data.delta) > 2147483647) invalid('Informe uma variação inteira não nula de estoque.');
-  return { expectedStock: stock(data.expectedStock), delta: data.delta };
+  const reason = text(data.reason, 500);
+  if (reason.length < 5) invalid('Informe um motivo com 5 a 500 caracteres.');
+  return { expectedStock: stock(data.expectedStock), delta: data.delta, reason };
 }
 
 export function validateOrderTransition(input: unknown): OrderTransition {

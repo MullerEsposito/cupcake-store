@@ -11,6 +11,8 @@ import { getListAdminOrdersController } from '../../../modules/admin/useCases/li
 import { getAdvanceOrderController } from '../../../modules/admin/useCases/advanceOrder/index.js';
 import { getAdminCancelOrderController } from '../../../modules/admin/useCases/adminCancelOrder/index.js';
 
+import { getListStockMovementsController } from '../../../modules/inventory/useCases/listStockMovements/index.js';
+
 export const adminRoutes = Router({ caseSensitive: true, strict: true });
 adminRoutes.use(resolveSession, requireSession);
 adminRoutes.use((request, response, next) => {
@@ -26,3 +28,5 @@ adminRoutes.post('/categories/:id', ...jsonBody(), (request, response) => getSav
 adminRoutes.get('/orders', (request, response) => getListAdminOrdersController().handle(request, response));
 adminRoutes.post('/orders/:id/status', ...jsonBody(), (request, response) => getAdvanceOrderController().handle(request, response));
 adminRoutes.post('/orders/:id/cancel', ...jsonBody(), (request, response) => getAdminCancelOrderController().handle(request, response));
+
+adminRoutes.get('/stock-movements', (request, response) => getListStockMovementsController().handle(request, response));

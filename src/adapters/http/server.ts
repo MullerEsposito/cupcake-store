@@ -30,7 +30,7 @@ export function createApp(dependencies: RuntimeDependencies, {
   });
 
   app.use('/api', (request, response, next) => withDataSource(dependencies.dataSource, next), router);
-  app.get(/^\/(?:index\.html|produtos(?:\/[^/.]+)?|sobre|carrinho|entrar|checkout|pedidos(?:\/[^/.]+)?|administracao)?$/, async (request, response, next) => {
+  app.get(/^\/(?:index\.html|produtos(?:\/[^/.]+)?|sobre|carrinho|entrar|checkout|pedidos(?:\/[^/.]+)?|administracao(?:\/estoque)?)?$/, async (request, response, next) => {
     if (!request.accepts('html')) { next(); return; }
     try {
       const html = await readFile(resolve(staticDirectory, 'index.html'), 'utf8');

@@ -42,11 +42,11 @@ try {
     assert.notEqual(edited.revision, created.revision);
     await assert.rejects(admin.saveProduct(administrator.id, created.id, { ...fields, revision: created.revision }), error => error.code === 'CONFLICT');
     await assert.rejects(admin.saveCategory(administrator.id, category.id, { ...category, active: false }), error => error.code === 'CONFLICT');
-    const adjusted = await admin.adjustStock(administrator.id, created.id, { expectedStock: 5, delta: 4 });
+    const adjusted = await admin.adjustStock(administrator.id, created.id, { expectedStock: 5, delta: 4, reason: 'Ajuste fictício revertido' });
     assert.equal(adjusted.stock, 9);
     assert.equal(adjusted.revision, edited.revision);
-    await assert.rejects(admin.adjustStock(administrator.id, created.id, { expectedStock: 5, delta: 4 }), error => error.code === 'CONFLICT');
-    await assert.rejects(admin.adjustStock(administrator.id, created.id, { expectedStock: 9, delta: -10 }), error => error.code === 'CONFLICT');
+    await assert.rejects(admin.adjustStock(administrator.id, created.id, { expectedStock: 5, delta: 4, reason: 'Ajuste fictício revertido' }), error => error.code === 'CONFLICT');
+    await assert.rejects(admin.adjustStock(administrator.id, created.id, { expectedStock: 9, delta: -10, reason: 'Ajuste fictício revertido' }), error => error.code === 'CONFLICT');
     const catalog = await admin.catalog(administrator.id, { page: 1 });
     assert.equal(catalog.products.items.find(item => item.id === created.id).stock, 9);
     assert.equal(catalog.products.pageSize, 20);
@@ -63,7 +63,7 @@ try {
     await runner.manager.update(Order, { id: order.id }, { status: 'AGUARDANDO_PAGAMENTO' });
     await orders.pay(buyer.id, order.id, { method: 'PIX', outcome: 'APROVADO', idempotencyKey: checkout.idempotencyKey });
     assert.equal((await runner.manager.findOneByOrFail(Product, { id: created.id })).stock, 7);
-    await assert.rejects(admin.adjustStock(administrator.id, created.id, { expectedStock: 9, delta: 1 }), error => error.code === 'CONFLICT');
+    await assert.rejects(admin.adjustStock(administrator.id, created.id, { expectedStock: 9, delta: 1, reason: 'Ajuste fictício revertido' }), error => error.code === 'CONFLICT');
     await assert.rejects(admin.advanceOrder(buyer.id, order.id, { expectedStatus: 'PAGAMENTO_APROVADO', status: 'EM_PREPARACAO' }), error => error.code === 'FORBIDDEN');
     const preparation = { expectedStatus: 'PAGAMENTO_APROVADO', status: 'EM_PREPARACAO' };
     assert.equal((await admin.advanceOrder(administrator.id, order.id, preparation)).status, 'EM_PREPARACAO');
@@ -113,7 +113,7 @@ try {
       const productResponse = await post('/api/admin/products', { ...input, categoryId: httpCategory.id, initialStock: 0 });
       assert.equal(productResponse.status, 200);
       const httpProduct = (await productResponse.json()).product;
-      const stockResponse = await post(`/api/admin/products/${httpProduct.id}/stock`, { expectedStock: 0, delta: 3 });
+      const stockResponse = await post(`/api/admin/products/${httpProduct.id}/stock`, { expectedStock: 0, delta: 3, reason: 'Ajuste fictício revertido' });
       assert.equal(stockResponse.status, 200);
       assert.equal((await stockResponse.json()).product.stock, 3);
       const editResponse = await post(`/api/admin/products/${httpProduct.id}`, { ...fields, categoryId: httpCategory.id,

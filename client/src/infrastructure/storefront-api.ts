@@ -1,3 +1,4 @@
+import type { InventoryPage } from '../contracts/inventory';
 import type { AxiosInstance } from 'axios';
 import type { StorefrontApi, Product, PublicUser, Cart, Address, Order } from '../contracts/storefront';
 import { createHttpClient } from './http-client';
@@ -27,6 +28,7 @@ export function createStorefrontApi(client: Pick<AxiosInstance, 'get' | 'post'> 
     saveProduct: async (id, input) => (await client.post<{ product: AdminProduct }>(id ? `/admin/products/${encodeURIComponent(id)}` : '/admin/products', input)).data.product,
     saveCategory: async (id, input) => (await client.post<{ category: AdminCategory }>(id ? `/admin/categories/${encodeURIComponent(id)}` : '/admin/categories', input)).data.category,
     adjustStock: async (id, input) => (await client.post<{ product: AdminProduct }>(`/admin/products/${encodeURIComponent(id)}/stock`, input)).data.product,
+    stockMovements: async (page, filters, signal) => (await client.get<{ movements: InventoryPage }>('/admin/stock-movements', { signal, params: { page, ...filters } })).data.movements,
     adminOrders: async (page, status, signal) => (await client.get<{ orders: Page<AdminOrder> }>('/admin/orders', { signal, params: { page, ...(status ? { status } : {}) } })).data.orders,
     advanceOrder: async (id, input) => (await client.post<{ order: AdminOrder }>(`/admin/orders/${encodeURIComponent(id)}/status`, input)).data.order,
     adminCancelOrder: async (id, input) => (await client.post<{ order: Order }>(`/admin/orders/${encodeURIComponent(id)}/cancel`, input)).data.order

@@ -1,3 +1,4 @@
+import { changeStock, recordInitialStock } from '../../../../inventory/repositories/implementations/typeorm/stock-ledger.js';
 import { createHash } from 'node:crypto';
 import type { EntityManager, Repository } from 'typeorm';
 import { Product } from '#entities/Product';
@@ -69,7 +70,9 @@ export class AdministrationRepository implements IAdministrationRepository {
       const fields = { categoryId: input.categoryId, name: input.name, description: input.description,
         price: input.price, weight: input.weight, image: input.image, active: input.active };
       const product = existing ? Object.assign(existing, fields) : manager.create(Product, { ...fields, stock: input.initialStock });
-      return presentProduct(await manager.save(Product, product));
+      await manager.save(Product, product);
+      if (!existing) await recordInitialStock(manager, product, userId);
+      return presentProduct(product);
     });
   }
 
@@ -94,8 +97,9 @@ export class AdministrationRepository implements IAdministrationRepository {
       if (product.stock !== input.expectedStock) throw new ApplicationError('CONFLICT', 'O estoque mudou. Atualize o painel antes de ajustar.');
       const stock = product.stock + input.delta;
       if (!Number.isSafeInteger(stock) || stock < 0 || stock > 2147483647) throw new ApplicationError('CONFLICT', 'O ajuste ultrapassa os limites do estoque.');
-      product.stock = stock;
-      return presentProduct(await manager.save(Product, product));
+      await changeStock(manager, product, input.delta, { type: input.delta > 0 ? 'REPOSICAO' : 'CORRECAO',
+        reason: input.reason, actorId: userId, actorRole: 'ADMIN', origin: 'ADMINISTRATIVO' });
+      return presentProduct(product);
     });
   }
 

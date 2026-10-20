@@ -1,3 +1,4 @@
+import { StockMovement } from '../src/modules/inventory/entities/StockMovement.ts';
 import { User } from '../src/modules/users/entities/User.ts';
 import { Product } from '../src/modules/catalog/entities/Product.ts';
 
@@ -61,6 +62,7 @@ export function createTypeOrmFixture(overrides = {}) {
       };
       return { target: target, manager: { transaction: operation => dataSource.transaction(operation) }, createQueryBuilder: () => query };
     }
+    if (target === StockMovement) return { target, manager: { transaction: operation => dataSource.transaction(operation) } };
     throw new Error('Entidade não prevista no DataSource de teste');
   }
   const dataSource = {

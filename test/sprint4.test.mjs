@@ -62,7 +62,7 @@ test('categoria e paginação rejeitam excesso de campos, arrays e valores fora 
 });
 
 test('ajuste de estoque exige comparação com saldo lido e variação inteira não nula', () => {
-  assert.deepEqual(validateStockAdjustment({ expectedStock: 10, delta: -3 }), { expectedStock: 10, delta: -3 });
+  assert.deepEqual(validateStockAdjustment({ expectedStock: 10, delta: -3, reason: 'Correção de teste' }), { expectedStock: 10, delta: -3, reason: 'Correção de teste' });
   for (const input of [{ expectedStock: -1, delta: 2 }, { expectedStock: 10, delta: 0 },
     { expectedStock: 10, delta: 1.5 }, { expectedStock: 10, delta: '3' }, { expectedStock: 10, delta: 3, userId: '1' }]) {
     assert.throws(() => validateStockAdjustment(input), validation);
@@ -122,7 +122,7 @@ test('gateway Axios mantém endpoints administrativos e acompanhamento isolados'
   await api.saveProduct('1', product);
   await api.saveCategory(null, {});
   await api.saveCategory('1', {});
-  await api.adjustStock('1', { expectedStock: 1, delta: 2 });
+  await api.adjustStock('1', { expectedStock: 1, delta: 2, reason: 'Reposição de teste' });
   await api.advanceOrder('1', { expectedStatus: 'PAGAMENTO_APROVADO', status: 'EM_PREPARACAO' });
   await api.order('1');
   assert.deepEqual(calls.map(call => call.slice(0, 2)), [['GET', '/admin/catalog'], ['GET', '/admin/orders'],
