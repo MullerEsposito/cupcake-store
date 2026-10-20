@@ -1,5 +1,5 @@
 import type { AxiosInstance } from 'axios';
-import type { StorefrontApi, Product, PublicUser, Cart } from '../contracts/storefront';
+import type { StorefrontApi, Product, PublicUser, Cart, Address, Order } from '../contracts/storefront';
 import { createHttpClient } from './http-client';
 
 export function createStorefrontApi(client: Pick<AxiosInstance, 'get' | 'post'> = createHttpClient()): StorefrontApi {
@@ -14,6 +14,11 @@ export function createStorefrontApi(client: Pick<AxiosInstance, 'get' | 'post'> 
     addCartItem: async (productId, quantity) => (await client.post<{ cart: Cart }>('/cart/items', { productId, quantity })).data.cart,
     setCartQuantity: async (id, quantity) => (await client.post<{ cart: Cart }>(`/cart/items/${encodeURIComponent(id)}/quantity`, { quantity })).data.cart,
     removeCartItem: async id => (await client.post<{ cart: Cart }>(`/cart/items/${encodeURIComponent(id)}/remove`, {})).data.cart,
-    mergeCart: async () => (await client.post<{ cart: Cart }>('/cart/merge', {})).data.cart
+    mergeCart: async () => (await client.post<{ cart: Cart }>('/cart/merge', {})).data.cart,
+    addresses: async signal => (await client.get<{ addresses: Address[] }>('/addresses', { signal })).data.addresses,
+    createAddress: async input => (await client.post<{ address: Address }>('/addresses', input)).data.address,
+    orders: async signal => (await client.get<{ orders: Order[] }>('/orders', { signal })).data.orders,
+    checkout: async input => (await client.post<{ order: Order }>('/orders/checkout', input)).data.order,
+    payOrder: async (id, input) => (await client.post<{ order: Order }>(`/orders/${encodeURIComponent(id)}/payments`, input)).data.order
   };
 }

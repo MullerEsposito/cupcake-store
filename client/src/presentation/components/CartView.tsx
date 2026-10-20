@@ -19,7 +19,7 @@ function CartRow({ item, busy, onQuantity, onRemove }: {
   </li>;
 }
 
-export function CartView({ cart, signedIn }: { cart: ReturnType<typeof useCart>; signedIn: boolean }) {
+export function CartView({ cart, signedIn, onCheckout }: { cart: ReturnType<typeof useCart>; signedIn: boolean; onCheckout(): void }) {
   return <section id="carrinho" className="cart-section wrap" aria-labelledby="cart-title">
     <p className="eyebrow">SEU MOMENTO DOCE</p><h2 id="cart-title">Meu carrinho</h2>
     <p>{signedIn ? 'Carrinho salvo na sua conta.' : 'Você pode montar seu carrinho sem entrar. Os itens serão incorporados à sua conta após o login.'}</p>
@@ -31,8 +31,10 @@ export function CartView({ cart, signedIn }: { cart: ReturnType<typeof useCart>;
       <ul className="cart-lines">{cart.data.items.map(item => <CartRow key={`${item.productId}-${item.quantity}`} item={item} busy={cart.busy}
         onQuantity={quantity => { void cart.setQuantity(item.productId, quantity); }} onRemove={() => { void cart.remove(item.productId); }} />)}</ul>
       <div className="cart-summary" aria-live="polite"><span>{cart.data.totalQuantity} unidade(s)</span><strong>Subtotal: {formatPrice(cart.data.total)}</strong></div>
-      <p className="hint">Preços atualizados pelo servidor. Os itens não reservam estoque. Frete e checkout serão disponibilizados na Sprint 3; nenhuma compra foi concluída.</p>
-      <button className="button primary" disabled>Checkout disponível na Sprint 3</button>
+      <p className="hint">Preços atualizados pelo servidor. Os itens não reservam estoque. Frete gratuito nesta simulação acadêmica.</p>
+      <button className="button primary" disabled={cart.busy || cart.data.items.some(item => !item.available)} onClick={onCheckout}>
+        {signedIn ? 'Continuar para o checkout' : 'Entrar para finalizar'}
+      </button>
     </>}
   </section>;
 }

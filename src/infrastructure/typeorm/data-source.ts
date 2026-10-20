@@ -5,6 +5,10 @@ import { Product } from '#entities/Product';
 import { Category } from '#entities/Category';
 import { Cart } from '#entities/Cart';
 import { CartItem } from '#entities/CartItem';
+import { Address } from '#entities/Address';
+import { Order } from '#entities/Order';
+import { OrderItem } from '#entities/OrderItem';
+import { Payment } from '#entities/Payment';
 import { errorCode } from '#shared/errors/error-info';
 
 export function createDataSource(): DataSource {
@@ -16,7 +20,7 @@ export function createDataSource(): DataSource {
     username: process.env.PGUSER || 'postgres',
     password: process.env.PGPASSWORD,
     schema: 'public',
-    entities: [User, Product, Category, Cart, CartItem],
+    entities: [User, Product, Category, Cart, CartItem, Address, Order, OrderItem, Payment],
     synchronize: false,
     dropSchema: false,
     migrationsRun: false,

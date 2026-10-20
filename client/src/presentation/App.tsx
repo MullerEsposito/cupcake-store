@@ -9,6 +9,7 @@ import { Catalog } from './components/Catalog';
 import { AuthDialog } from './components/AuthDialog';
 import { ProductDetails } from './components/ProductDetails';
 import { CartView } from './components/CartView';
+import { CheckoutView } from './components/CheckoutView';
 
 export function App({ api }: { api: StorefrontApi }) {
   const session = useSession(api);
@@ -22,6 +23,7 @@ export function App({ api }: { api: StorefrontApi }) {
   const categories = useMemo(() => [...new Map((allProducts.data ?? []).map(product => [product.category_id, { id: product.category_id, name: product.category }])).values()]
     .sort((left, right) => left.name.localeCompare(right.name, 'pt-BR')), [allProducts.data]);
   const [authOpen, setAuthOpen] = useState(false);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [productId, setProductId] = useState<string | null>(null);
   const [notice, setNotice] = useState('');
   useEffect(() => {
@@ -38,12 +40,14 @@ export function App({ api }: { api: StorefrontApi }) {
     else setNotice('Não foi possível adicionar. Confira a mensagem no carrinho.');
   }
   return <>
-    <Header user={session.user} loading={session.loading || cart.pending} cartCount={cart.data?.totalQuantity ?? 0} onLogin={() => setAuthOpen(true)} onLogout={logout} />
+    <Header user={session.user} loading={session.loading || cart.pending || checkoutOpen} cartCount={cart.data?.totalQuantity ?? 0} onLogin={() => setAuthOpen(true)} onLogout={logout} />
     <main>
       <Hero />
       <Catalog resource={products} onSelect={setProductId} categories={categories} onFilter={setFilters} filtered={hasFilters}
-        onAdd={id => { void add(id); }} cartBusy={cart.busy || authOpen} />
-      <CartView cart={cart} signedIn={Boolean(session.user)} />
+        onAdd={id => { void add(id); }} cartBusy={cart.busy || authOpen || checkoutOpen} />
+      <CartView cart={cart} signedIn={Boolean(session.user)} onCheckout={() => session.user ? setCheckoutOpen(true) : setAuthOpen(true)} />
+      {session.user && !session.loading && <CheckoutView key={session.user.id} api={api} cart={cart.data}
+        open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onChanged={() => { cart.retry(); allProducts.retry(); filtered.retry(); }} />}
       <Footer />
     </main>
     {authOpen && <AuthDialog authenticate={session.authenticate} onClose={() => setAuthOpen(false)} onSuccess={message => { setAuthOpen(false); setNotice(message); }} />}
