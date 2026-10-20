@@ -1,7 +1,8 @@
+import { Container } from './styles';
 import { useState } from 'react';
-import type { CartLine } from '../../contracts/storefront';
-import type { useCart } from '../hooks/use-cart';
-import { formatPrice } from '../format-price';
+import type { CartLine } from '../../../contracts/storefront';
+import type { useCart } from '../../hooks/use-cart';
+import { formatPrice } from '../../format-price';
 
 function CartRow({ item, busy, onQuantity, onRemove }: {
   item: CartLine; busy: boolean; onQuantity(quantity: number): void; onRemove(): void;
@@ -20,8 +21,8 @@ function CartRow({ item, busy, onQuantity, onRemove }: {
 }
 
 export function CartView({ cart, signedIn, onCheckout }: { cart: ReturnType<typeof useCart>; signedIn: boolean; onCheckout(): void }) {
-  return <section id="carrinho" className="cart-section wrap" aria-labelledby="cart-title">
-    <p className="eyebrow">SEU MOMENTO DOCE</p><h2 id="cart-title">Meu carrinho</h2>
+  return <Container><section id="carrinho" className="cart-section wrap" aria-labelledby="cart-title">
+    <p className="eyebrow">SEU MOMENTO DOCE</p><h1 id="cart-title">Meu carrinho</h1>
     <p>{signedIn ? 'Carrinho salvo na sua conta.' : 'Você pode montar seu carrinho sem entrar. Os itens serão incorporados à sua conta após o login.'}</p>
     {cart.loading && <p role="status">Carregando o carrinho…</p>}
     {cart.error && <div role="alert"><p className="error">{cart.error}</p><button className="button outline" disabled={cart.pending} onClick={cart.retry}>Atualizar carrinho</button></div>}
@@ -36,5 +37,5 @@ export function CartView({ cart, signedIn, onCheckout }: { cart: ReturnType<type
         {signedIn ? 'Continuar para o checkout' : 'Entrar para finalizar'}
       </button>
     </>}
-  </section>;
+  </section></Container>;
 }

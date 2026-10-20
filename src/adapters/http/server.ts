@@ -2,6 +2,8 @@ import { withDataSource } from '#infrastructure/typeorm/repository-context';
 import type { RuntimeDependencies } from './dependencies.js';
 
 import express from 'express';
+import { randomBytes } from 'node:crypto';
+import { readFile } from 'node:fs/promises';
 import { resolve, relative, sep } from 'node:path';
 import { securityHeaders, verifyOrigin, createRateLimiter } from './middlewares/security.js';
 import { errorHandler } from './helpers/response.js';
@@ -28,7 +30,18 @@ export function createApp(dependencies: RuntimeDependencies, {
   });
 
   app.use('/api', (request, response, next) => withDataSource(dependencies.dataSource, next), router);
+  app.get(/^\/(?:index\.html|produtos(?:\/[^/.]+)?|sobre|carrinho|entrar|checkout|pedidos(?:\/[^/.]+)?|administracao)?$/, async (request, response, next) => {
+    if (!request.accepts('html')) { next(); return; }
+    try {
+      const html = await readFile(resolve(staticDirectory, 'index.html'), 'utf8');
+      const nonce = randomBytes(24).toString('base64');
+      securityHeaders(response, nonce);
+      response.set('Cache-Control', 'no-store');
+      response.type('html').send(html.replace('__CSP_NONCE__', nonce));
+    } catch (error) { next(error); }
+  });
   app.use(express.static(resolve(staticDirectory), {
+    index: false,
     dotfiles: 'deny',
     redirect: false,
     etag: false,

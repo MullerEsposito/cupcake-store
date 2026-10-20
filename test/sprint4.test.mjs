@@ -9,7 +9,7 @@ import { SaveProductService } from '../src/modules/admin/useCases/saveProduct/Sa
 import { AdvanceOrderService } from '../src/modules/admin/useCases/advanceOrder/AdvanceOrderService.ts';
 import { GetOrderService } from '../src/modules/orders/useCases/getOrder/GetOrderService.ts';
 import { createStorefrontApi } from '../client/src/infrastructure/storefront-api.ts';
-import { OrderProgress } from '../client/src/presentation/components/OrderProgress.tsx';
+import { OrderProgress } from '../client/src/presentation/components/OrderProgress/index.tsx';
 import { statusLabel, nextStatus } from '../client/src/presentation/order-status.ts';
 import { createApp } from '../src/adapters/http/server.ts';
 import { Sessions } from '#infrastructure/security/primitives';

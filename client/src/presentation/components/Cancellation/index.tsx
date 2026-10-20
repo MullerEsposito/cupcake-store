@@ -1,13 +1,14 @@
+import { Container } from './styles';
 import { useRef } from 'react';
-import type { Cancellation, CancellationInput } from '../../contracts/cancellation';
-import { formatPrice } from '../format-price';
+import type { Cancellation, CancellationInput } from '../../../contracts/cancellation';
+import { formatPrice } from '../../format-price';
 
 export function CancellationForm({ status, total, busy, onConfirm }: {
   status: string; total: string; busy: boolean; onConfirm(input: CancellationInput): Promise<void>;
 }) {
   const request = useRef<{ fingerprint: string; key: string } | null>(null);
   const paid = status !== 'AGUARDANDO_PAGAMENTO';
-  return <form className="cancellation-form" onSubmit={event => {
+  return <Container><form className="cancellation-form" onSubmit={event => {
     event.preventDefault();
     if (busy) return;
     const fields = new FormData(event.currentTarget);
@@ -23,16 +24,16 @@ export function CancellationForm({ status, total, busy, onConfirm }: {
     <label>Motivo do cancelamento<input name="reason" required minLength={5} maxLength={500} /></label>
     <label className="cancellation-confirm"><input name="confirmed" type="checkbox" required />Confirmo que desejo cancelar este pedido.</label>
     <button className="button danger" type="submit">{busy ? 'Processando…' : paid ? 'Confirmar cancelamento e estorno simulado' : 'Confirmar cancelamento'}</button>
-  </fieldset></form>;
+  </fieldset></form></Container>;
 }
 
 export function CancellationSummary({ cancellation }: { cancellation: Cancellation }) {
-  return <div className="cancellation-summary" role="status"><h3>Cancelamento registrado</h3>
+  return <Container><div className="cancellation-summary" role="status"><h3>Cancelamento registrado</h3>
     <p>Motivo: {cancellation.reason}</p>
     <p>{cancellation.actorRole === 'ADMIN' ? 'Administrador' : 'Cliente'} · usuário #{cancellation.actorId} · {new Date(cancellation.createdAt).toLocaleString('pt-BR')}</p>
     <p>{cancellation.refundStatus === 'SIMULADO' ? `Estorno simulado concluído: ${formatPrice(cancellation.refundAmount)}.` : 'Estorno não aplicável: nenhum pagamento havia sido aprovado.'}</p>
     {cancellation.refundedAt && <p>Estorno registrado em {new Date(cancellation.refundedAt).toLocaleString('pt-BR')}.</p>}
     <p>{cancellation.stockRestored ? 'Estoque devolvido integralmente, uma única vez.' : 'Nenhuma devolução de estoque necessária.'}</p>
     <p className="hint">Registro acadêmico, sem movimentação financeira real. O histórico original dos pagamentos foi preservado.</p>
-  </div>;
+  </div></Container>;
 }

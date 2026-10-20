@@ -1,14 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
+import { Container } from './styles';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
-import type { StorefrontApi, AddressInput, Cart, Order, PaymentMethod, PaymentOutcome } from '../../contracts/storefront';
-import { useResource } from '../hooks/use-resource';
-import { errorMessage } from '../error-message';
-import { formatPrice } from '../format-price';
-import { Modal } from './Modal';
-import { OrderProgress } from './OrderProgress';
-import { statusLabel } from '../order-status';
-import { canCancel } from '../../contracts/cancellation';
-import { CancellationForm, CancellationSummary } from './Cancellation';
+import type { StorefrontApi, AddressInput, Cart, Order, PaymentMethod, PaymentOutcome } from '../../../contracts/storefront';
+import { useResource } from '../../hooks/use-resource';
+import { errorMessage } from '../../error-message';
+import { formatPrice } from '../../format-price';
+import { Link, useNavigate } from 'react-router';
+import { OrderProgress } from '../OrderProgress';
+import { statusLabel } from '../../order-status';
+import { canCancel } from '../../../contracts/cancellation';
+import { CancellationForm, CancellationSummary } from '../Cancellation';
 
 const addressFields = [
   ['recipient', 'Destinatário', 150], ['postalCode', 'CEP', 9], ['street', 'Logradouro', 200], ['number', 'Número', 20],
@@ -34,9 +35,12 @@ function AddressForm({ busy, onSave }: { busy: boolean; onSave(input: AddressInp
   </form>;
 }
 
-export function CheckoutView({ api, cart, open, onClose, onChanged }: {
-  api: StorefrontApi; cart: Cart | null; open: boolean; onClose(): void; onChanged(): void;
+export function CheckoutView({ api, cart, mode, orderId, onChanged }: {
+  api: StorefrontApi; cart: Cart | null; mode: 'checkout' | 'orders' | 'detail'; orderId?: string; onChanged(): void;
 }) {
+  const navigate = useNavigate();
+  const loadDetail = useCallback((signal: AbortSignal) => orderId ? api.order(orderId, signal) : Promise.resolve<Order | null>(null), [api, orderId]);
+  const detail = useResource(loadDetail);
   const addresses = useResource(api.addresses);
   const orders = useResource(api.orders);
   const [addressId, setAddressId] = useState('');
@@ -51,6 +55,7 @@ export function CheckoutView({ api, cart, open, onClose, onChanged }: {
   const checkoutRequest = useRef<{ fingerprint: string; key: string } | null>(null);
   const paymentRequest = useRef<{ orderId: string; method: PaymentMethod; key: string } | null>(null);
   const selectedId = order?.id;
+  useEffect(() => { if (detail.data) setOrder(detail.data); }, [detail.data]);
   useEffect(() => {
     const controller = new AbortController();
     let active = true;
@@ -90,6 +95,7 @@ export function CheckoutView({ api, cart, open, onClose, onChanged }: {
       checkoutRequest.current = null;
       orders.retry();
       onChanged();
+      navigate('/pedidos/' + encodeURIComponent(result.id), { replace: true });
     });
   }
 
@@ -112,8 +118,14 @@ export function CheckoutView({ api, cart, open, onClose, onChanged }: {
   const pending = order?.payments.find(payment => payment.status === 'PENDENTE');
   const latest = order?.payments[0];
   const showPayment = order?.status === 'AGUARDANDO_PAGAMENTO';
-  return <section id="pedidos" className="checkout-section wrap" aria-labelledby="checkout-section-title">
-    <p className="eyebrow">AMBIENTE ACADÊMICO</p><h2 id="checkout-section-title">Pedidos e pagamentos simulados</h2>
+  if (mode === 'detail' && !order) return <Container><section className="checkout-section wrap">
+    {detail.loading && <p role="status">Carregando pedido…</p>}
+    {detail.error && <div role="alert"><p className="error">{detail.error}</p><button className="button outline" onClick={detail.retry}>Tentar novamente</button></div>}
+    <Link className="detail-button" to="/pedidos">← Voltar aos pedidos</Link>
+  </section></Container>;
+  return <Container><section id="pedidos" className="checkout-section wrap" aria-labelledby={mode === 'orders' ? 'checkout-section-title' : 'checkout-title'}>
+    {mode === 'orders' && <>
+    <p className="eyebrow">AMBIENTE ACADÊMICO</p><h1 id="checkout-section-title">Meus pedidos</h1>
     <p>Nenhuma cobrança real. Frete gratuito na simulação. O estoque só é baixado após aprovação.</p>
     {orders.loading && <p role="status">Carregando seus pedidos…</p>}
     {orders.error && <p className="error" role="alert">{orders.error}</p>}
@@ -121,14 +133,14 @@ export function CheckoutView({ api, cart, open, onClose, onChanged }: {
     {orders.data?.length === 0 && <p>Você ainda não possui pedidos.</p>}
     <ul className="order-list">{orders.data?.map(item => <li key={item.id}>
       <strong>{item.number}</strong><span>{formatPrice(item.total)} · {statusLabel(item.status)}</span>
-      <button className="button outline" disabled={busy} onClick={() => { void run(async () => {
-        setOrder(await api.order(item.id)); paymentRequest.current = null;
-      }); }}>
+      <Link className="button outline" to={'/pedidos/' + encodeURIComponent(item.id)}>
         {item.status === 'AGUARDANDO_PAGAMENTO' ? 'Retomar pagamento' : 'Ver resumo'}
-      </button>
+      </Link>
     </li>)}</ul>
-    {(open || order) && <Modal titleId="checkout-title" busy={busy} onClose={() => { setOrder(null); setError(''); onClose(); }}>
-      <div className="checkout-content"><p className="eyebrow">SEM COBRANÇA REAL</p><h2 id="checkout-title">{order ? 'Resumo do pedido' : 'Finalizar pedido'}</h2>
+    </>}
+    {mode !== 'orders' && <div aria-busy={busy}>
+      <Link className="detail-button" to={order ? '/pedidos' : '/carrinho'}>{order ? '← Meus pedidos' : '← Voltar ao carrinho'}</Link>
+      <div className="checkout-content"><p className="eyebrow">SEM COBRANÇA REAL</p><h1 id="checkout-title">{order ? 'Resumo do pedido' : 'Finalizar pedido'}</h1>
         {error && <p role="alert" className="error">{error}</p>}
         {!order && <>
           <p>Subtotal: <strong>{formatPrice(cart?.total ?? '0.00')}</strong> · Frete: <strong>Grátis</strong></p>
@@ -174,6 +186,6 @@ export function CheckoutView({ api, cart, open, onClose, onChanged }: {
           </> : <button className="button primary" disabled={busy || !addressId || !cart?.items.length} onClick={() => { void createOrder(); }}>{busy ? 'Conferindo…' : 'Confirmar pedido e ir ao pagamento'}</button>}
         </>}
       </div>
-    </Modal>}
-  </section>;
+    </div>}
+  </section></Container>;
 }

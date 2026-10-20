@@ -3,11 +3,11 @@ import type { ServerResponse } from 'node:http';
 
 import { HttpError } from '../errors/http-error.js';
 
-export function securityHeaders(response: Pick<ServerResponse, 'setHeader'>): void {
+export function securityHeaders(response: Pick<ServerResponse, 'setHeader'>, styleNonce?: string): void {
   response.setHeader('X-Content-Type-Options', 'nosniff');
   response.setHeader('X-Frame-Options', 'DENY');
   response.setHeader('Referrer-Policy', 'same-origin');
-  response.setHeader('Content-Security-Policy', "default-src 'self'; img-src 'self' https:; style-src 'self'; script-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'");
+  response.setHeader('Content-Security-Policy', `default-src 'self'; img-src 'self' https:; style-src 'self'${styleNonce ? " 'nonce-" + styleNonce + "'" : ''}; script-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'`);
 }
 
 export function verifyOrigin(request: Pick<Request, 'method' | 'headers'>, origin: string): void {

@@ -1,18 +1,19 @@
-import type { Product, Resource, CatalogFilters as Filters } from '../../contracts/storefront';
-import { ProductImage } from './ProductImage';
-import { formatPrice } from '../format-price';
+import { Container } from './styles';
+import type { Product, Resource, CatalogFilters as Filters } from '../../../contracts/storefront';
+import { ProductImage } from '../ProductImage';
+import { formatPrice } from '../../format-price';
 
-import { CatalogFilters } from './CatalogFilters';
+import { CatalogFilters } from '../CatalogFilters';
 
-export function Catalog({ resource, onSelect, categories, onFilter, filtered, onAdd, cartBusy }: {
+export function Catalog({ resource, onSelect, categories, onFilter, filters, filtered, onAdd, cartBusy }: {
   resource: Resource<Product[]>; onSelect(id: string): void;
   categories: { id: string; name: string }[]; onFilter(filters: Filters): void;
-  filtered: boolean; onAdd(id: string): void; cartBusy: boolean;
+  filters: Filters; filtered: boolean; onAdd(id: string): void; cartBusy: boolean;
 }) {
   const { data: products, loading, error, retry } = resource;
-  return <section id="catalogo" className="catalog wrap" aria-labelledby="catalog-title">
-    <div className="section-top"><div><p className="eyebrow">ESCOLHA SEU MOMENTO DOCE</p><h2 id="catalog-title">Nossos cupcakes</h2></div><span className="catalog-note">Do primeiro olhar à última mordida.</span></div>
-    <CatalogFilters categories={categories} onApply={onFilter} />
+  return <Container><section id="catalogo" className="catalog wrap" aria-labelledby="catalog-title">
+    <div className="section-top"><div><p className="eyebrow">ESCOLHA SEU MOMENTO DOCE</p><h1 id="catalog-title">Nossos cupcakes</h1></div><span className="catalog-note">Do primeiro olhar à última mordida.</span></div>
+    <CatalogFilters categories={categories} onApply={onFilter} filters={filters} />
     {!loading && !error && <p role="status">{products?.length ?? 0} produto(s) encontrado(s).</p>}
     {loading && <div className="state" role="status">Preparando a vitrine…</div>}
     {error && <div className="state" role="alert"><p>{error}</p><button className="button outline" onClick={retry}>Tentar novamente</button></div>}
@@ -25,5 +26,5 @@ export function Catalog({ resource, onSelect, categories, onFilter, filtered, on
         <p className="stock">{Number(product.stock) > 0 ? 'Disponível' : 'Temporariamente esgotado'}</p>
       </div>
     </article>)}</div>
-  </section>;
+  </section></Container>;
 }

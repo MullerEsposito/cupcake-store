@@ -1,12 +1,12 @@
+import { Container } from './styles';
 import type { ChangeEvent, FormEvent } from 'react';
-import type { Authenticate, AuthMode } from '../../contracts/storefront';
-import { errorMessage } from '../error-message';
+import type { Authenticate, AuthMode } from '../../../contracts/storefront';
+import { errorMessage } from '../../error-message';
 
 import { useState } from 'react';
-import { Modal } from './Modal';
 
-export function AuthDialog({ authenticate, onSuccess, onClose }: {
-  authenticate: Authenticate; onSuccess(message: string): void; onClose(): void;
+export function AuthForm({ authenticate, onSuccess }: {
+  authenticate: Authenticate; onSuccess(message: string): void;
 }) {
   const [mode, setMode] = useState<AuthMode>('login');
   const [fields, setFields] = useState({ name: '', email: '', password: '' });
@@ -24,9 +24,9 @@ export function AuthDialog({ authenticate, onSuccess, onClose }: {
     catch (failure) { setError(errorMessage(failure)); setBusy(false); }
   }
   return (
-  <Modal titleId="auth-title" onClose={onClose} busy={busy}>
+  <Container>
     <p className="eyebrow">BEM-VINDO À CUPCAKE STORE</p>
-    <h2 id="auth-title">Que bom ter você aqui.</h2>
+    <h1 id="auth-title">Que bom ter você aqui.</h1>
     <p>{registering ? 'Seu cadastro começa com nome, e-mail e senha.' : 'Entre para acessar sua conta.'}</p>
     <div className="tabs" role="group" aria-label="Acesso à conta">
       <button type="button" aria-pressed={!registering} disabled={busy} onClick={() => changeMode('login')}>Entrar</button>
@@ -39,5 +39,5 @@ export function AuthDialog({ authenticate, onSuccess, onClose }: {
       {registering && <p className="hint">Use entre 12 e 128 caracteres para proteger sua conta.</p>}
       <p className="error" role="alert">{error}</p><button className="button primary" type="submit" disabled={busy}>{busy ? 'Aguarde…' : registering ? 'Criar minha conta' : 'Entrar na minha conta'}</button>
     </form>
-  </Modal>)
+  </Container>)
 }

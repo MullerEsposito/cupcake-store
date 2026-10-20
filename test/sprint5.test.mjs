@@ -9,7 +9,7 @@ import { CreateOrderCancellations1792454400000 } from '../src/infrastructure/typ
 import { OrderCancellation } from '#entities/OrderCancellation';
 import { Order } from '#entities/Order';
 import { createDataSource } from '../src/infrastructure/typeorm/data-source.ts';
-import { CancellationForm, CancellationSummary } from '../client/src/presentation/components/Cancellation.tsx';
+import { CancellationForm, CancellationSummary } from '../client/src/presentation/components/Cancellation/index.tsx';
 import { canCancel } from '../client/src/contracts/cancellation.ts';
 import { createStorefrontApi } from '../client/src/infrastructure/storefront-api.ts';
 import { createApp } from '../src/adapters/http/server.ts';

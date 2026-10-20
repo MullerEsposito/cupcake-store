@@ -1,4 +1,5 @@
-import type { Product } from '../../contracts/storefront';
+import { Image } from './styles';
+import type { Product } from '../../../contracts/storefront';
 import { useState } from 'react';
 
 export function safeImageSource(value: unknown): string {
@@ -7,6 +8,6 @@ export function safeImageSource(value: unknown): string {
 
 export function ProductImage({ product, className }: { product: Product; className: string }) {
   const [failed, setFailed] = useState(false);
-  return <img className={className} src={failed ? '/cupcake.svg' : safeImageSource(product.image)}
+  return <Image className={className} src={failed ? '/cupcake.svg' : safeImageSource(product.image)}
     alt={product.name} loading="lazy" referrerPolicy="no-referrer" onError={() => setFailed(true)} />;
 }

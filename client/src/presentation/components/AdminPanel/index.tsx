@@ -1,14 +1,15 @@
+import { Container } from './styles';
 import { useCallback, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
-import type { AdminApi, AdminProduct, AdminCategory, AdminOrder, ProductWrite, CategoryWrite } from '../../contracts/admin';
-import { useResource } from '../hooks/use-resource';
-import { errorMessage } from '../error-message';
-import { formatPrice } from '../format-price';
-import { nextStatus, orderSteps, statusLabel } from '../order-status';
-import { OrderProgress } from './OrderProgress';
-import { canCancel } from '../../contracts/cancellation';
-import type { CancellationInput } from '../../contracts/cancellation';
-import { CancellationForm, CancellationSummary } from './Cancellation';
+import type { AdminApi, AdminProduct, AdminCategory, AdminOrder, ProductWrite, CategoryWrite } from '../../../contracts/admin';
+import { useResource } from '../../hooks/use-resource';
+import { errorMessage } from '../../error-message';
+import { formatPrice } from '../../format-price';
+import { nextStatus, orderSteps, statusLabel } from '../../order-status';
+import { OrderProgress } from '../OrderProgress';
+import { canCancel } from '../../../contracts/cancellation';
+import type { CancellationInput } from '../../../contracts/cancellation';
+import { CancellationForm, CancellationSummary } from '../Cancellation';
 
 function Pagination({ page, total, pageSize, busy, onPage }: {
   page: number; total: number; pageSize: number; busy: boolean; onPage(page: number): void;
@@ -122,8 +123,8 @@ export function AdminPanel({ api, onChanged }: { api: AdminApi; onChanged(): voi
     finally { refresh(); locked.current = false; setBusy(false); }
   }
 
-  return <section id="administracao" className="admin-section wrap" aria-labelledby="admin-title">
-    <p className="eyebrow">ACESSO RESTRITO · ADMIN</p><h2 id="admin-title">Painel administrativo</h2>
+  return <Container><section id="administracao" className="admin-section wrap" aria-labelledby="admin-title">
+    <p className="eyebrow">ACESSO RESTRITO · ADMIN</p><h1 id="admin-title">Painel administrativo</h1>
     <p>Gerencie o catálogo e acompanhe as entregas. Não há cobranças ou integrações logísticas reais.</p>
     <div className="admin-actions" aria-label="Seções administrativas">
       <button className="button outline" aria-pressed={tab === 'products'} disabled={busy} onClick={() => setTab('products')}>Produtos e estoque</button>
@@ -164,5 +165,5 @@ export function AdminPanel({ api, onChanged }: { api: AdminApi; onChanged(): voi
       {orders.data?.total === 0 && <p>Nenhum pedido encontrado.</p>}
       {orders.data && <Pagination {...orders.data} busy={busy} onPage={setOrderPage} />}
     </>}
-  </section>;
+  </section></Container>;
 }
