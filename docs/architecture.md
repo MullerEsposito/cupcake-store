@@ -101,7 +101,7 @@ Vite só expõe variáveis com prefixo VITE_ ao frontend. A configuração PG pe
 
 URLs e payloads da API mantidos. Não há alteração no esquema ou nos dados do banco. Hash scrypt, perfil CLIENTE no cadastro, bloqueio de conta, cookies HttpOnly/SameSite, CSP e consultas parametrizadas permanecem. Sessões em memória continuam locais a um processo e são encerradas ao reiniciar.
 
-`npm test` usa tsx para executar os testes de regressão JavaScript contra os fontes TypeScript. `npm run typecheck` verifica servidor, React, ferramentas e provas de contratos em test/types; `npm test` verifica casos de uso, contratos HTTP, infraestrutura transacional simulada, gateway do frontend e direção de dependências. Testes de unidade não substituem validação com PostgreSQL. `npm run check:db` verifica conexão e nove tabelas, sem modificar dados. A compilação React e a revisão no navegador complementam esses testes.
+`npm test` usa tsx para executar os testes de regressão JavaScript contra os fontes TypeScript. `npm run typecheck` verifica servidor, React, ferramentas e provas de contratos em test/types; `npm test` verifica casos de uso, contratos HTTP, infraestrutura transacional simulada, gateway do frontend e direção de dependências. Testes de unidade não substituem validação com PostgreSQL. `npm run check:db` verifica conexão e dez tabelas de negócio após a migração da Sprint 5, sem modificar dados. A compilação React e a revisão no navegador complementam esses testes.
 
 Na Sprint 1 não houve ampliação do escopo funcional. A Sprint 2 acrescentou busca, filtros e carrinho conforme docs/sprint-2.md; a Sprint 3 acrescentou checkout e pagamentos simulados conforme docs/sprint-3.md. A Sprint 4 acrescenta administração e acompanhamento conforme docs/sprint-4.md.
 
@@ -128,7 +128,7 @@ Na Sprint 1 não houve ampliação do escopo funcional. A Sprint 2 acrescentou b
 - A falha de credencial continua sendo retornada pelo callback, confirmando a atualização antes de o serviço lançar o erro de negócio. Exceções inesperadas causam rollback e liberação pelo TypeORM.
 - senha_hash fica com select: false, sendo selecionada explicitamente apenas na autenticação. Logging SQL fica desativado para não registrar credenciais ou parâmetros sensíveis.
 - O catálogo usa QueryBuilder, join com categoria, filtros parametrizados e ordenação por nome e id; getRawMany/getRawOne preservam os nomes públicos e os decimais da API.
-- `npm run check:db` inicializa o DataSource, confere as nove tabelas, consulta o catálogo e valida consultas de usuário e bloqueio sem inserir, atualizar ou excluir dados.
+- `npm run check:db` inicializa o DataSource, confere as dez tabelas de negócio após a migração, consulta o catálogo e valida consultas de usuário e bloqueio sem inserir, atualizar ou excluir dados.
 - Testes unitários usam um DataSource simulado. Testes de metadata e geração de SQL usam o TypeORM real sem conexão ao banco. O diagnóstico separado verifica a integração real.
 - Não utilize schema:sync ou geração/aplicação automática de migrações sobre esse banco sem revisar o impacto. Nenhuma migração de schema é necessária para esta troca de adaptador.
 
@@ -240,3 +240,11 @@ AdminPanel é apresentado somente para o perfil ADMIN, mas a autorização efeti
 GetOrder consulta o pedido pelo ID e proprietário. A apresentação TypeORM dos snapshots foi compartilhada em present-order.ts para evitar duplicação entre cliente e administrador. O acompanhamento mostra o estado atual, atualiza explicitamente ou por consulta periódica com a página visível e impede respostas antigas de substituir uma operação mais recente.
 
 Produtos e categorias recebem revisão dos campos editáveis para comparação otimista. Ajustes de estoque e avanços de pedido têm bloqueios de linha e validação dos valores esperados; não há nova tabela, sincronização ou migração automática. O fluxo administrativo não aprova pagamentos, não cancela pedidos e não concede perfis. Decisões e limites estão em docs/sprint-4.md.
+
+## Incremento da Sprint 5
+
+CancelOrder e AdminCancelOrder preservam a separação de autorização: o primeiro aceita apenas o proprietário; o segundo exige ADMIN ativo. Ambos usam IOrdersRepository e compartilham a transação de cancelamento, que revalida a identidade/perfil, bloqueia pedido e produtos, registra o evento, trata estoque e pendências e conclui o estado CANCELADO. Revisões e avanço logístico continuam separados: cancelamento não é um avanço genérico do administrador.
+
+OrderCancellation mapeia a nova tabela cancelamento_pedido. Ela preserva o histórico do pagamento aprovado e registra estorno exclusivamente simulado, motivo, ator e reposição. O presenter compartilhado inclui o recibo de cancelamento nas visões do cliente e do administrador. A listagem administrativa usa snapshot consistente para não combinar estado antigo com recibo recém-criado.
+
+TypeORM registra a migração CreateOrderCancellations1792454400000, mas somente npm run migrate a executa. Não há sincronização no startup ou mudança destrutiva do modelo inicial. As dez entidades de negócio e o histórico técnico de migrações ficam no mesmo banco. Regras de cancelamento, garantias, diagnóstico com rollback e limites estão em docs/sprint-5.md.
