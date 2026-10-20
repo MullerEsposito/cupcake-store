@@ -74,7 +74,7 @@ test('aliases permitidos são resolvidos sem liberar HTTP, ORM, implementações
 test('controllers não acessam repositórios nem implementam regras de negócio', async () => {
   const files = await sourceFiles(new URL('../src/modules/', import.meta.url));
   const controllers = files.filter(file => /Controller\.ts$/.test(file.pathname));
-  assert.equal(controllers.length, 21);
+  assert.equal(controllers.length, 23);
   for (const file of controllers) {
     const source = await readFile(file, 'utf8');
     assert.doesNotMatch(source.replace(/import type[\s\S]*?;\n/g, ''), /from\s+['"][^'"]*(?:repositories|infrastructure|entities|Service|node:|pg)[^'"]*['"]/);
@@ -88,8 +88,8 @@ test('cada caso de uso possui serviço, controlador e composição', async () =>
     catalog: ['listProducts', 'getProduct'],
     cart: ['getCart', 'changeCart', 'mergeCart'],
     addresses: ['listAddresses', 'createAddress'],
-    orders: ['listOrders', 'checkout', 'payOrder', 'getOrder'],
-    admin: ['getAdminCatalog', 'saveProduct', 'saveCategory', 'adjustStock', 'listAdminOrders', 'advanceOrder']
+    orders: ['listOrders', 'checkout', 'payOrder', 'getOrder', 'cancelOrder'],
+    admin: ['getAdminCatalog', 'saveProduct', 'saveCategory', 'adjustStock', 'listAdminOrders', 'advanceOrder', 'adminCancelOrder']
   })) {
     for (const useCase of cases) {
       const directory = new URL(`../src/modules/${module}/useCases/${useCase}/`, import.meta.url);
@@ -104,7 +104,7 @@ test('cada caso de uso possui serviço, controlador e composição', async () =>
 test('fábricas instanciam serviços sem depender de request ou app.locals', async () => {
   const files = await sourceFiles(new URL('../src/modules/', import.meta.url));
   const factories = files.filter(file => /\/useCases\/[^/]+\/index\.ts$/.test(file.pathname));
-  assert.equal(factories.length, 21);
+  assert.equal(factories.length, 23);
   for (const file of factories) {
     const source = await readFile(file, 'utf8');
     assert.doesNotMatch(source, /\brequest\b|app\.locals/);
@@ -117,7 +117,7 @@ test('fábricas com persistência instanciam repositórios sem argumentos', asyn
   const files = await sourceFiles(new URL('../src/modules/', import.meta.url));
   const factories = files.filter(file => /\/useCases\/[^/]+\/index\.ts$/.test(file.pathname)
     && !file.pathname.includes('/logoutUser/'));
-  assert.equal(factories.length, 20);
+  assert.equal(factories.length, 22);
   for (const file of factories) {
     const source = await readFile(file, 'utf8');
     assert.doesNotMatch(source, /\bdataSource\b|\.getRepository\(/);
@@ -142,7 +142,7 @@ test('há somente uma classe por entidade, localizada no módulo', async () => {
   const files = await sourceFiles(new URL('../src/modules/', import.meta.url));
   for (const [module, name] of [['users', 'User'], ['catalog', 'Product'], ['catalog', 'Category'],
     ['cart', 'Cart'], ['cart', 'CartItem'], ['addresses', 'Address'],
-    ['orders', 'Order'], ['orders', 'OrderItem'], ['orders', 'Payment']]) {
+    ['orders', 'Order'], ['orders', 'OrderItem'], ['orders', 'Payment'], ['orders', 'OrderCancellation']]) {
     const matches = [];
     for (const file of files) {
       const source = await readFile(file, 'utf8');

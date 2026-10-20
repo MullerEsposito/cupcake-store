@@ -4,6 +4,7 @@ import { Address } from '#entities/Address';
 import { Order } from '#entities/Order';
 import { OrderItem } from '#entities/OrderItem';
 import { Payment } from '#entities/Payment';
+import { OrderCancellation } from '#entities/OrderCancellation';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { User } from '../src/modules/users/entities/User.ts';
@@ -26,8 +27,8 @@ test('projeção pública de User nunca serializa hash ou estado de autenticaç�
 test('DataSource registra somente as entidades únicas dos módulos', async () => {
   const source = createDataSource();
   await source.buildMetadatas();
-  assert.deepEqual(source.options.entities, [User, Product, Category, Cart, CartItem, Address, Order, OrderItem, Payment]);
-  assert.equal(source.entityMetadatas.length, 9);
+  assert.deepEqual(source.options.entities, [User, Product, Category, Cart, CartItem, Address, Order, OrderItem, Payment, OrderCancellation]);
+  assert.equal(source.entityMetadatas.length, 10);
   assert.equal(source.getRepository(User).target, User);
   assert.equal(source.getRepository(Product).target, Product);
   assert.equal(source.getMetadata(Product).relations[0].inverseEntityMetadata.target, Category);
