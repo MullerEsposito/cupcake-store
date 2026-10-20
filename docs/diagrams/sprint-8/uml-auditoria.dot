@@ -1,0 +1,19 @@
+digraph Model {
+graph [fontname="Arial", fontsize=18, label="Classes UML — Cancelamento, estorno e auditoria", labelloc=t, xlabel="Multiplicidade na legenda da ligação: origem / destino", bgcolor="white", rankdir=TB, nodesep=0.4, ranksep=0.7, pad=0.3];
+node [shape=plain, fontname="Arial", fontsize=12];
+edge [fontname="Arial", fontsize=10, color="#77646a", penwidth=1.2, arrowsize=0.7, labeldistance=1.7];
+usuario [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>User</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">id: string<BR ALIGN="LEFT"/>name: string<BR ALIGN="LEFT"/>email: string<BR ALIGN="LEFT"/>role: string<BR ALIGN="LEFT"/>active: boolean<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+produto [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>Product</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">id: string<BR ALIGN="LEFT"/>name: string<BR ALIGN="LEFT"/>price: string<BR ALIGN="LEFT"/>stock: number<BR ALIGN="LEFT"/>active: boolean<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+pedido [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>Order</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">id: string<BR ALIGN="LEFT"/>number: string<BR ALIGN="LEFT"/>userId: string<BR ALIGN="LEFT"/>status: string<BR ALIGN="LEFT"/>total: string<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+pagamento [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>Payment</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">id: string<BR ALIGN="LEFT"/>orderId: string<BR ALIGN="LEFT"/>method: string<BR ALIGN="LEFT"/>status: string<BR ALIGN="LEFT"/>amount: string<BR ALIGN="LEFT"/>processedAt: Date | null<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+cancelamento_pedido [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>OrderCancellation</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">id: string<BR ALIGN="LEFT"/>orderId: string<BR ALIGN="LEFT"/>actorId: string<BR ALIGN="LEFT"/>refundAmount: string<BR ALIGN="LEFT"/>stockRestored: boolean<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+movimentacao_estoque [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>StockMovement</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">id: string<BR ALIGN="LEFT"/>productId: string<BR ALIGN="LEFT"/>type: MovementType<BR ALIGN="LEFT"/>quantity: number<BR ALIGN="LEFT"/>previousStock: number<BR ALIGN="LEFT"/>currentStock: number<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+pedido -> cancelamento_pedido [dir=both, arrowhead=none, arrowtail=none, label="pode ter\n1 / 0..1"];
+usuario -> cancelamento_pedido [dir=both, arrowhead=none, arrowtail=none, label="registra\n1 / 0..*"];
+pagamento -> cancelamento_pedido [dir=both, arrowhead=none, arrowtail=none, label="referência de estorno\n0..1 / 0..1"];
+produto -> movimentacao_estoque [dir=both, arrowhead=none, arrowtail=none, label="movimenta\n1 / 0..*"];
+usuario -> movimentacao_estoque [dir=both, arrowhead=none, arrowtail=none, label="é autor de\n0..1 / 0..*"];
+pedido -> movimentacao_estoque [dir=both, arrowhead=none, arrowtail=none, label="vincula\n0..1 / 0..*"];
+pagamento -> movimentacao_estoque [dir=both, arrowhead=none, arrowtail=none, label="vincula\n0..1 / 0..*"];
+cancelamento_pedido -> movimentacao_estoque [dir=both, arrowhead=none, arrowtail=none, label="vincula devolução\n0..1 / 0..*"];
+}

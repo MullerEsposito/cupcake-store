@@ -1,0 +1,68 @@
+{
+  "recordedAt": "2026-10-20T22:47:49.339Z",
+  "method": "Tempos de parede entre ação da automação e observação do DOM; não são LCP ou pintura completa.",
+  "home": [
+    {
+      "navigationToDomObservationMs": 324,
+      "products": 4
+    },
+    {
+      "navigationToDomObservationMs": 230,
+      "products": 4
+    },
+    {
+      "navigationToDomObservationMs": 212,
+      "products": 4
+    },
+    {
+      "navigationToDomObservationMs": 208,
+      "products": 4
+    },
+    {
+      "navigationToDomObservationMs": 234,
+      "products": 4
+    }
+  ],
+  "search": [
+    {
+      "term": "chocolate",
+      "actionToDomObservationMs": 377,
+      "products": 1
+    },
+    {
+      "term": "baunilha",
+      "actionToDomObservationMs": 350,
+      "products": 1
+    },
+    {
+      "term": "morango",
+      "actionToDomObservationMs": 360,
+      "products": 1
+    },
+    {
+      "term": "red velvet",
+      "actionToDomObservationMs": 356,
+      "products": 1
+    },
+    {
+      "term": "chocolate",
+      "actionToDomObservationMs": 374,
+      "products": 1
+    }
+  ],
+  "address": {
+    "postalCode": "01001000",
+    "state": "SP",
+    "city": "São Paulo",
+    "stateOptions": 27,
+    "saoPauloMunicipalities": 645,
+    "rioGrandeDoSulMunicipalities": 497,
+    "stateChangeClearedCity": true,
+    "mismatchingCityBlockedSave": true,
+    "restoredFromPostalCode": true,
+    "savedAddress": false,
+    "createdOrder": false,
+    "changedStock": false
+  },
+  "consoleErrors": []
+}

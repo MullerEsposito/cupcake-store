@@ -1,0 +1,24 @@
+digraph Model {
+graph [fontname="Arial", fontsize=18, label="Modelo conceitual ER — Catálogo, carrinho e compra", labelloc=t, bgcolor="white", rankdir=TB, nodesep=0.4, ranksep=0.7, pad=0.3];
+node [shape=plain, fontname="Arial", fontsize=12];
+edge [fontname="Arial", fontsize=10, color="#77646a", penwidth=1.2, arrowsize=0.7, labeldistance=1.7];
+usuario [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>Usuário</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">nome<BR ALIGN="LEFT"/>email<BR ALIGN="LEFT"/>perfil<BR ALIGN="LEFT"/>ativo<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+endereco [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>Endereço</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">destinatário<BR ALIGN="LEFT"/>CEP<BR ALIGN="LEFT"/>logradouro<BR ALIGN="LEFT"/>número<BR ALIGN="LEFT"/>bairro<BR ALIGN="LEFT"/>cidade / UF<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+categoria [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>Categoria</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">nome<BR ALIGN="LEFT"/>descrição<BR ALIGN="LEFT"/>ativo<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+produto [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>Produto</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">nome<BR ALIGN="LEFT"/>preço<BR ALIGN="LEFT"/>peso<BR ALIGN="LEFT"/>estoque<BR ALIGN="LEFT"/>ativo<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+carrinho [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>Carrinho</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">estado<BR ALIGN="LEFT"/>identidade de usuário ou visitante<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+item_carrinho [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>ItemCarrinho</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">quantidade<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+pedido [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>Pedido</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">número<BR ALIGN="LEFT"/>estado<BR ALIGN="LEFT"/>endereço histórico<BR ALIGN="LEFT"/>subtotal / frete / total<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+item_pedido [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>ItemPedido</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">quantidade<BR ALIGN="LEFT"/>nome histórico<BR ALIGN="LEFT"/>preço unitário<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+pagamento [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>Pagamento</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">método<BR ALIGN="LEFT"/>estado<BR ALIGN="LEFT"/>valor<BR ALIGN="LEFT"/>simulado<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+usuario -> endereco [dir=both, arrowhead=none, arrowtail=none, label="possui", taillabel="1", headlabel="0..*"];
+usuario -> carrinho [dir=both, arrowhead=none, arrowtail=none, label="mantém", taillabel="0..1", headlabel="0..*"];
+categoria -> produto [dir=both, arrowhead=none, arrowtail=none, label="classifica", taillabel="1", headlabel="0..*"];
+carrinho -> item_carrinho [dir=both, arrowhead=none, arrowtail=none, label="contém", taillabel="1", headlabel="0..*"];
+produto -> item_carrinho [dir=both, arrowhead=none, arrowtail=none, label="selecionado em", taillabel="1", headlabel="0..*"];
+usuario -> pedido [dir=both, arrowhead=none, arrowtail=none, label="realiza", taillabel="1", headlabel="0..*"];
+endereco -> pedido [dir=both, arrowhead=none, arrowtail=none, label="utilizado em", taillabel="1", headlabel="0..*"];
+pedido -> item_pedido [dir=both, arrowhead=none, arrowtail=none, label="compõe", taillabel="1", headlabel="1..*"];
+produto -> item_pedido [dir=both, arrowhead=none, arrowtail=none, label="origina", taillabel="1", headlabel="0..*"];
+pedido -> pagamento [dir=both, arrowhead=none, arrowtail=none, label="recebe tentativa", taillabel="1", headlabel="0..*"];
+}

@@ -1,0 +1,22 @@
+digraph Model {
+graph [fontname="Arial", fontsize=18, label="Arquitetura implementada — Sprint 8", labelloc=t, bgcolor="white", rankdir=TB, nodesep=0.4, ranksep=0.7, pad=0.3];
+node [shape=plain, fontname="Arial", fontsize=12];
+edge [fontname="Arial", fontsize=10, color="#77646a", penwidth=1.2, arrowsize=0.7, labeldistance=1.7];
+
+node [shape=box, style="rounded,filled", fillcolor="#fff5ed", margin=0.2];
+react [label="React + páginas + styled-components\nFormulários, estado, apresentação"];
+axios [label="Gateway Axios\nREST JSON / cancelamento de consultas"];
+express [label="Express /api\nRotas, sessão, origem e limites"];
+controllers [label="Controllers e fábricas\nServiços e repositórios injetados"];
+services [label="Serviços / casos de uso\nRegras e interfaces de dependência"];
+repositories [label="Repositórios TypeORM\nEntidades e transações"];
+postgres [label="PostgreSQL\n11 tabelas de negócio + migrations"];
+postal [label="Adaptadores Axios\nViaCEP / municípios IBGE\ncache limitado e timeout"];
+external [label="APIs públicas\nSomente CEP ou UF, sem dados pessoais"];
+sse [label="SSE autenticado e por usuário\nSinal de atualização após commit\nPolling de 30 s como contingência"];
+react -> axios -> express -> controllers -> services -> repositories -> postgres;
+services -> postal [label="interfaces"];
+postal -> external;
+controllers -> sse [label="sucesso confirmado"];
+sse -> react [label="EventSource"];
+}

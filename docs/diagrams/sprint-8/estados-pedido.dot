@@ -1,0 +1,19 @@
+digraph Model {
+graph [fontname="Arial", fontsize=18, label="Estados de pedido e cancelamento simulado", labelloc=t, bgcolor="white", rankdir=TB, nodesep=0.4, ranksep=0.7, pad=0.3];
+node [shape=plain, fontname="Arial", fontsize=12];
+edge [fontname="Arial", fontsize=10, color="#77646a", penwidth=1.2, arrowsize=0.7, labeldistance=1.7];
+
+node [shape=box, style="rounded,filled", fillcolor="#fff5ed", margin=0.2];
+waiting [label="AGUARDANDO_PAGAMENTO"];
+paid [label="PAGAMENTO_APROVADO"];
+preparing [label="EM_PREPARACAO"];
+shipping [label="SAIU_PARA_ENTREGA"];
+delivered [label="ENTREGUE"];
+cancelled [label="CANCELADO"];
+waiting -> paid [label="aprovação + baixa + auditoria\nna mesma transação"];
+waiting -> waiting [label="recusa ou falha\nsem baixa"];
+paid -> preparing -> shipping -> delivered [label="ADMIN"];
+waiting -> cancelled [label="cliente ou ADMIN\nsem estorno / sem reposição"];
+paid -> cancelled [label="cliente ou ADMIN"];
+preparing -> cancelled [label="cliente ou ADMIN\nestorno integral simulado\n+ reposição única + auditoria"];
+}

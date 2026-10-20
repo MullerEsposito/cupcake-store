@@ -1,0 +1,19 @@
+digraph Model {
+graph [fontname="Arial", fontsize=18, label="Modelo conceitual ER — Cancelamento, estorno e auditoria", labelloc=t, xlabel="Multiplicidade na legenda da ligação: origem / destino", bgcolor="white", rankdir=TB, nodesep=0.4, ranksep=0.7, pad=0.3];
+node [shape=plain, fontname="Arial", fontsize=12];
+edge [fontname="Arial", fontsize=10, color="#77646a", penwidth=1.2, arrowsize=0.7, labeldistance=1.7];
+usuario [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>Usuário</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">nome<BR ALIGN="LEFT"/>email<BR ALIGN="LEFT"/>perfil<BR ALIGN="LEFT"/>ativo<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+produto [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>Produto</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">nome<BR ALIGN="LEFT"/>preço<BR ALIGN="LEFT"/>peso<BR ALIGN="LEFT"/>estoque<BR ALIGN="LEFT"/>ativo<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+pedido [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>Pedido</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">número<BR ALIGN="LEFT"/>estado<BR ALIGN="LEFT"/>endereço histórico<BR ALIGN="LEFT"/>subtotal / frete / total<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+pagamento [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>Pagamento</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">método<BR ALIGN="LEFT"/>estado<BR ALIGN="LEFT"/>valor<BR ALIGN="LEFT"/>simulado<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+cancelamento_pedido [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>CancelamentoPedido</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">motivo / autor<BR ALIGN="LEFT"/>estado anterior<BR ALIGN="LEFT"/>valor de estorno<BR ALIGN="LEFT"/>estoque reposto<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+movimentacao_estoque [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7" COLOR="#b99da6"><TR><TD BGCOLOR="#783b4a"><FONT COLOR="white"><B>MovimentaçãoEstoque</B></FONT></TD></TR><TR><TD ALIGN="LEFT" BGCOLOR="#fffaf5">tipo / origem<BR ALIGN="LEFT"/>quantidade com sinal<BR ALIGN="LEFT"/>saldo anterior / posterior<BR ALIGN="LEFT"/>motivo / autor<BR ALIGN="LEFT"/>data e vínculos<BR ALIGN="LEFT"/></TD></TR></TABLE>>];
+pedido -> cancelamento_pedido [dir=both, arrowhead=none, arrowtail=none, label="pode ter\n1 / 0..1"];
+usuario -> cancelamento_pedido [dir=both, arrowhead=none, arrowtail=none, label="registra\n1 / 0..*"];
+pagamento -> cancelamento_pedido [dir=both, arrowhead=none, arrowtail=none, label="referência de estorno\n0..1 / 0..1"];
+produto -> movimentacao_estoque [dir=both, arrowhead=none, arrowtail=none, label="movimenta\n1 / 0..*"];
+usuario -> movimentacao_estoque [dir=both, arrowhead=none, arrowtail=none, label="é autor de\n0..1 / 0..*"];
+pedido -> movimentacao_estoque [dir=both, arrowhead=none, arrowtail=none, label="vincula\n0..1 / 0..*"];
+pagamento -> movimentacao_estoque [dir=both, arrowhead=none, arrowtail=none, label="vincula\n0..1 / 0..*"];
+cancelamento_pedido -> movimentacao_estoque [dir=both, arrowhead=none, arrowtail=none, label="vincula devolução\n0..1 / 0..*"];
+}

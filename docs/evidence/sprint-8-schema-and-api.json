@@ -1,0 +1,2515 @@
+{
+  "recordedAt": "2026-10-20T22:15:30.602Z",
+  "database": "cupcake_store",
+  "node": "v20.20.0",
+  "platform": "win32",
+  "scope": "Somente leitura; API local, sem simular carga concorrente ou medir renderização.",
+  "columns": [
+    {
+      "table_name": "cancelamento_pedido",
+      "column_name": "id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "YES"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "column_name": "pedido_id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "column_name": "usuario_id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "column_name": "perfil_usuario",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 10,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "column_name": "status_anterior",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 25,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "column_name": "motivo",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 500,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "column_name": "chave_idempotencia",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 128,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "column_name": "criado_em",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": "clock_timestamp()",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "column_name": "pagamento_id",
+      "data_type": "bigint",
+      "is_nullable": "YES",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "column_name": "status_estorno",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 20,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "column_name": "valor_estorno",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 12,
+      "numeric_scale": 2,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "column_name": "estornado_em",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "column_name": "estoque_reposto",
+      "data_type": "boolean",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "column_name": "simulado",
+      "data_type": "boolean",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": "true",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "carrinho",
+      "column_name": "id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "YES"
+    },
+    {
+      "table_name": "carrinho",
+      "column_name": "usuario_id",
+      "data_type": "bigint",
+      "is_nullable": "YES",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "carrinho",
+      "column_name": "token_sessao",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "character_maximum_length": 128,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "carrinho",
+      "column_name": "criado_em",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": "CURRENT_TIMESTAMP",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "carrinho",
+      "column_name": "atualizado_em",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": "CURRENT_TIMESTAMP",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "carrinho",
+      "column_name": "estado",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 12,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": "'ATIVO'::character varying",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "categoria",
+      "column_name": "id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "YES"
+    },
+    {
+      "table_name": "categoria",
+      "column_name": "nome",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 100,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "categoria",
+      "column_name": "descricao",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "categoria",
+      "column_name": "ativo",
+      "data_type": "boolean",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": "true",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "endereco",
+      "column_name": "id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "YES"
+    },
+    {
+      "table_name": "endereco",
+      "column_name": "usuario_id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "endereco",
+      "column_name": "destinatario",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 150,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "endereco",
+      "column_name": "cep",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 8,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "endereco",
+      "column_name": "logradouro",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 200,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "endereco",
+      "column_name": "numero",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 20,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "endereco",
+      "column_name": "complemento",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "character_maximum_length": 150,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "endereco",
+      "column_name": "bairro",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 100,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "endereco",
+      "column_name": "cidade",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 100,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "endereco",
+      "column_name": "uf",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 2,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "endereco",
+      "column_name": "ativo",
+      "data_type": "boolean",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": "true",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "item_carrinho",
+      "column_name": "id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "YES"
+    },
+    {
+      "table_name": "item_carrinho",
+      "column_name": "carrinho_id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "item_carrinho",
+      "column_name": "produto_id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "item_carrinho",
+      "column_name": "quantidade",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 32,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "item_pedido",
+      "column_name": "id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "YES"
+    },
+    {
+      "table_name": "item_pedido",
+      "column_name": "pedido_id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "item_pedido",
+      "column_name": "produto_id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "item_pedido",
+      "column_name": "quantidade",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 32,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "item_pedido",
+      "column_name": "preco_unitario",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 12,
+      "numeric_scale": 2,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "item_pedido",
+      "column_name": "nome_produto_snapshot",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 150,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "column_name": "id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "YES"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "column_name": "produto_id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "column_name": "nome_produto",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 150,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "column_name": "tipo",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 20,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "column_name": "quantidade",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 32,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "column_name": "saldo_anterior",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 32,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "column_name": "saldo_posterior",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 32,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "column_name": "motivo",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 500,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "column_name": "usuario_id",
+      "data_type": "bigint",
+      "is_nullable": "YES",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "column_name": "perfil_usuario",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 10,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "column_name": "origem",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 20,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "column_name": "pedido_id",
+      "data_type": "bigint",
+      "is_nullable": "YES",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "column_name": "pagamento_id",
+      "data_type": "bigint",
+      "is_nullable": "YES",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "column_name": "cancelamento_id",
+      "data_type": "bigint",
+      "is_nullable": "YES",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "column_name": "criado_em",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": "clock_timestamp()",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pagamento",
+      "column_name": "id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "YES"
+    },
+    {
+      "table_name": "pagamento",
+      "column_name": "pedido_id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pagamento",
+      "column_name": "metodo",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 10,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pagamento",
+      "column_name": "status",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 10,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": "'PENDENTE'::character varying",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pagamento",
+      "column_name": "valor",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 12,
+      "numeric_scale": 2,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pagamento",
+      "column_name": "criado_em",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": "CURRENT_TIMESTAMP",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pagamento",
+      "column_name": "processado_em",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pagamento",
+      "column_name": "chave_idempotencia",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 128,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pagamento",
+      "column_name": "simulado",
+      "data_type": "boolean",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": "true",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pagamento",
+      "column_name": "motivo_resultado",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pedido",
+      "column_name": "id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "YES"
+    },
+    {
+      "table_name": "pedido",
+      "column_name": "numero",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 40,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pedido",
+      "column_name": "usuario_id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pedido",
+      "column_name": "endereco_id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pedido",
+      "column_name": "criado_em",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": "CURRENT_TIMESTAMP",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pedido",
+      "column_name": "status",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 25,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": "'AGUARDANDO_PAGAMENTO'::character varying",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pedido",
+      "column_name": "entrega_destinatario",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 150,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pedido",
+      "column_name": "entrega_cep",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 8,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pedido",
+      "column_name": "entrega_logradouro",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 200,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pedido",
+      "column_name": "entrega_numero",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 20,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pedido",
+      "column_name": "entrega_complemento",
+      "data_type": "character varying",
+      "is_nullable": "YES",
+      "character_maximum_length": 150,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pedido",
+      "column_name": "entrega_bairro",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 100,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pedido",
+      "column_name": "entrega_cidade",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 100,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pedido",
+      "column_name": "entrega_uf",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 2,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pedido",
+      "column_name": "subtotal",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 12,
+      "numeric_scale": 2,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pedido",
+      "column_name": "frete",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 12,
+      "numeric_scale": 2,
+      "column_default": "0",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "pedido",
+      "column_name": "total",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 12,
+      "numeric_scale": 2,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "produto",
+      "column_name": "id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "YES"
+    },
+    {
+      "table_name": "produto",
+      "column_name": "categoria_id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "produto",
+      "column_name": "nome",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 150,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "produto",
+      "column_name": "descricao",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "produto",
+      "column_name": "preco",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 12,
+      "numeric_scale": 2,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "produto",
+      "column_name": "peso_gramas",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 10,
+      "numeric_scale": 3,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "produto",
+      "column_name": "imagem_url",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "produto",
+      "column_name": "ativo",
+      "data_type": "boolean",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": "true",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "produto",
+      "column_name": "estoque_disponivel",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 32,
+      "numeric_scale": 0,
+      "column_default": "0",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "usuario",
+      "column_name": "id",
+      "data_type": "bigint",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 64,
+      "numeric_scale": 0,
+      "column_default": null,
+      "is_identity": "YES"
+    },
+    {
+      "table_name": "usuario",
+      "column_name": "nome",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 150,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "usuario",
+      "column_name": "email",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 254,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "usuario",
+      "column_name": "senha_hash",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "usuario",
+      "column_name": "perfil",
+      "data_type": "character varying",
+      "is_nullable": "NO",
+      "character_maximum_length": 10,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": "'CLIENTE'::character varying",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "usuario",
+      "column_name": "ativo",
+      "data_type": "boolean",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": "true",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "usuario",
+      "column_name": "tentativas_falhas",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "character_maximum_length": null,
+      "numeric_precision": 32,
+      "numeric_scale": 0,
+      "column_default": "0",
+      "is_identity": "NO"
+    },
+    {
+      "table_name": "usuario",
+      "column_name": "bloqueado_ate",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "character_maximum_length": null,
+      "numeric_precision": null,
+      "numeric_scale": null,
+      "column_default": null,
+      "is_identity": "NO"
+    }
+  ],
+  "constraints": [
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_chave_idempotencia_check",
+      "contype": "c",
+      "definition": "CHECK (((chave_idempotencia)::text ~ '^[a-zA-Z0-9_-]{16,128}$'::text))"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_chave_idempotencia_key",
+      "contype": "u",
+      "definition": "UNIQUE (chave_idempotencia)"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_chave_idempotencia_not_null",
+      "contype": "n",
+      "definition": "NOT NULL chave_idempotencia"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_check",
+      "contype": "c",
+      "definition": "CHECK (((((status_anterior)::text = 'AGUARDANDO_PAGAMENTO'::text) AND (pagamento_id IS NULL) AND ((status_estorno)::text = 'NAO_APLICAVEL'::text) AND (valor_estorno = (0)::numeric) AND (estornado_em IS NULL) AND (NOT estoque_reposto)) OR (((status_anterior)::text = ANY ((ARRAY['PAGAMENTO_APROVADO'::character varying, 'EM_PREPARACAO'::character varying])::text[])) AND (pagamento_id IS NOT NULL) AND ((status_estorno)::text = 'SIMULADO'::text) AND (estornado_em IS NOT NULL) AND (estornado_em >= criado_em) AND estoque_reposto)))"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_criado_em_not_null",
+      "contype": "n",
+      "definition": "NOT NULL criado_em"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_estoque_reposto_not_null",
+      "contype": "n",
+      "definition": "NOT NULL estoque_reposto"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_motivo_check",
+      "contype": "c",
+      "definition": "CHECK (((length(btrim((motivo)::text)) >= 5) AND (length(btrim((motivo)::text)) <= 500)))"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_motivo_not_null",
+      "contype": "n",
+      "definition": "NOT NULL motivo"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_pagamento_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (pagamento_id) REFERENCES pagamento(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_pagamento_id_key",
+      "contype": "u",
+      "definition": "UNIQUE (pagamento_id)"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_pedido_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (pedido_id) REFERENCES pedido(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_pedido_id_key",
+      "contype": "u",
+      "definition": "UNIQUE (pedido_id)"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_pedido_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL pedido_id"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_perfil_usuario_check",
+      "contype": "c",
+      "definition": "CHECK (((perfil_usuario)::text = ANY ((ARRAY['CLIENTE'::character varying, 'ADMIN'::character varying])::text[])))"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_perfil_usuario_not_null",
+      "contype": "n",
+      "definition": "NOT NULL perfil_usuario"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_pkey",
+      "contype": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_simulado_check",
+      "contype": "c",
+      "definition": "CHECK (simulado)"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_simulado_not_null",
+      "contype": "n",
+      "definition": "NOT NULL simulado"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_status_anterior_check",
+      "contype": "c",
+      "definition": "CHECK (((status_anterior)::text = ANY ((ARRAY['AGUARDANDO_PAGAMENTO'::character varying, 'PAGAMENTO_APROVADO'::character varying, 'EM_PREPARACAO'::character varying])::text[])))"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_status_anterior_not_null",
+      "contype": "n",
+      "definition": "NOT NULL status_anterior"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_status_estorno_check",
+      "contype": "c",
+      "definition": "CHECK (((status_estorno)::text = ANY ((ARRAY['NAO_APLICAVEL'::character varying, 'SIMULADO'::character varying])::text[])))"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_status_estorno_not_null",
+      "contype": "n",
+      "definition": "NOT NULL status_estorno"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_usuario_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_usuario_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL usuario_id"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_valor_estorno_check",
+      "contype": "c",
+      "definition": "CHECK ((valor_estorno >= (0)::numeric))"
+    },
+    {
+      "table_name": "cancelamento_pedido",
+      "conname": "cancelamento_pedido_valor_estorno_not_null",
+      "contype": "n",
+      "definition": "NOT NULL valor_estorno"
+    },
+    {
+      "table_name": "carrinho",
+      "conname": "carrinho_atualizado_em_not_null",
+      "contype": "n",
+      "definition": "NOT NULL atualizado_em"
+    },
+    {
+      "table_name": "carrinho",
+      "conname": "carrinho_check",
+      "contype": "c",
+      "definition": "CHECK (((usuario_id IS NOT NULL) OR (NULLIF(btrim((token_sessao)::text), ''::text) IS NOT NULL)))"
+    },
+    {
+      "table_name": "carrinho",
+      "conname": "carrinho_check1",
+      "contype": "c",
+      "definition": "CHECK ((atualizado_em >= criado_em))"
+    },
+    {
+      "table_name": "carrinho",
+      "conname": "carrinho_criado_em_not_null",
+      "contype": "n",
+      "definition": "NOT NULL criado_em"
+    },
+    {
+      "table_name": "carrinho",
+      "conname": "carrinho_estado_check",
+      "contype": "c",
+      "definition": "CHECK (((estado)::text = ANY ((ARRAY['ATIVO'::character varying, 'CONVERTIDO'::character varying, 'ABANDONADO'::character varying])::text[])))"
+    },
+    {
+      "table_name": "carrinho",
+      "conname": "carrinho_estado_not_null",
+      "contype": "n",
+      "definition": "NOT NULL estado"
+    },
+    {
+      "table_name": "carrinho",
+      "conname": "carrinho_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "carrinho",
+      "conname": "carrinho_pkey",
+      "contype": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "carrinho",
+      "conname": "carrinho_usuario_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "categoria",
+      "conname": "categoria_ativo_not_null",
+      "contype": "n",
+      "definition": "NOT NULL ativo"
+    },
+    {
+      "table_name": "categoria",
+      "conname": "categoria_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "categoria",
+      "conname": "categoria_nome_check",
+      "contype": "c",
+      "definition": "CHECK ((btrim((nome)::text) <> ''::text))"
+    },
+    {
+      "table_name": "categoria",
+      "conname": "categoria_nome_not_null",
+      "contype": "n",
+      "definition": "NOT NULL nome"
+    },
+    {
+      "table_name": "categoria",
+      "conname": "categoria_pkey",
+      "contype": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_ativo_not_null",
+      "contype": "n",
+      "definition": "NOT NULL ativo"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_bairro_check",
+      "contype": "c",
+      "definition": "CHECK ((btrim((bairro)::text) <> ''::text))"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_bairro_not_null",
+      "contype": "n",
+      "definition": "NOT NULL bairro"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_cep_check",
+      "contype": "c",
+      "definition": "CHECK (((cep)::text ~ '^[0-9]{8}$'::text))"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_cep_not_null",
+      "contype": "n",
+      "definition": "NOT NULL cep"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_cidade_check",
+      "contype": "c",
+      "definition": "CHECK ((btrim((cidade)::text) <> ''::text))"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_cidade_not_null",
+      "contype": "n",
+      "definition": "NOT NULL cidade"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_destinatario_check",
+      "contype": "c",
+      "definition": "CHECK ((btrim((destinatario)::text) <> ''::text))"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_destinatario_not_null",
+      "contype": "n",
+      "definition": "NOT NULL destinatario"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_id_usuario_id_key",
+      "contype": "u",
+      "definition": "UNIQUE (id, usuario_id)"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_logradouro_check",
+      "contype": "c",
+      "definition": "CHECK ((btrim((logradouro)::text) <> ''::text))"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_logradouro_not_null",
+      "contype": "n",
+      "definition": "NOT NULL logradouro"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_numero_check",
+      "contype": "c",
+      "definition": "CHECK ((btrim((numero)::text) <> ''::text))"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_numero_not_null",
+      "contype": "n",
+      "definition": "NOT NULL numero"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_pkey",
+      "contype": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_uf_check",
+      "contype": "c",
+      "definition": "CHECK (((uf)::text ~ '^[A-Z]{2}$'::text))"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_uf_not_null",
+      "contype": "n",
+      "definition": "NOT NULL uf"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_usuario_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "endereco",
+      "conname": "endereco_usuario_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL usuario_id"
+    },
+    {
+      "table_name": "item_carrinho",
+      "conname": "item_carrinho_carrinho_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (carrinho_id) REFERENCES carrinho(id) ON DELETE CASCADE"
+    },
+    {
+      "table_name": "item_carrinho",
+      "conname": "item_carrinho_carrinho_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL carrinho_id"
+    },
+    {
+      "table_name": "item_carrinho",
+      "conname": "item_carrinho_carrinho_id_produto_id_key",
+      "contype": "u",
+      "definition": "UNIQUE (carrinho_id, produto_id)"
+    },
+    {
+      "table_name": "item_carrinho",
+      "conname": "item_carrinho_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "item_carrinho",
+      "conname": "item_carrinho_pkey",
+      "contype": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "item_carrinho",
+      "conname": "item_carrinho_produto_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (produto_id) REFERENCES produto(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "item_carrinho",
+      "conname": "item_carrinho_produto_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL produto_id"
+    },
+    {
+      "table_name": "item_carrinho",
+      "conname": "item_carrinho_quantidade_check",
+      "contype": "c",
+      "definition": "CHECK ((quantidade > 0))"
+    },
+    {
+      "table_name": "item_carrinho",
+      "conname": "item_carrinho_quantidade_not_null",
+      "contype": "n",
+      "definition": "NOT NULL quantidade"
+    },
+    {
+      "table_name": "item_pedido",
+      "conname": "item_pedido_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "item_pedido",
+      "conname": "item_pedido_nome_produto_snapshot_check",
+      "contype": "c",
+      "definition": "CHECK ((btrim((nome_produto_snapshot)::text) <> ''::text))"
+    },
+    {
+      "table_name": "item_pedido",
+      "conname": "item_pedido_nome_produto_snapshot_not_null",
+      "contype": "n",
+      "definition": "NOT NULL nome_produto_snapshot"
+    },
+    {
+      "table_name": "item_pedido",
+      "conname": "item_pedido_pedido_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (pedido_id) REFERENCES pedido(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "item_pedido",
+      "conname": "item_pedido_pedido_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL pedido_id"
+    },
+    {
+      "table_name": "item_pedido",
+      "conname": "item_pedido_pedido_id_produto_id_key",
+      "contype": "u",
+      "definition": "UNIQUE (pedido_id, produto_id)"
+    },
+    {
+      "table_name": "item_pedido",
+      "conname": "item_pedido_pkey",
+      "contype": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "item_pedido",
+      "conname": "item_pedido_preco_unitario_check",
+      "contype": "c",
+      "definition": "CHECK ((preco_unitario >= (0)::numeric))"
+    },
+    {
+      "table_name": "item_pedido",
+      "conname": "item_pedido_preco_unitario_not_null",
+      "contype": "n",
+      "definition": "NOT NULL preco_unitario"
+    },
+    {
+      "table_name": "item_pedido",
+      "conname": "item_pedido_produto_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (produto_id) REFERENCES produto(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "item_pedido",
+      "conname": "item_pedido_produto_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL produto_id"
+    },
+    {
+      "table_name": "item_pedido",
+      "conname": "item_pedido_quantidade_check",
+      "contype": "c",
+      "definition": "CHECK ((quantidade > 0))"
+    },
+    {
+      "table_name": "item_pedido",
+      "conname": "item_pedido_quantidade_not_null",
+      "contype": "n",
+      "definition": "NOT NULL quantidade"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_cancelamento_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (cancelamento_id) REFERENCES cancelamento_pedido(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_check",
+      "contype": "c",
+      "definition": "CHECK (((saldo_posterior)::bigint = ((saldo_anterior)::bigint + (quantidade)::bigint)))"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_check1",
+      "contype": "c",
+      "definition": "CHECK (((((tipo)::text = ANY ((ARRAY['ABERTURA'::character varying, 'INICIALIZACAO'::character varying])::text[])) AND (quantidade >= 0) AND (saldo_anterior = 0)) OR (((tipo)::text = ANY ((ARRAY['REPOSICAO'::character varying, 'DEVOLUCAO'::character varying])::text[])) AND (quantidade > 0)) OR (((tipo)::text = ANY ((ARRAY['CORRECAO'::character varying, 'VENDA'::character varying])::text[])) AND (quantidade < 0))))"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_check2",
+      "contype": "c",
+      "definition": "CHECK ((((usuario_id IS NULL) AND ((perfil_usuario)::text = 'SISTEMA'::text)) OR ((usuario_id IS NOT NULL) AND ((perfil_usuario)::text = ANY ((ARRAY['ADMIN'::character varying, 'CLIENTE'::character varying])::text[])))))"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_check3",
+      "contype": "c",
+      "definition": "CHECK (((((tipo)::text = 'ABERTURA'::text) AND ((origem)::text = 'SISTEMA'::text) AND (usuario_id IS NULL) AND (pedido_id IS NULL) AND (pagamento_id IS NULL) AND (cancelamento_id IS NULL)) OR (((tipo)::text = ANY ((ARRAY['INICIALIZACAO'::character varying, 'REPOSICAO'::character varying, 'CORRECAO'::character varying])::text[])) AND ((origem)::text = 'ADMINISTRATIVO'::text) AND ((perfil_usuario)::text = 'ADMIN'::text) AND (usuario_id IS NOT NULL) AND (pedido_id IS NULL) AND (pagamento_id IS NULL) AND (cancelamento_id IS NULL)) OR (((tipo)::text = 'VENDA'::text) AND ((origem)::text = 'SISTEMA'::text) AND (usuario_id IS NOT NULL) AND (pedido_id IS NOT NULL) AND (pagamento_id IS NOT NULL) AND (cancelamento_id IS NULL)) OR (((tipo)::text = 'DEVOLUCAO'::text) AND ((origem)::text = 'SISTEMA'::text) AND (usuario_id IS NOT NULL) AND (pedido_id IS NOT NULL) AND (pagamento_id IS NOT NULL) AND (cancelamento_id IS NOT NULL))))"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_criado_em_not_null",
+      "contype": "n",
+      "definition": "NOT NULL criado_em"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_motivo_check",
+      "contype": "c",
+      "definition": "CHECK (((length(btrim((motivo)::text)) >= 5) AND (length(btrim((motivo)::text)) <= 500)))"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_motivo_not_null",
+      "contype": "n",
+      "definition": "NOT NULL motivo"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_nome_produto_not_null",
+      "contype": "n",
+      "definition": "NOT NULL nome_produto"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_origem_check",
+      "contype": "c",
+      "definition": "CHECK (((origem)::text = ANY ((ARRAY['SISTEMA'::character varying, 'ADMINISTRATIVO'::character varying])::text[])))"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_origem_not_null",
+      "contype": "n",
+      "definition": "NOT NULL origem"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_pagamento_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (pagamento_id) REFERENCES pagamento(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_pedido_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (pedido_id) REFERENCES pedido(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_perfil_usuario_check",
+      "contype": "c",
+      "definition": "CHECK (((perfil_usuario)::text = ANY ((ARRAY['SISTEMA'::character varying, 'ADMIN'::character varying, 'CLIENTE'::character varying])::text[])))"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_perfil_usuario_not_null",
+      "contype": "n",
+      "definition": "NOT NULL perfil_usuario"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_pkey",
+      "contype": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_produto_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (produto_id) REFERENCES produto(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_produto_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL produto_id"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_quantidade_not_null",
+      "contype": "n",
+      "definition": "NOT NULL quantidade"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_saldo_anterior_check",
+      "contype": "c",
+      "definition": "CHECK ((saldo_anterior >= 0))"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_saldo_anterior_not_null",
+      "contype": "n",
+      "definition": "NOT NULL saldo_anterior"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_saldo_posterior_check",
+      "contype": "c",
+      "definition": "CHECK ((saldo_posterior >= 0))"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_saldo_posterior_not_null",
+      "contype": "n",
+      "definition": "NOT NULL saldo_posterior"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_tipo_check",
+      "contype": "c",
+      "definition": "CHECK (((tipo)::text = ANY ((ARRAY['ABERTURA'::character varying, 'INICIALIZACAO'::character varying, 'REPOSICAO'::character varying, 'CORRECAO'::character varying, 'VENDA'::character varying, 'DEVOLUCAO'::character varying])::text[])))"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_tipo_not_null",
+      "contype": "n",
+      "definition": "NOT NULL tipo"
+    },
+    {
+      "table_name": "movimentacao_estoque",
+      "conname": "movimentacao_estoque_usuario_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_chave_idempotencia_check",
+      "contype": "c",
+      "definition": "CHECK ((btrim((chave_idempotencia)::text) <> ''::text))"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_chave_idempotencia_key",
+      "contype": "u",
+      "definition": "UNIQUE (chave_idempotencia)"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_chave_idempotencia_not_null",
+      "contype": "n",
+      "definition": "NOT NULL chave_idempotencia"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_check",
+      "contype": "c",
+      "definition": "CHECK (((((status)::text = 'PENDENTE'::text) AND (processado_em IS NULL)) OR (((status)::text <> 'PENDENTE'::text) AND (processado_em IS NOT NULL))))"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_check1",
+      "contype": "c",
+      "definition": "CHECK (((processado_em IS NULL) OR (processado_em >= criado_em)))"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_criado_em_not_null",
+      "contype": "n",
+      "definition": "NOT NULL criado_em"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_metodo_check",
+      "contype": "c",
+      "definition": "CHECK (((metodo)::text = ANY ((ARRAY['PIX'::character varying, 'CARTAO'::character varying, 'BOLETO'::character varying])::text[])))"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_metodo_not_null",
+      "contype": "n",
+      "definition": "NOT NULL metodo"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_pedido_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (pedido_id) REFERENCES pedido(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_pedido_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL pedido_id"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_pkey",
+      "contype": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_simulado_check",
+      "contype": "c",
+      "definition": "CHECK (simulado)"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_simulado_not_null",
+      "contype": "n",
+      "definition": "NOT NULL simulado"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_status_check",
+      "contype": "c",
+      "definition": "CHECK (((status)::text = ANY ((ARRAY['PENDENTE'::character varying, 'APROVADO'::character varying, 'RECUSADO'::character varying, 'FALHA'::character varying])::text[])))"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_status_not_null",
+      "contype": "n",
+      "definition": "NOT NULL status"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_valor_check",
+      "contype": "c",
+      "definition": "CHECK ((valor >= (0)::numeric))"
+    },
+    {
+      "table_name": "pagamento",
+      "conname": "pagamento_valor_not_null",
+      "contype": "n",
+      "definition": "NOT NULL valor"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_check",
+      "contype": "c",
+      "definition": "CHECK ((total = (subtotal + frete)))"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_criado_em_not_null",
+      "contype": "n",
+      "definition": "NOT NULL criado_em"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_endereco_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL endereco_id"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_endereco_id_usuario_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (endereco_id, usuario_id) REFERENCES endereco(id, usuario_id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_entrega_bairro_check",
+      "contype": "c",
+      "definition": "CHECK ((btrim((entrega_bairro)::text) <> ''::text))"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_entrega_bairro_not_null",
+      "contype": "n",
+      "definition": "NOT NULL entrega_bairro"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_entrega_cep_check",
+      "contype": "c",
+      "definition": "CHECK (((entrega_cep)::text ~ '^[0-9]{8}$'::text))"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_entrega_cep_not_null",
+      "contype": "n",
+      "definition": "NOT NULL entrega_cep"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_entrega_cidade_check",
+      "contype": "c",
+      "definition": "CHECK ((btrim((entrega_cidade)::text) <> ''::text))"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_entrega_cidade_not_null",
+      "contype": "n",
+      "definition": "NOT NULL entrega_cidade"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_entrega_destinatario_check",
+      "contype": "c",
+      "definition": "CHECK ((btrim((entrega_destinatario)::text) <> ''::text))"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_entrega_destinatario_not_null",
+      "contype": "n",
+      "definition": "NOT NULL entrega_destinatario"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_entrega_logradouro_check",
+      "contype": "c",
+      "definition": "CHECK ((btrim((entrega_logradouro)::text) <> ''::text))"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_entrega_logradouro_not_null",
+      "contype": "n",
+      "definition": "NOT NULL entrega_logradouro"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_entrega_numero_check",
+      "contype": "c",
+      "definition": "CHECK ((btrim((entrega_numero)::text) <> ''::text))"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_entrega_numero_not_null",
+      "contype": "n",
+      "definition": "NOT NULL entrega_numero"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_entrega_uf_check",
+      "contype": "c",
+      "definition": "CHECK (((entrega_uf)::text ~ '^[A-Z]{2}$'::text))"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_entrega_uf_not_null",
+      "contype": "n",
+      "definition": "NOT NULL entrega_uf"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_frete_check",
+      "contype": "c",
+      "definition": "CHECK ((frete >= (0)::numeric))"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_frete_not_null",
+      "contype": "n",
+      "definition": "NOT NULL frete"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_numero_check",
+      "contype": "c",
+      "definition": "CHECK ((btrim((numero)::text) <> ''::text))"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_numero_key",
+      "contype": "u",
+      "definition": "UNIQUE (numero)"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_numero_not_null",
+      "contype": "n",
+      "definition": "NOT NULL numero"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_pkey",
+      "contype": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_status_check",
+      "contype": "c",
+      "definition": "CHECK (((status)::text = ANY ((ARRAY['AGUARDANDO_PAGAMENTO'::character varying, 'PAGAMENTO_APROVADO'::character varying, 'EM_PREPARACAO'::character varying, 'SAIU_PARA_ENTREGA'::character varying, 'ENTREGUE'::character varying, 'CANCELADO'::character varying])::text[])))"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_status_not_null",
+      "contype": "n",
+      "definition": "NOT NULL status"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_subtotal_check",
+      "contype": "c",
+      "definition": "CHECK ((subtotal >= (0)::numeric))"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_subtotal_not_null",
+      "contype": "n",
+      "definition": "NOT NULL subtotal"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_total_not_null",
+      "contype": "n",
+      "definition": "NOT NULL total"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_usuario_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "pedido",
+      "conname": "pedido_usuario_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL usuario_id"
+    },
+    {
+      "table_name": "produto",
+      "conname": "produto_ativo_not_null",
+      "contype": "n",
+      "definition": "NOT NULL ativo"
+    },
+    {
+      "table_name": "produto",
+      "conname": "produto_categoria_id_fkey",
+      "contype": "f",
+      "definition": "FOREIGN KEY (categoria_id) REFERENCES categoria(id) ON DELETE RESTRICT"
+    },
+    {
+      "table_name": "produto",
+      "conname": "produto_categoria_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL categoria_id"
+    },
+    {
+      "table_name": "produto",
+      "conname": "produto_descricao_not_null",
+      "contype": "n",
+      "definition": "NOT NULL descricao"
+    },
+    {
+      "table_name": "produto",
+      "conname": "produto_estoque_disponivel_check",
+      "contype": "c",
+      "definition": "CHECK ((estoque_disponivel >= 0))"
+    },
+    {
+      "table_name": "produto",
+      "conname": "produto_estoque_disponivel_not_null",
+      "contype": "n",
+      "definition": "NOT NULL estoque_disponivel"
+    },
+    {
+      "table_name": "produto",
+      "conname": "produto_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "produto",
+      "conname": "produto_imagem_url_not_null",
+      "contype": "n",
+      "definition": "NOT NULL imagem_url"
+    },
+    {
+      "table_name": "produto",
+      "conname": "produto_nome_check",
+      "contype": "c",
+      "definition": "CHECK ((btrim((nome)::text) <> ''::text))"
+    },
+    {
+      "table_name": "produto",
+      "conname": "produto_nome_not_null",
+      "contype": "n",
+      "definition": "NOT NULL nome"
+    },
+    {
+      "table_name": "produto",
+      "conname": "produto_peso_gramas_check",
+      "contype": "c",
+      "definition": "CHECK ((peso_gramas >= (0)::numeric))"
+    },
+    {
+      "table_name": "produto",
+      "conname": "produto_peso_gramas_not_null",
+      "contype": "n",
+      "definition": "NOT NULL peso_gramas"
+    },
+    {
+      "table_name": "produto",
+      "conname": "produto_pkey",
+      "contype": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "produto",
+      "conname": "produto_preco_check",
+      "contype": "c",
+      "definition": "CHECK ((preco >= (0)::numeric))"
+    },
+    {
+      "table_name": "produto",
+      "conname": "produto_preco_not_null",
+      "contype": "n",
+      "definition": "NOT NULL preco"
+    },
+    {
+      "table_name": "usuario",
+      "conname": "usuario_ativo_not_null",
+      "contype": "n",
+      "definition": "NOT NULL ativo"
+    },
+    {
+      "table_name": "usuario",
+      "conname": "usuario_email_check",
+      "contype": "c",
+      "definition": "CHECK ((((email)::text = lower(btrim((email)::text))) AND ((email)::text <> ''::text)))"
+    },
+    {
+      "table_name": "usuario",
+      "conname": "usuario_email_key",
+      "contype": "u",
+      "definition": "UNIQUE (email)"
+    },
+    {
+      "table_name": "usuario",
+      "conname": "usuario_email_not_null",
+      "contype": "n",
+      "definition": "NOT NULL email"
+    },
+    {
+      "table_name": "usuario",
+      "conname": "usuario_id_not_null",
+      "contype": "n",
+      "definition": "NOT NULL id"
+    },
+    {
+      "table_name": "usuario",
+      "conname": "usuario_nome_check",
+      "contype": "c",
+      "definition": "CHECK ((btrim((nome)::text) <> ''::text))"
+    },
+    {
+      "table_name": "usuario",
+      "conname": "usuario_nome_not_null",
+      "contype": "n",
+      "definition": "NOT NULL nome"
+    },
+    {
+      "table_name": "usuario",
+      "conname": "usuario_perfil_check",
+      "contype": "c",
+      "definition": "CHECK (((perfil)::text = ANY ((ARRAY['CLIENTE'::character varying, 'ADMIN'::character varying])::text[])))"
+    },
+    {
+      "table_name": "usuario",
+      "conname": "usuario_perfil_not_null",
+      "contype": "n",
+      "definition": "NOT NULL perfil"
+    },
+    {
+      "table_name": "usuario",
+      "conname": "usuario_pkey",
+      "contype": "p",
+      "definition": "PRIMARY KEY (id)"
+    },
+    {
+      "table_name": "usuario",
+      "conname": "usuario_senha_hash_check",
+      "contype": "c",
+      "definition": "CHECK ((senha_hash <> ''::text))"
+    },
+    {
+      "table_name": "usuario",
+      "conname": "usuario_senha_hash_not_null",
+      "contype": "n",
+      "definition": "NOT NULL senha_hash"
+    },
+    {
+      "table_name": "usuario",
+      "conname": "usuario_tentativas_falhas_check",
+      "contype": "c",
+      "definition": "CHECK ((tentativas_falhas >= 0))"
+    },
+    {
+      "table_name": "usuario",
+      "conname": "usuario_tentativas_falhas_not_null",
+      "contype": "n",
+      "definition": "NOT NULL tentativas_falhas"
+    }
+  ],
+  "indexes": [
+    {
+      "tablename": "cancelamento_pedido",
+      "indexname": "cancelamento_pedido_chave_idempotencia_key",
+      "indexdef": "CREATE UNIQUE INDEX cancelamento_pedido_chave_idempotencia_key ON public.cancelamento_pedido USING btree (chave_idempotencia)"
+    },
+    {
+      "tablename": "cancelamento_pedido",
+      "indexname": "cancelamento_pedido_pagamento_id_key",
+      "indexdef": "CREATE UNIQUE INDEX cancelamento_pedido_pagamento_id_key ON public.cancelamento_pedido USING btree (pagamento_id)"
+    },
+    {
+      "tablename": "cancelamento_pedido",
+      "indexname": "cancelamento_pedido_pedido_id_key",
+      "indexdef": "CREATE UNIQUE INDEX cancelamento_pedido_pedido_id_key ON public.cancelamento_pedido USING btree (pedido_id)"
+    },
+    {
+      "tablename": "cancelamento_pedido",
+      "indexname": "cancelamento_pedido_pkey",
+      "indexdef": "CREATE UNIQUE INDEX cancelamento_pedido_pkey ON public.cancelamento_pedido USING btree (id)"
+    },
+    {
+      "tablename": "carrinho",
+      "indexname": "carrinho_ativo_sessao",
+      "indexdef": "CREATE UNIQUE INDEX carrinho_ativo_sessao ON public.carrinho USING btree (token_sessao) WHERE (((estado)::text = 'ATIVO'::text) AND (usuario_id IS NULL))"
+    },
+    {
+      "tablename": "carrinho",
+      "indexname": "carrinho_ativo_usuario",
+      "indexdef": "CREATE UNIQUE INDEX carrinho_ativo_usuario ON public.carrinho USING btree (usuario_id) WHERE (((estado)::text = 'ATIVO'::text) AND (usuario_id IS NOT NULL))"
+    },
+    {
+      "tablename": "carrinho",
+      "indexname": "carrinho_pkey",
+      "indexdef": "CREATE UNIQUE INDEX carrinho_pkey ON public.carrinho USING btree (id)"
+    },
+    {
+      "tablename": "categoria",
+      "indexname": "categoria_pkey",
+      "indexdef": "CREATE UNIQUE INDEX categoria_pkey ON public.categoria USING btree (id)"
+    },
+    {
+      "tablename": "endereco",
+      "indexname": "endereco_id_usuario_id_key",
+      "indexdef": "CREATE UNIQUE INDEX endereco_id_usuario_id_key ON public.endereco USING btree (id, usuario_id)"
+    },
+    {
+      "tablename": "endereco",
+      "indexname": "endereco_pkey",
+      "indexdef": "CREATE UNIQUE INDEX endereco_pkey ON public.endereco USING btree (id)"
+    },
+    {
+      "tablename": "endereco",
+      "indexname": "endereco_usuario",
+      "indexdef": "CREATE INDEX endereco_usuario ON public.endereco USING btree (usuario_id)"
+    },
+    {
+      "tablename": "item_carrinho",
+      "indexname": "item_carrinho_carrinho_id_produto_id_key",
+      "indexdef": "CREATE UNIQUE INDEX item_carrinho_carrinho_id_produto_id_key ON public.item_carrinho USING btree (carrinho_id, produto_id)"
+    },
+    {
+      "tablename": "item_carrinho",
+      "indexname": "item_carrinho_pkey",
+      "indexdef": "CREATE UNIQUE INDEX item_carrinho_pkey ON public.item_carrinho USING btree (id)"
+    },
+    {
+      "tablename": "item_carrinho",
+      "indexname": "item_carrinho_produto",
+      "indexdef": "CREATE INDEX item_carrinho_produto ON public.item_carrinho USING btree (produto_id)"
+    },
+    {
+      "tablename": "item_pedido",
+      "indexname": "item_pedido_pedido_id_produto_id_key",
+      "indexdef": "CREATE UNIQUE INDEX item_pedido_pedido_id_produto_id_key ON public.item_pedido USING btree (pedido_id, produto_id)"
+    },
+    {
+      "tablename": "item_pedido",
+      "indexname": "item_pedido_pkey",
+      "indexdef": "CREATE UNIQUE INDEX item_pedido_pkey ON public.item_pedido USING btree (id)"
+    },
+    {
+      "tablename": "item_pedido",
+      "indexname": "item_pedido_produto",
+      "indexdef": "CREATE INDEX item_pedido_produto ON public.item_pedido USING btree (produto_id)"
+    },
+    {
+      "tablename": "movimentacao_estoque",
+      "indexname": "movimentacao_estoque_abertura_unica",
+      "indexdef": "CREATE UNIQUE INDEX movimentacao_estoque_abertura_unica ON public.movimentacao_estoque USING btree (produto_id) WHERE ((tipo)::text = ANY ((ARRAY['ABERTURA'::character varying, 'INICIALIZACAO'::character varying])::text[]))"
+    },
+    {
+      "tablename": "movimentacao_estoque",
+      "indexname": "movimentacao_estoque_data",
+      "indexdef": "CREATE INDEX movimentacao_estoque_data ON public.movimentacao_estoque USING btree (criado_em DESC, id DESC)"
+    },
+    {
+      "tablename": "movimentacao_estoque",
+      "indexname": "movimentacao_estoque_devolucao_unica",
+      "indexdef": "CREATE UNIQUE INDEX movimentacao_estoque_devolucao_unica ON public.movimentacao_estoque USING btree (cancelamento_id, produto_id) WHERE ((tipo)::text = 'DEVOLUCAO'::text)"
+    },
+    {
+      "tablename": "movimentacao_estoque",
+      "indexname": "movimentacao_estoque_pedido",
+      "indexdef": "CREATE INDEX movimentacao_estoque_pedido ON public.movimentacao_estoque USING btree (pedido_id)"
+    },
+    {
+      "tablename": "movimentacao_estoque",
+      "indexname": "movimentacao_estoque_pkey",
+      "indexdef": "CREATE UNIQUE INDEX movimentacao_estoque_pkey ON public.movimentacao_estoque USING btree (id)"
+    },
+    {
+      "tablename": "movimentacao_estoque",
+      "indexname": "movimentacao_estoque_produto_data",
+      "indexdef": "CREATE INDEX movimentacao_estoque_produto_data ON public.movimentacao_estoque USING btree (produto_id, criado_em DESC, id DESC)"
+    },
+    {
+      "tablename": "movimentacao_estoque",
+      "indexname": "movimentacao_estoque_usuario",
+      "indexdef": "CREATE INDEX movimentacao_estoque_usuario ON public.movimentacao_estoque USING btree (usuario_id)"
+    },
+    {
+      "tablename": "movimentacao_estoque",
+      "indexname": "movimentacao_estoque_venda_unica",
+      "indexdef": "CREATE UNIQUE INDEX movimentacao_estoque_venda_unica ON public.movimentacao_estoque USING btree (pedido_id, produto_id) WHERE ((tipo)::text = 'VENDA'::text)"
+    },
+    {
+      "tablename": "pagamento",
+      "indexname": "pagamento_aprovado_pedido",
+      "indexdef": "CREATE UNIQUE INDEX pagamento_aprovado_pedido ON public.pagamento USING btree (pedido_id) WHERE ((status)::text = 'APROVADO'::text)"
+    },
+    {
+      "tablename": "pagamento",
+      "indexname": "pagamento_chave_idempotencia_key",
+      "indexdef": "CREATE UNIQUE INDEX pagamento_chave_idempotencia_key ON public.pagamento USING btree (chave_idempotencia)"
+    },
+    {
+      "tablename": "pagamento",
+      "indexname": "pagamento_pedido_data",
+      "indexdef": "CREATE INDEX pagamento_pedido_data ON public.pagamento USING btree (pedido_id, criado_em DESC)"
+    },
+    {
+      "tablename": "pagamento",
+      "indexname": "pagamento_pkey",
+      "indexdef": "CREATE UNIQUE INDEX pagamento_pkey ON public.pagamento USING btree (id)"
+    },
+    {
+      "tablename": "pedido",
+      "indexname": "pedido_endereco_usuario",
+      "indexdef": "CREATE INDEX pedido_endereco_usuario ON public.pedido USING btree (endereco_id, usuario_id)"
+    },
+    {
+      "tablename": "pedido",
+      "indexname": "pedido_numero_key",
+      "indexdef": "CREATE UNIQUE INDEX pedido_numero_key ON public.pedido USING btree (numero)"
+    },
+    {
+      "tablename": "pedido",
+      "indexname": "pedido_pkey",
+      "indexdef": "CREATE UNIQUE INDEX pedido_pkey ON public.pedido USING btree (id)"
+    },
+    {
+      "tablename": "pedido",
+      "indexname": "pedido_status_data",
+      "indexdef": "CREATE INDEX pedido_status_data ON public.pedido USING btree (status, criado_em DESC)"
+    },
+    {
+      "tablename": "pedido",
+      "indexname": "pedido_usuario_data",
+      "indexdef": "CREATE INDEX pedido_usuario_data ON public.pedido USING btree (usuario_id, criado_em DESC)"
+    },
+    {
+      "tablename": "produto",
+      "indexname": "produto_categoria_preco",
+      "indexdef": "CREATE INDEX produto_categoria_preco ON public.produto USING btree (categoria_id, preco) WHERE ativo"
+    },
+    {
+      "tablename": "produto",
+      "indexname": "produto_pkey",
+      "indexdef": "CREATE UNIQUE INDEX produto_pkey ON public.produto USING btree (id)"
+    },
+    {
+      "tablename": "usuario",
+      "indexname": "usuario_email_key",
+      "indexdef": "CREATE UNIQUE INDEX usuario_email_key ON public.usuario USING btree (email)"
+    },
+    {
+      "tablename": "usuario",
+      "indexname": "usuario_pkey",
+      "indexdef": "CREATE UNIQUE INDEX usuario_pkey ON public.usuario USING btree (id)"
+    }
+  ],
+  "statistics": [
+    {
+      "name": "vitrine API",
+      "samples": 20,
+      "productCount": 4,
+      "limitMs": 3000,
+      "firstMs": 222.85680000000002,
+      "medianMs": 14.078599999999824,
+      "p95Ms": 28.23160000000007,
+      "maximumMs": 222.85680000000002,
+      "withinApiBudget": true
+    },
+    {
+      "name": "busca API",
+      "samples": 20,
+      "productCount": 1,
+      "limitMs": 2000,
+      "firstMs": 14.30119999999988,
+      "medianMs": 6.902099999999791,
+      "p95Ms": 18.327800000000025,
+      "maximumMs": 91.51049999999987,
+      "withinApiBudget": true
+    }
+  ],
+  "postalCode": {
+    "available": true,
+    "result": {
+      "postalCode": "01001000",
+      "street": "Praça da Sé",
+      "district": "Sé",
+      "city": "São Paulo",
+      "state": "SP"
+    }
+  }
+}

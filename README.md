@@ -73,3 +73,9 @@ Teste manual com o banco conectado: inserir catálogo, consultar vitrine e detal
 ## Próximos incrementos
 
 Sprints 1 a 7 implementadas no escopo aprovado. Evoluções: inventário físico, alertas de estoque mínimo, trocas/devoluções após entrega e preparação para produção. O login não conclui uma compra. Pagamentos, estornos e logística são simulações acadêmicas, sem cobrança, GPS ou movimentação financeira real.
+
+## Sprint 8
+
+Vitrine automática na página inicial, resumo ampliado no checkout, consulta de CEP via ViaCEP e listas de UF/municípios pelo IBGE. Atendimento nacional e frete gratuito exclusivamente simulados. Pedidos usam SSE autenticado por usuário, com reconexão e consulta de contingência a cada 30 segundos. Nenhuma migração adicional é necessária.
+
+Consulte [Sprint 8](docs/sprint-8.md) para modelos UML/ER/físico, dicionário, decisões, evidências e pendências formais da entrega. Execute `npm run check:sprint8` com a aplicação na porta 3000 para conferir metadados, medir a API local e consultar um CEP público, sem gravar dados de negócio. As chamadas externas exigem acesso HTTPS a ViaCEP e IBGE.
