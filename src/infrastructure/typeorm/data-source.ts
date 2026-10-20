@@ -3,6 +3,8 @@ import { DataSource } from 'typeorm';
 import { User } from '#entities/User';
 import { Product } from '#entities/Product';
 import { Category } from '#entities/Category';
+import { Cart } from '#entities/Cart';
+import { CartItem } from '#entities/CartItem';
 import { errorCode } from '#shared/errors/error-info';
 
 export function createDataSource(): DataSource {
@@ -14,7 +16,7 @@ export function createDataSource(): DataSource {
     username: process.env.PGUSER || 'postgres',
     password: process.env.PGPASSWORD,
     schema: 'public',
-    entities: [User, Product, Category],
+    entities: [User, Product, Category, Cart, CartItem],
     synchronize: false,
     dropSchema: false,
     migrationsRun: false,

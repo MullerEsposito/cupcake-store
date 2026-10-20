@@ -1,3 +1,4 @@
+import type { ProductFilters } from '../../../contracts/ProductFilters.js';
 import { getRepository } from '#infrastructure/typeorm/repository-context';
 import { Product } from '#entities/Product';
 import type { Repository, SelectQueryBuilder } from 'typeorm';
@@ -26,8 +27,16 @@ export class ProductsRepository implements IProductsRepository {
       .where('product.active = :active', { active: true });
   }
 
-  listActive(): Promise<ProductDTO[]> {
-    return this.query().orderBy('product.name', 'ASC').addOrderBy('product.id', 'ASC').getRawMany<ProductDTO>();
+  listActive(filters: ProductFilters = {}): Promise<ProductDTO[]> {
+    const query = this.query();
+    if (filters.q) {
+      const search = '%' + filters.q.replace(/[\\%_]/g, '\\$&') + '%';
+      query.andWhere('(product.name ILIKE :search OR product.description ILIKE :search)', { search });
+    }
+    if (filters.category) query.andWhere('product.categoryId = :category', { category: filters.category });
+    if (filters.minPrice) query.andWhere('product.price >= :minPrice', { minPrice: filters.minPrice });
+    if (filters.maxPrice) query.andWhere('product.price <= :maxPrice', { maxPrice: filters.maxPrice });
+    return query.orderBy('product.name', 'ASC').addOrderBy('product.id', 'ASC').getRawMany<ProductDTO>();
   }
 
   async findActiveById(id: string): Promise<ProductDTO | null> {

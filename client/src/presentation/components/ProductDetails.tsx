@@ -5,7 +5,7 @@ import { Modal } from './Modal';
 import { ProductImage } from './ProductImage';
 import { formatPrice } from '../format-price';
 
-export function ProductDetails({ id, api, onClose }: { id: string; api: StorefrontApi; onClose(): void }) {
+export function ProductDetails({ id, api, onClose, onAdd, cartBusy }: { id: string; api: StorefrontApi; onClose(): void; onAdd(): void; cartBusy: boolean }) {
   const load = useCallback((signal: AbortSignal) => api.product(id, signal), [api, id]);
   const { data: product, loading, error, retry } = useResource(load);
   return <Modal titleId="product-title" onClose={onClose}>
@@ -15,6 +15,6 @@ export function ProductDetails({ id, api, onClose }: { id: string; api: Storefro
     {product && <><ProductImage product={product} className="detail-image" /><p className="category">{product.category}</p>
       <p className="detail-info">{product.description}</p><p className="detail-price">{formatPrice(product.price)}</p>
       <p className="hint">Peso: {Number(product.weight)} g · {Number(product.stock) > 0 ? 'Disponível' : 'Temporariamente esgotado'}</p>
-      <p className="hint">Compras serão disponibilizadas na próxima etapa do projeto.</p></>}
+      <button className="button primary" disabled={cartBusy || Number(product.stock) <= 0} onClick={onAdd}>Adicionar ao carrinho</button><p className="hint">Adicionar não reserva estoque nem conclui uma compra.</p></>}
   </Modal>;
 }

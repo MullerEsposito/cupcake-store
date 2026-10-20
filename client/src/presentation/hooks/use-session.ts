@@ -13,9 +13,15 @@ export function useSession(api: StorefrontApi) {
     return () => { active = false; controller.abort(); };
   }, [api]);
   async function authenticate(mode: AuthMode, input: AuthInput) {
-    const result = await (mode === 'register' ? api.register(input) : api.login(input));
-    setUser(result);
+    setLoading(true);
+    try {
+      const result = await (mode === 'register' ? api.register(input) : api.login(input));
+      setUser(result);
+    } finally { setLoading(false); }
   }
-  async function logout() { await api.logout(); setUser(null); }
+  async function logout() {
+    setLoading(true);
+    try { await api.logout(); setUser(null); } finally { setLoading(false); }
+  }
   return { user, loading, authenticate, logout };
 }

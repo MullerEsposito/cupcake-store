@@ -6,6 +6,6 @@ export class ListProductsController {
   constructor(private readonly listProductsService: ListProductsService) {}
 
   async handle(request: ApiRequest, response: Response): Promise<Response> {
-    return response.json({ products: await this.listProductsService.execute() });
+    return response.json({ products: await this.listProductsService.execute(request.query) });
   }
 }

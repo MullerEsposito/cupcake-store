@@ -11,7 +11,8 @@
     "paths": {
       "#entities/*": [
         "./src/modules/catalog/entities/*.ts",
-        "./src/modules/users/entities/*.ts"
+        "./src/modules/users/entities/*.ts",
+        "./src/modules/cart/entities/*.ts"
       ],
       "#dtos/*": [
         "./src/modules/catalog/dtos/*.ts",
@@ -25,7 +26,9 @@
         "./src/modules/catalog/repositories/implementations/typeorm/*.ts",
         "./src/modules/users/repositories/implementations/typeorm/*.ts",
         "./src/modules/catalog/repositories/*.ts",
-        "./src/modules/users/repositories/*.ts"
+        "./src/modules/users/repositories/*.ts",
+        "./src/modules/cart/repositories/implementations/typeorm/*.ts",
+        "./src/modules/cart/repositories/*.ts"
       ],
       "#http/*": [
         "./src/adapters/http/*.ts"
@@ -41,6 +44,9 @@
       ],
       "#users-usecases/*": [
         "./src/modules/users/useCases/*.ts"
+      ],
+      "#cart-usecases/*": [
+        "./src/modules/cart/useCases/*.ts"
       ]
     }
   }

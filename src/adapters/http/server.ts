@@ -15,6 +15,7 @@ export function createApp(dependencies: RuntimeDependencies, {
   const app = express();
   app.locals.dependencies = { ...dependencies, origin };
   app.locals.rateLimit = createRateLimiter();
+  app.locals.cartRateLimit = createRateLimiter({ maximum: 120 });
   app.disable('x-powered-by');
   app.disable('etag');
   app.set('case sensitive routing', true);

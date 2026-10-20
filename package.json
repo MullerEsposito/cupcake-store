@@ -14,7 +14,8 @@
     "clean:server": "node scripts/clean-server.mjs",
     "typecheck": "tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.client.json && tsc -p tsconfig.tools.json",
     "test": "node --import tsx --test",
-    "check:db": "node --import tsx --env-file-if-exists=.env scripts/check-db.ts"
+    "check:db": "node --import tsx --env-file-if-exists=.env scripts/check-db.ts",
+    "check:sprint2": "node --import tsx --env-file-if-exists=.env scripts/check-sprint2.mjs"
   },
   "dependencies": {
     "axios": "^1.13.2",

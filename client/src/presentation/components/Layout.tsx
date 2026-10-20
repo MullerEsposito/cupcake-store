@@ -1,7 +1,7 @@
 import type { PublicUser } from '../../contracts/storefront';
 
-export function Header({ user, loading, onLogin, onLogout }: {
-  user: PublicUser | null; loading: boolean; onLogin(): void; onLogout(): void;
+export function Header({ user, loading, cartCount, onLogin, onLogout }: {
+  user: PublicUser | null; loading: boolean; cartCount: number; onLogin(): void; onLogout(): void;
 }) {
   return <>
     <a className="skip" href="#catalogo">Ir para o catálogo</a>
@@ -19,8 +19,9 @@ export function Header({ user, loading, onLogin, onLogout }: {
         <a href="#sobre">Nossa essência</a>
       </nav>
       <div className="account">
+        <a className="cart-shortcut" href="#carrinho">Carrinho ({cartCount})</a>
         {user
-          ? <><span id="greeting">Olá, {user.name.split(' ')[0]}!</span><button className="button outline" onClick={onLogout}>Sair</button></>
+          ? <><span id="greeting">Olá, {user.name.split(' ')[0]}!</span><button className="button outline" disabled={loading} onClick={onLogout}>Sair</button></>
           : <button className="button outline" disabled={loading} onClick={onLogin}>Entrar / Cadastrar</button>}
       </div>
     </header>
@@ -65,7 +66,7 @@ export function Footer() {
     </section>
     <div className="project-note wrap">
       <strong>Protótipo acadêmico · PIT II</strong>
-      <span>Primeira entrega: vitrine, detalhes, cadastro e login. Compras e pagamentos ainda não estão disponíveis.</span>
+      <span>Sprint 2: busca, filtros e carrinho. Checkout e pagamentos ainda não estão disponíveis.</span>
     </div>
     <footer className="wrap">
       <a className="brand footer-brand" href="/">CupCake Store</a>
