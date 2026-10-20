@@ -103,7 +103,7 @@ URLs e payloads da API mantidos. Não há alteração no esquema ou nos dados do
 
 `npm test` usa tsx para executar os testes de regressão JavaScript contra os fontes TypeScript. `npm run typecheck` verifica servidor, React, ferramentas e provas de contratos em test/types; `npm test` verifica casos de uso, contratos HTTP, infraestrutura transacional simulada, gateway do frontend e direção de dependências. Testes de unidade não substituem validação com PostgreSQL. `npm run check:db` verifica conexão e nove tabelas, sem modificar dados. A compilação React e a revisão no navegador complementam esses testes.
 
-Não houve ampliação do escopo funcional: carrinho, checkout, estoque transacional, pagamentos e painel administrativo permanecem nos próximos incrementos.
+Na Sprint 1 não houve ampliação do escopo funcional. A Sprint 2 acrescenta busca, filtros e carrinho conforme docs/sprint-2.md; checkout, estoque transacional de pedidos, pagamentos e painel administrativo permanecem nos próximos incrementos.
 
 ## TypeScript
 
@@ -218,3 +218,9 @@ RegisterUserService e AuthenticateUserService criam a nova sessão e revogam o t
 Os serviços retornam AuthenticationResult, com usuário público e token interno. Não conhecem cookies, Express ou origem HTTP. O helper authenticatedResponse grava o cookie HttpOnly/SameSite e serializa somente user: o token não vai no JSON. LogoutUserService continua revogando a sessão; o controller apenas limpa o cookie.
 
 O middleware resolveSession lê o cookie e consulta a instância compartilhada de ISessions, obtida nas dependências da aplicação. Ele preenche request.authentication com token e userId, sem aceitar a identidade do corpo ou da query. Token ausente, inválido ou expirado resulta em userId null. GetCurrentUserController encaminha apenas o ID ao serviço, que reconsulta o usuário ativo. Nenhum controller recebe ISessions; o middleware é aplicado às quatro rotas de conta e a vitrine permanece pública. As fábricas continuam criando serviços e injetando-os nos controllers.
+
+## Incremento da Sprint 2
+
+O módulo cart segue a organização de entidades, contratos de repositório, implementações TypeORM e casos de uso com Service, Controller e fábrica. GetCart consulta o resumo; ChangeCart valida inclusão, quantidade e remoção; MergeCart incorpora o visitante ao cliente. Os controllers continuam tipados com a própria classe do serviço e os serviços dependem das interfaces ICartsRepository e IUsersRepository. Cart e CartItem são mapeadas no DataSource sem sincronização do schema.
+
+resolveCart gera a identidade anônima em cookie opaco e armazena somente seu hash no contexto e no banco. A integração do frontend executa a incorporação após obter a sessão autenticada; o serviço de autenticação não passa a depender do módulo cart. As transações de carrinho serializam operações por proprietário e revalidam estoque, sem reservá-lo. Totais são calculados em centavos inteiros. HTTP mantém a proteção de origem e adiciona limite próprio para alterações no carrinho. Critérios, limites, rotas e diagnóstico transacional estão em docs/sprint-2.md.

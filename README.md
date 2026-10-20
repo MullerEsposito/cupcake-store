@@ -2,6 +2,12 @@
 
 Primeiro incremento funcional: HU-01 (vitrine), HU-02 (detalhes), HU-09 (cadastro) e HU-10 (login). Interface React com TypeScript, Vite e Axios; backend TypeScript em Node.js 20.19+ com Express 5, organizado por módulos de negócio (users e catalog), com entidades, repositórios e Service/Controller/composição por caso de uso, usando TypeORM com PostgreSQL. Casos de uso e regras de negócio são independentes de Express, React e banco. Consulte [Arquitetura](docs/architecture.md) para a estrutura modular, contratos e decisões. O banco existente é reutilizado e nenhuma tabela é apagada ou recriada. As nove tabelas devem estar no esquema public do banco cupcake_store.
 
+## Sprint 2
+
+Busca por nome/descrição, filtros por categoria e faixa de preço, carrinho de visitante e carrinho persistido do cliente, com incorporação após login. Quantidades e totais são validados no servidor; não há reserva nem baixa de estoque antes do checkout. Consulte [Sprint 2](docs/sprint-2.md) para endpoints, limites e critérios de verificação.
+
+Diagnóstico com PostgreSQL real: `npm run check:sprint2`. Os dados fictícios são revertidos com ROLLBACK; sequências podem avançar. O checkout e os pagamentos permanecem fora desta entrega.
+
 ## Configuração local
 
 1. Abra a raiz deste repositório em um terminal e execute `npm ci` para instalar as dependências registradas.
@@ -38,4 +44,4 @@ Teste manual com o banco conectado: inserir catálogo, consultar vitrine e detal
 
 ## Próximos incrementos
 
-Sprint 2: busca, filtros, carrinho e resumo. Sprint 3: endereço, checkout e pagamento simulado com baixa transacional de estoque. Sprint 4: acompanhamento e painel administrador. Esses fluxos não estão implementados nesta entrega. O login não é apresentado como compra concluída e nenhum pagamento é realizado.
+Sprint 2: busca, filtros, carrinho e resumo implementados. Próximas etapas — Sprint 3: endereço, checkout e pagamento simulado com baixa transacional de estoque. Sprint 4: acompanhamento e painel administrador. Os fluxos das Sprints 3 e 4 não estão implementados nesta entrega. O login não é apresentado como compra concluída e nenhum pagamento é realizado.
