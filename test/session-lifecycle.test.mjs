@@ -80,7 +80,7 @@ test('falha na confirmação da transação não emite sessão', async () => {
   assert.deepEqual(events, []);
 });
 
-test('middleware identifica pelo cookie e ignora identidade fornecida pelo cliente', () => {
+test('middleware identifica pelo cookie e ignora identidade fornecida pelo cliente', async () => {
   const sessions = new Sessions();
   const token = sessions.create('real');
   const request = {
@@ -90,12 +90,12 @@ test('middleware identifica pelo cookie e ignora identidade fornecida pelo clien
     app: { locals: { dependencies: { sessions } } }
   };
   let calls = 0;
-  resolveSession(request, {}, () => { calls++; });
+  await resolveSession(request, {}, () => { calls++; });
   assert.deepEqual(request.authentication, { token, userId: 'real' });
   assert.equal(calls, 1);
 });
 
-test('middleware trata cookies ausentes, inválidos, expirados e de outra aplicação como anônimos', () => {
+test('middleware trata cookies ausentes, inválidos, expirados e de outra aplicação como anônimos', async () => {
   const sessions = new Sessions();
   const expired = new Sessions({ ttl: -1 });
   const expiredToken = expired.create('1');
@@ -105,7 +105,7 @@ test('middleware trata cookies ausentes, inválidos, expirados e de outra aplica
       headers: { cookie: token ? `cupcake_session=${token}` : undefined },
       app: { locals: { dependencies: { sessions: store } } }
     };
-    resolveSession(request, {}, () => {});
+    await resolveSession(request, {}, () => {});
     assert.deepEqual(request.authentication, { token, userId: null });
   }
 });
