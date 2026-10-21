@@ -60,9 +60,9 @@ Os arquivos em `database/` permitem reproduzir o ambiente. Para uma instalação
 - Senhas com 12–128 caracteres, salt aleatório e scrypt (N=32768, r=8, p=1). Senhas nunca aparecem em logs ou respostas. Cadastros sempre recebem perfil CLIENTE, independentemente de campos enviados pelo navegador.
 - Email normalizado e único; consultas parametrizadas; validação de entradas no servidor. Login e cadastro têm limite de 20 solicitações por minuto por IP.
 - Política proposta para o protótipo: cinco tentativas inválidas bloqueiam a conta por 15 minutos. O registro é atualizado com bloqueio de linha para evitar contagem perdida em tentativas simultâneas. Contas inativas não entram.
-- Sessões opacas aleatórias em cookie HttpOnly e SameSite=Strict, com validade fixa de oito horas. O servidor guarda apenas o hash do identificador e revalida se o usuário está ativo. Logout invalida a sessão; reiniciar o processo encerra todas as sessões. Sessões em memória atendem apenas este protótipo local de processo único; persistência compartilhada é necessária antes de escalar.
+- Sessões opacas aleatórias em cookie HttpOnly e SameSite=Strict, com validade fixa de oito horas. O servidor guarda apenas o hash do identificador e revalida se o usuário está ativo. Logout invalida a sessão. Na execução local, sessões ficam em memória e terminam ao reiniciar o processo; na Vercel, são persistidas com hash no PostgreSQL compartilhado.
 - Operações POST exigem origem exata e cabeçalho próprio; sem CORS permissivo. Página usa CSP, dados são inseridos com textContent e imagens externas admitem somente HTTPS.
-- HTTPS e cookies Secure são necessários antes de publicar. Este servidor é destinado ao ambiente local; não há implantação pública ou conexão remota ao PostgreSQL.
+- A demonstração Vercel utiliza HTTPS, cookies Secure e PostgreSQL Neon com validação TLS. O servidor local permanece limitado à interface local e usa configuração independente.
 
 ## Verificação
 
@@ -79,3 +79,9 @@ Sprints 1 a 7 implementadas no escopo aprovado. Evoluções: inventário físico
 Vitrine automática na página inicial, resumo ampliado no checkout, consulta de CEP via ViaCEP e listas de UF/municípios pelo IBGE. Atendimento nacional e frete gratuito exclusivamente simulados. Pedidos usam SSE autenticado por usuário, com reconexão e consulta de contingência a cada 30 segundos. Nenhuma migração adicional é necessária.
 
 Consulte [Sprint 8](docs/sprint-8.md) para modelos UML/ER/físico, dicionário, decisões, evidências e pendências formais da entrega. Execute `npm run check:sprint8` com a aplicação na porta 3000 para conferir metadados, medir a API local e consultar um CEP público, sem gravar dados de negócio. As chamadas externas exigem acesso HTTPS a ViaCEP e IBGE.
+
+## Sprint 9 e demonstração
+
+Aplicação publicada em https://cupcake-store-gamma.vercel.app, com banco Neon fictício separado do banco local. Projeto Vercel conectado ao repositório `MullerEsposito/cupcake-store`, branch `main`. Consulte [Publicação](docs/deployment.md) para configuração, estado compartilhado, segurança e verificações.
+
+O pacote de publicação é produzido por `npm run build:vercel`; `npm start` continua destinado à execução local na porta 3000. Credenciais, arquivos `.env*` e a pasta `.vercel` não são versionados. O provisionamento de demonstração recusa bancos não vazios e não executa reset.
