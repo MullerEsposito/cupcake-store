@@ -3,9 +3,9 @@ import { fileURLToPath } from 'node:url';
 
 await build({
   absWorkingDir: fileURLToPath(new URL('../', import.meta.url)),
-  entryPoints: ['src/main.ts'],
+  entryPoints: { main: 'src/main.ts', vercel: 'src/vercel.ts' },
   tsconfig: 'tsconfig.server.json',
-  outfile: 'build/server/main.js',
+  outdir: 'build/server',
   bundle: true,
   platform: 'node',
   target: 'node20.19',

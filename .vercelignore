@@ -1,0 +1,8 @@
+.env*
+.git
+.npm-cache
+node_modules
+docs
+test
+test-support
+iniciar.cmd

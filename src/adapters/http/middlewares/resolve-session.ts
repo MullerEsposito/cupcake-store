@@ -3,11 +3,11 @@ import type { ApiRequest } from '../contracts.js';
 import { getDependencies } from '../contracts.js';
 import { readSessionToken } from '../helpers/session-cookie.js';
 
-export const resolveSession: RequestHandler = (request: ApiRequest, response, next) => {
+export const resolveSession: RequestHandler = async (request: ApiRequest, response, next) => {
   const token = readSessionToken(request);
   request.authentication = {
     token,
-    userId: getDependencies(request).sessions.get(token)
+    userId: await getDependencies(request).sessions.get(token)
   };
   next();
 };

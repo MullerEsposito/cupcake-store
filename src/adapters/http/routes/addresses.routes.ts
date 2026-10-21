@@ -10,16 +10,16 @@ import { getCreateAddressController } from '../../../modules/addresses/useCases/
 
 export const addressesRoutes = Router({ caseSensitive: true, strict: true });
 addressesRoutes.use(resolveSession, requireSession);
-addressesRoutes.use((request, response, next) => {
-  if (request.method !== 'GET') (request.app.locals as HttpLocals).cartRateLimit(request);
+addressesRoutes.use(async (request, response, next) => {
+  if (request.method !== 'GET') await (request.app.locals as HttpLocals).cartRateLimit(request);
   next();
 });
-addressesRoutes.get('/postal-codes/:postalCode', (request, response) => {
-  (request.app.locals as HttpLocals).cartRateLimit(request);
+addressesRoutes.get('/postal-codes/:postalCode', async (request, response) => {
+  await (request.app.locals as HttpLocals).cartRateLimit(request);
   return getLookupPostalCodeController().handle(request, response);
 });
-addressesRoutes.get('/states/:state/cities', (request, response) => {
-  (request.app.locals as HttpLocals).cartRateLimit(request);
+addressesRoutes.get('/states/:state/cities', async (request, response) => {
+  await (request.app.locals as HttpLocals).cartRateLimit(request);
   return getListCitiesController().handle(request, response);
 });
 addressesRoutes.get('/', (request, response) => getListAddressesController().handle(request, response));

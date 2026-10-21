@@ -12,8 +12,8 @@ import { resolveSession } from '../middlewares/resolve-session.js';
 
 export const authRoutes = Router({ caseSensitive: true, strict: true });
 
-const limit: RequestHandler = (request, response, next) => {
-  (request.app.locals as HttpLocals).rateLimit(request);
+const limit: RequestHandler = async (request, response, next) => {
+  await (request.app.locals as HttpLocals).rateLimit(request);
   next();
 };
 

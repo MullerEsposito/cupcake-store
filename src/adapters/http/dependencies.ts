@@ -1,4 +1,5 @@
 import type { DataSource } from 'typeorm';
+import type { ISharedRuntime } from '../../shared/contracts/ISharedRuntime.js';
 import type { Clock, IPasswordHasher, ISessions } from '#shared/contracts/ISecurity';
 
 export interface RuntimeDependencies {
@@ -6,6 +7,7 @@ export interface RuntimeDependencies {
   passwords: IPasswordHasher;
   sessions: ISessions;
   clock?: Clock;
+  sharedRuntime?: ISharedRuntime;
 }
 export interface ControllerDependencies extends RuntimeDependencies {
   origin: string;

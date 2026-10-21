@@ -15,8 +15,8 @@ import { getListStockMovementsController } from '../../../modules/inventory/useC
 
 export const adminRoutes = Router({ caseSensitive: true, strict: true });
 adminRoutes.use(resolveSession, requireSession);
-adminRoutes.use((request, response, next) => {
-  if (request.method !== 'GET') (request.app.locals as HttpLocals).cartRateLimit(request);
+adminRoutes.use(async (request, response, next) => {
+  if (request.method !== 'GET') await (request.app.locals as HttpLocals).cartRateLimit(request);
   next();
 });
 adminRoutes.get('/catalog', (request, response) => getAdminCatalogController().handle(request, response));

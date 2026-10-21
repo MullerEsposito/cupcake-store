@@ -39,8 +39,8 @@ export class AuthenticateUserService {
       return { user: presentUser(user) };
     });
     if (outcome.error) throw outcome.error;
-    const token = this.sessions.create(outcome.user.id);
-    this.sessions.delete(previousToken);
+    const token = await this.sessions.create(outcome.user.id);
+    await this.sessions.delete(previousToken);
     return { user: outcome.user, token };
   }
 

@@ -9,8 +9,8 @@ import { getChangeCartController } from '#cart-usecases/changeCart/index';
 import { getMergeCartController } from '#cart-usecases/mergeCart/index';
 
 export const cartRoutes = Router({ caseSensitive: true, strict: true });
-cartRoutes.use((request, response, next) => {
-  if (request.method !== 'GET') (request.app.locals as HttpLocals).cartRateLimit(request);
+cartRoutes.use(async (request, response, next) => {
+  if (request.method !== 'GET') await (request.app.locals as HttpLocals).cartRateLimit(request);
   next();
 }, resolveSession, resolveCart);
 cartRoutes.get('/', (request, response) => getCartController().handle(request, response));

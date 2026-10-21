@@ -12,8 +12,8 @@ import { getCancelOrderController } from '../../../modules/orders/useCases/cance
 
 export const ordersRoutes = Router({ caseSensitive: true, strict: true });
 ordersRoutes.use(resolveSession, requireSession);
-ordersRoutes.use((request, response, next) => {
-  if (request.method !== 'GET') (request.app.locals as HttpLocals).cartRateLimit(request);
+ordersRoutes.use(async (request, response, next) => {
+  if (request.method !== 'GET') await (request.app.locals as HttpLocals).cartRateLimit(request);
   next();
 });
 ordersRoutes.get('/', (request, response) => getListOrdersController().handle(request, response));

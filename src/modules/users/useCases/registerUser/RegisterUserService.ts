@@ -11,8 +11,8 @@ export class RegisterUserService {
     const { email, password, name } = validateCredentials(input, { registration: true });
     const passwordHash = await this.passwords.hash(password);
     const user = presentUser(await this.usersRepository.createClient({ email, name, passwordHash }));
-    const token = this.sessions.create(user.id);
-    this.sessions.delete(previousToken);
+    const token = await this.sessions.create(user.id);
+    await this.sessions.delete(previousToken);
     return { user, token };
   }
 }

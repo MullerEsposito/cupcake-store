@@ -13,8 +13,8 @@ export type ApiRequest = Request<Record<string, string | string[]>, unknown, unk
 };
 export interface HttpLocals {
   dependencies: ControllerDependencies;
-  rateLimit(request: Pick<Request, 'socket'>): void;
-  cartRateLimit(request: Pick<Request, 'socket'>): void;
+  rateLimit(request: Pick<Request, 'socket' | 'headers'>): void | Promise<void>;
+  cartRateLimit(request: Pick<Request, 'socket' | 'headers'>): void | Promise<void>;
 }
 export function getDependencies(request: Pick<Request, 'app'>): ControllerDependencies {
   return (request.app.locals as HttpLocals).dependencies;

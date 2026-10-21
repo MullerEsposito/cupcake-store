@@ -16,13 +16,19 @@ import { CreateStockMovements1792537200000 } from './migrations/1792537200000-Cr
 import { errorCode } from '#shared/errors/error-info';
 
 export function createDataSource(): DataSource {
+  const remote = process.env.DATABASE_URL ? new URL(process.env.DATABASE_URL) : undefined;
+  if (process.env.VERCEL === '1' && !remote) throw new Error('DATABASE_URL obrigatória na Vercel.');
+  if (remote && !['postgres:', 'postgresql:'].includes(remote.protocol)) throw new Error('Protocolo PostgreSQL inválido.');
+  for (const key of ['sslmode', 'sslcert', 'sslkey', 'sslrootcert']) remote?.searchParams.delete(key);
   return new DataSource({
     type: 'postgres',
-    host: process.env.PGHOST || 'localhost',
-    port: Number(process.env.PGPORT || 5432),
-    database: process.env.PGDATABASE || 'cupcake_store',
-    username: process.env.PGUSER || 'postgres',
-    password: process.env.PGPASSWORD,
+    ...(remote ? { url: remote.toString(), ssl: { rejectUnauthorized: true } } : {
+      host: process.env.PGHOST || 'localhost',
+      port: Number(process.env.PGPORT || 5432),
+      database: process.env.PGDATABASE || 'cupcake_store',
+      username: process.env.PGUSER || 'postgres',
+      password: process.env.PGPASSWORD
+    }),
     schema: 'public',
     entities: [User, Product, Category, Cart, CartItem, Address, Order, OrderItem, Payment, OrderCancellation, StockMovement],
     migrations: [CreateOrderCancellations1792454400000, CreateStockMovements1792537200000],
@@ -33,7 +39,7 @@ export function createDataSource(): DataSource {
     connectTimeoutMS: 3000,
     applicationName: 'cupcake_store',
     poolErrorHandler: error => console.error('Conexão PostgreSQL interrompida:', errorCode(error)),
-    extra: { max: 5, statement_timeout: 5000 }
+    extra: { max: remote ? 3 : 5, idleTimeoutMillis: 10000, statement_timeout: 5000 }
   });
 }
 

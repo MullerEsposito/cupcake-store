@@ -3,6 +3,7 @@ import type { RuntimeDependencies } from './dependencies.js';
 
 import { OrderEvents } from './events/order-events.js';
 import express from 'express';
+import type { Request } from 'express';
 import { randomBytes } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { resolve, relative, sep } from 'node:path';
@@ -18,8 +19,13 @@ export function createApp(dependencies: RuntimeDependencies, {
   const app = express();
   app.locals.orderEvents = new OrderEvents();
   app.locals.dependencies = { ...dependencies, origin };
-  app.locals.rateLimit = createRateLimiter();
-  app.locals.cartRateLimit = createRateLimiter({ maximum: 120 });
+  const sharedLimiter = (bucket: string, maximum: number) => (request: Pick<Request, 'socket' | 'headers'>) => {
+    const address = process.env.VERCEL === '1' ? request.headers['x-forwarded-for'] : request.socket.remoteAddress;
+    const identity = typeof address === 'string' && address.length <= 256 ? address.split(',')[0]!.trim() : 'unknown';
+    return dependencies.sharedRuntime!.consumeRateLimit(bucket + ':' + identity, maximum);
+  };
+  app.locals.rateLimit = dependencies.sharedRuntime ? sharedLimiter('auth', 20) : createRateLimiter();
+  app.locals.cartRateLimit = dependencies.sharedRuntime ? sharedLimiter('operations', 120) : createRateLimiter({ maximum: 120 });
   app.disable('x-powered-by');
   app.disable('etag');
   app.set('case sensitive routing', true);
