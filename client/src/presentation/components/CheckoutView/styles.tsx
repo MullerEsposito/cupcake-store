@@ -31,6 +31,9 @@ list-style: none; padding: 0;
 .order-list li {
 display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding-block: 18px; border-bottom: 1px solid #e6d6d3;
 }
+.order-list-summary {
+display: grid; gap: 4px; flex: 1 1 260px; min-width: 0; overflow-wrap: anywhere;
+}
 .order-list strong, .order-number {
 overflow-wrap: anywhere;
 }

@@ -13,8 +13,11 @@ list-style: none; padding: 0; margin: 24px 0;
 .cart-line {
 display: grid; grid-template-columns: 2fr 2fr 1fr auto; gap: 20px; align-items: center; padding: 20px 0; border-bottom: 1px solid #e6d6d3;
 }
-.cart-line form {
-display: flex; align-items: end; gap: 10px;
+.cart-quantity-controls {
+display: flex; flex-wrap: wrap; align-items: end; gap: 10px;
+}
+.cart-quantity-error {
+font-weight: 600;
 }
 .cart-line input {
 max-width: 100px;

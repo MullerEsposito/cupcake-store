@@ -11,6 +11,23 @@ import { statusLabel } from '../../order-status';
 import { canCancel } from '../../../contracts/cancellation';
 import { CancellationForm, CancellationSummary } from '../Cancellation';
 
+const orderDateFormatter = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeZone: 'America/Sao_Paulo' });
+
+export function OrderListEntry({ order }: { order: Order }) {
+  const preview = order.items.slice(0, 3).map(item => `${item.quantity} × ${item.name}`).join(', ');
+  const remaining = order.items.length - 3;
+  return <li>
+    <div className="order-list-summary">
+      <strong>{preview}{remaining > 0 && ` + ${remaining} ${remaining === 1 ? 'item' : 'itens'}`}</strong>
+      <span><time dateTime={order.createdAt}>{orderDateFormatter.format(new Date(order.createdAt))}</time> · Pedido {order.number}</span>
+      <span>{formatPrice(order.total)} · {statusLabel(order.status)}</span>
+    </div>
+    <Link className="button outline" to={'/pedidos/' + encodeURIComponent(order.id)}>
+      {order.status === 'AGUARDANDO_PAGAMENTO' ? 'Retomar pagamento' : 'Ver resumo'}
+    </Link>
+  </li>;
+}
+
 export function CheckoutView({ api, cart, mode, orderId, onChanged }: {
   api: StorefrontApi; cart: Cart | null; mode: 'checkout' | 'orders' | 'detail'; orderId?: string; onChanged(): void;
 }) {
@@ -109,12 +126,7 @@ export function CheckoutView({ api, cart, mode, orderId, onChanged }: {
     {orders.error && <p className="error" role="alert">{orders.error}</p>}
     <button className="detail-button" disabled={busy || orders.loading} onClick={orders.retry}>Atualizar pedidos</button>
     {orders.data?.length === 0 && <p>Você ainda não possui pedidos.</p>}
-    <ul className="order-list">{orders.data?.map(item => <li key={item.id}>
-      <strong>{item.number}</strong><span>{formatPrice(item.total)} · {statusLabel(item.status)}</span>
-      <Link className="button outline" to={'/pedidos/' + encodeURIComponent(item.id)}>
-        {item.status === 'AGUARDANDO_PAGAMENTO' ? 'Retomar pagamento' : 'Ver resumo'}
-      </Link>
-    </li>)}</ul>
+    <ul className="order-list">{orders.data?.map(item => <OrderListEntry key={item.id} order={item} />)}</ul>
     </>}
     {mode !== 'orders' && <div aria-busy={busy}>
       <Link className="detail-button" to={order ? '/pedidos' : '/carrinho'}>{order ? '← Meus pedidos' : '← Voltar ao carrinho'}</Link>

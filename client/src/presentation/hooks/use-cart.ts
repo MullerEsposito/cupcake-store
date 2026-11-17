@@ -30,7 +30,7 @@ export function useCart(api: StorefrontApi, userId: string | null, sessionLoadin
 
   const data = state.owner === owner && !sessionLoading ? state.data : null;
   const busy = pending || sessionLoading || state.loading || !data;
-  async function mutate(operation: () => Promise<Cart>): Promise<boolean> {
+  async function mutate(operation: () => Promise<Cart>, onError?: (message: string) => void): Promise<boolean> {
     if (locked.current || busy) return false;
     locked.current = true;
     setPending(true);
@@ -41,7 +41,11 @@ export function useCart(api: StorefrontApi, userId: string | null, sessionLoadin
       setState({ owner, data: result, error: '', loading: false });
       return true;
     } catch (error) {
-      if (generation.current === current) setState(previous => ({ ...previous, error: errorMessage(error) }));
+      if (generation.current === current) {
+        const message = errorMessage(error);
+        setState(previous => ({ ...previous, error: onError ? '' : message }));
+        onError?.(message);
+      }
       return false;
     } finally {
       if (generation.current === current) { locked.current = false; setPending(false); }
@@ -52,7 +56,8 @@ export function useCart(api: StorefrontApi, userId: string | null, sessionLoadin
     error: state.owner === owner ? state.error : '',
     retry: useCallback(() => { mergeRequest.current = null; setVersion(value => value + 1); }, []),
     add: (productId: string) => mutate(() => api.addCartItem(productId, 1)),
-    setQuantity: (productId: string, quantity: number) => mutate(() => api.setCartQuantity(productId, quantity)),
+    setQuantity: (productId: string, quantity: number, onError?: (message: string) => void) =>
+      mutate(() => api.setCartQuantity(productId, quantity), onError),
     remove: (productId: string) => mutate(() => api.removeCartItem(productId))
   };
 }
