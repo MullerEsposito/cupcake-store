@@ -6,7 +6,7 @@ import { useResource } from '../../hooks/use-resource';
 import { errorMessage } from '../../error-message';
 import { formatPrice } from '../../format-price';
 import { Link, useNavigate } from 'react-router';
-import { OrderProgress } from '../OrderProgress';
+import { OrderOverview } from './OrderOverview';
 import { statusLabel } from '../../order-status';
 import { canCancel } from '../../../contracts/cancellation';
 import { CancellationForm, CancellationSummary } from '../Cancellation';
@@ -111,7 +111,6 @@ export function CheckoutView({ api, cart, mode, orderId, onChanged }: {
   }
 
   const pending = order?.payments.find(payment => payment.status === 'PENDENTE');
-  const latest = order?.payments[0];
   const showPayment = order?.status === 'AGUARDANDO_PAGAMENTO';
   if (mode === 'detail' && !order) return <Container><section className="checkout-section wrap">
     {detail.loading && <p role="status">Carregando pedido…</p>}
@@ -148,16 +147,10 @@ export function CheckoutView({ api, cart, mode, orderId, onChanged }: {
           })} />
         </>}
         {order && <>
-          <p className="order-number">{order.number}</p><p role="status">{statusLabel(order.status)}</p>
-          <OrderProgress status={order.status} />
-          {trackingError && <p role="status" className="error">{trackingError}</p>}
-          <p className="hint">Atualização por eventos em tempo real com esta página visível, com reconexão automática e conferência de segurança a cada 30 segundos. As etapas não representam rastreamento GPS.</p>
-          <button className="detail-button" disabled={busy} onClick={() => { void run(async () => { setOrder(await api.order(order.id)); orders.retry(); }); }}>Atualizar acompanhamento</button>
-          <ul>{order.items.map(item => <li key={item.productId}>{item.quantity} × {item.name} — {formatPrice(item.lineTotal)}</li>)}</ul>
-          <p>Entrega: {order.address.recipient}, {order.address.street}, {order.address.number}{order.address.complement ? `, ${order.address.complement}` : ''} — {order.address.district}, {order.address.city}/{order.address.state}, CEP {order.address.postalCode}.</p>
-          <p>Subtotal: {formatPrice(order.subtotal)} · Frete: {formatPrice(order.shipping)}</p>
-          <p><strong>Total: {formatPrice(order.total)}</strong></p>
-          {latest && <p role="status">Pagamento: {latest.status} · {latest.method}. {latest.reason}</p>}
+          <OrderOverview order={order} busy={busy} trackingError={trackingError} onRefresh={() => {
+            void run(async () => { setOrder(await api.order(order.id)); orders.retry(); });
+          }} />
+
           {order.cancellation && <CancellationSummary cancellation={order.cancellation} />}
           {canCancel(order.status) && <CancellationForm key={`${order.id}-${order.status}`} status={order.status} total={order.total} busy={busy}
             onConfirm={input => run(async () => {
