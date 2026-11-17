@@ -27,12 +27,31 @@ display: grid;
   gap: 23px
 }
 .product {
+position: relative;
 border: 1px solid var(--line);
   background: #fffdf9;
   border-radius: 9px;
   overflow: hidden;
   display: flex;
   flex-direction: column
+}
+.product:has(.product-link:hover) {
+border-color: var(--rose);
+}
+.product-link::after {
+content: '';
+position: absolute;
+inset: 0;
+z-index: 1;
+}
+.product-link:focus-visible::after {
+outline: 2px solid var(--rose);
+outline-offset: -3px;
+border-radius: 9px;
+}
+.product-content > button {
+position: relative;
+z-index: 2;
 }
 .product-image {
 width: 100%;

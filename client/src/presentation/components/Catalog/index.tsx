@@ -1,12 +1,13 @@
 import { Container } from './styles';
+import { Link } from 'react-router';
 import type { Product, Resource, CatalogFilters as Filters } from '../../../contracts/storefront';
 import { ProductImage } from '../ProductImage';
 import { formatPrice } from '../../format-price';
 
 import { CatalogFilters } from '../CatalogFilters';
 
-export function Catalog({ resource, onSelect, categories, onFilter, filters, filtered, onAdd, cartBusy, showcase = false }: {
-  resource: Resource<Product[]>; onSelect(id: string): void;
+export function Catalog({ resource, categories, onFilter, filters, filtered, onAdd, cartBusy, showcase = false }: {
+  resource: Resource<Product[]>;
   categories: { id: string; name: string }[]; onFilter(filters: Filters): void;
   filters: Filters; filtered: boolean; onAdd(id: string): void; cartBusy: boolean; showcase?: boolean;
 }) {
@@ -21,7 +22,7 @@ export function Catalog({ resource, onSelect, categories, onFilter, filters, fil
     <div className="products" aria-live="polite">{products?.map(product => <article className="product" key={product.id}>
       <ProductImage product={product} className="product-image" />
       <div className="product-content"><p className="category">{product.category}</p><h3>{product.name}</h3><p className="product-description">{product.description}</p>
-        <div className="product-bottom"><span className="price">{formatPrice(product.price)}</span><button className="detail-button" onClick={() => onSelect(product.id)} aria-label={`Ver detalhes de ${product.name}`}>Ver detalhes ↗</button></div>
+        <div className="product-bottom"><span className="price">{formatPrice(product.price)}</span><Link className="detail-button product-link" to={'/produtos/' + encodeURIComponent(product.id)} aria-label={`Ver detalhes de ${product.name}`}>Ver detalhes ↗</Link></div>
         <button className="button primary" type="button" disabled={cartBusy || Number(product.stock) <= 0} onClick={() => onAdd(product.id)} aria-label={`Adicionar ${product.name} ao carrinho`}>Adicionar ao carrinho</button>
         <p className="stock">{Number(product.stock) > 0 ? 'Disponível' : 'Temporariamente esgotado'}</p>
       </div>

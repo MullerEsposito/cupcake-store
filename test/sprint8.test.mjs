@@ -140,11 +140,12 @@ test('lista de municípios exige sessão ativa e encaminha apenas UF validada', 
 test('vitrine inicial permite produtos reais sem duplicar h1 ou montar filtros', () => {
   const markup = renderToStaticMarkup(React.createElement(MemoryRouter, null, React.createElement(Catalog, {
     showcase: true, resource: { data: [{ id: '1', name: 'Chocolate', price: '12.00', stock: 1, category: 'Clássicos' }], loading: false, error: '', retry() {} },
-    categories: [], filters: {}, filtered: false, onFilter() {}, onSelect() {}, onAdd() {}, cartBusy: false
+    categories: [], filters: {}, filtered: false, onFilter() {}, onAdd() {}, cartBusy: false
   })));
   assert.match(markup, /id="vitrine"/);
   assert.match(markup, /<h2 id="showcase-title"/);
-  assert.match(markup, /Chocolate/);
+  assert.match(markup, /<a[^>]+href="\/produtos\/1"[^>]*>Ver detalhes ↗<\/a>/);
+  assert.match(markup, /<button[^>]+aria-label="Adicionar Chocolate ao carrinho"[^>]*>/);
   assert.doesNotMatch(markup, /<h1|Buscar produtos/);
 });
 
